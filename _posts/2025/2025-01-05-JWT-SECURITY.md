@@ -20,6 +20,10 @@ image:
 ## Introdução
 
 Um dos motivos  da popularidade das API (Application Programming Interfaces) é sua vantagem  de ser usada em diversas interfaces diferentes, com uma única API podemos conversar com uma aplicação web ou mobile, simultaneamente se necessário, além disso, pensando pelo lado da segurança, podemos implementar controles mais centralizados do lado do servidor.
+Nesse artigo irei estudar e documentar, a aula disponível de JWT na plataforma TryHackMe.
+
+[Aula disponível aqui.](https://tryhackme.com/r/room/jwtsecurity)
+
 
 ## Gerenciamento de Sessão baseado em Token.
 
