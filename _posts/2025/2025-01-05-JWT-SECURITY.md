@@ -217,7 +217,7 @@ flag = self.db_lookup(username, "flag")
 **username = payload['username']**:
 
 - Extrai o valor associado à chave 'username' do payload. Esse valor é armazenado na variável `username`.
-- 
+
 **flag = self.db_lookup(username, "flag")**:
 
 - Realiza uma busca na base de dados (`self.db_lookup`) utilizando o `username` e a chave "flag".
