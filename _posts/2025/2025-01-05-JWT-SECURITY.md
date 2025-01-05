@@ -97,3 +97,135 @@ curl -H 'Content-Type: application/json' -X POST -d '{ "username" : "admin", "pa
 Para respondermos a pergunta acima, basta sabermos como é a estrutura de uma requisição JWT e qual é o seu cabeçalho.
 
 Resposta: `Authorization: Bearer header`
+
+## JSON Web Tokens
+
+JWT é um padrão aberto, fornecendo informações para desenvolvedores ou criadores de bibliotecas que querem usar JWTs, a sua estrutura segue da seguinte maneira.
+
+![Estrutura JWT](/assets/img/posts/2025/01/JWT-SCTRUCTURE.webp)
+
+### Estrutura JWT
+
+`Header`:  indica qual é o tipo de token e qual algoritmo está sendo utilizado.
+
+`Payload`: corpo do token, contém informações  de reinvindicações, as reinvindicações são pré-definidas como sendo públicas ou privadas pelo padrão JWT.
+
+`Signature`: a parte do token que fornece o método que será utilizado para garantir a autenticidade do token.
+
+### Algoritmos de assinatura
+
+Existem diversos algoritmos de assinatura, abaixo será explicado os principais.
+
+`None`: significa que nenhum algoritmo de assinatura será utilizado, desta forma, JWT não será capaz de verificar a autenticidade do token.
+
+`Symmetric Signing`: algoritmo simétrico, como HS265, criam uma assinatura e anexando um valor secreto para o cabeçalho e corpo do JWT antes de gerar um valor em hash. A verificação de assinatura, pode ser executada por qualquer sistema que tenha em posse o valor secreto.
+
+`Asymmetric Signing`: algoritmo de assinatura assimétrica, como RS256, cria uma assinatura usando uma chave privada, para assinar o cabeçalho e o corpo do JWT, é criado gerando uma hash e depois criptografando a hash com a chave privada. A verificação pode ser realizada por qualquer sistema que tenha a chave pública.
+
+### Segurança na assinatura
+
+JWTs podem ser criptografados (chamadas  de JWEs), mas o poder principal dos JWTs vem da assinatura. Uma vez que um JWT é assinado, ele pode ser enviado ao cliente, que pode usar este JWT sempre que necessário, realizando dessa maneira um servidor centralizado de autenticação que cria JWT para diversas aplicações.
+
+### Perguntas
+
+#### HS256 is an example of what type of signing algorithm?
+
+HS256 é utilizado para realizar assinaturas simétricas.
+
+Resposta: `Symmetric`
+
+#### RS256 is an example of what type of signing algorithm?
+
+RS256 é utilizado para realizar assinaturas assimétricas.
+
+Resposta: `Asymmetric`
+
+#### What is the name used for encrypted JWTs?
+
+O nome é JWEs
+
+Resposta:`JWEs`
+
+## Divulgação de informações confidenciais
+
+O primeiro problema que iremos nos aprofundar é sobre a exposição de informações sensíveis dentro do JWT.
+
+Em um gerenciamento de sessão baseado em `cookie` as informações são armazenadas em parâmetros do lado servidor, esses valores não são expostos do lado do cliente e podem ser recuperados somente do lado do servidor. Entretanto com tokens, as reinvindicações são expostas em JWT no lado do cliente, alguns exemplos de informações que podem ser expostas.
+
+- Credenciais como senhas em hash, ou ainda pior, em texto claro.
+- Exposição da rede interna, como endereços de hosts, hostname e servidores de autenticação.
+
+### Exemplo 1:
+
+```shell
+┌──(root㉿kali)-[/home/alex]
+└─# 
+curl -H 'Content-Type: application/json' -X POST -d '{ "username" : "user", "password" : "password1" }' http://10.10.63.229/api/v1.0/example1
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJwYXNzd29yZCI6InBhc3N3b3JkMSIsImFkbWluIjowLCJmbGFnIjoiVEhNezljYzAzOWNjLWQ4NWYtNDVkMS1hYzNiLTgxOGM4MzgzYTU2MH0ifQ.TkIH_A1zu1mu-zu6_9w_R4FUlYadkyjmXWyD5sqWd5U"
+} 
+```
+
+
+Acima vemos a resposta da nossa requisição `POST` a API, nossa estrutura em JWT é montada, com caracter "." sendo o delimitador de cada campo.
+
+`header:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9`
+
+`Payload:eyJ1c2VybmFtZSI6InVzZXIiLCJwYXNzd29yZCI6InBhc3N3b3JkMSIsImFkbWluIjowLCJmbGFnIjoiVEhNezljYzAzOWNjLWQ4NWYtNDVkMS1hYzNiLTgxOGM4MzgzYTU2MH0ifQ`
+
+`Signature: TkIH_A1zu1mu-zu6_9w_R4FUlYadkyjmXWyD5sqWd5U`
+
+A decodificação do token pode ser realizada manualmente ou com ferramentas, na lição é fornecido a ferramenta [jwt io](https://jwt.io/).
+Outra solução, que podemos executar localmente, é a ferramenta [Cyber Chef](https://cyberchef.org/)
+
+Resultado da nossa decodificação.
+
+![JWT-IO](/assets/img/posts/2025/01/JWT-IO.webp)
+
+### Erros de desenvolvimento
+
+Exemplo de informações confidenciais sendo fornecidas após requisição.
+
+```python
+payload = { 
+	"username" : username, 
+	"password" : password, 
+	"admin" : 0, 
+	"flag" : "[redacted]" 
+	} 
+
+access_token = jwt.encode(payload, self.secret, algorithm="HS256")
+```
+
+
+#### Correção
+
+Informações valiosas não podem ser adicionadas na resposta do JWT que será enviado para o lado do cliente, ao invés disso, esses valores devem ficar armazenados no lado do servidor, quando requisitados, o nome de usuário pode ser lido pelo JWT verificador , que realiza um lookup desses valores.
+
+```python
+payload = jwt.decode(token, self.secret, algorithms="HS256") 
+username = payload['username'] 
+flag = self.db_lookup(username, "flag")
+```
+
+
+**payload = jwt.decode(token, self.secret, algorithms="HS256")**:
+
+- Decodifica o token JWT utilizando a chave secreta (`self.secret`) e o algoritmo HS256.
+- O resultado da decodificação é um payload, que é um dicionário contendo as informações contidas no token.
+
+**username = payload['username']**:
+
+- Extrai o valor associado à chave 'username' do payload. Esse valor é armazenado na variável `username`.
+- 
+**flag = self.db_lookup(username, "flag")**:
+
+- Realiza uma busca na base de dados (`self.db_lookup`) utilizando o `username` e a chave "flag".
+- O resultado dessa busca é armazenado na variável `flag`.
+
+### Pergunta
+#### What is the flag for example 1?
+
+A resposta foi encontrada quando realizamos a requisição e decodificamos o JWT.
+
+Resposta: `THM{9cc039cc-d85f-45d1-ac3b-818c8383a560}`
