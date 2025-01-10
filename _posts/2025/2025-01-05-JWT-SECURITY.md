@@ -96,7 +96,8 @@ curl -H 'Content-Type: application/json' -X POST -d '{ "username" : "admin", "pa
 
 ```
 
-#### What is the common header used to transport the JWT in a request?
+#### Perguntas
+##### What is the common header used to transport the JWT in a request?
 
 Para respondermos a pergunta acima, basta sabermos como é a estrutura de uma requisição JWT e qual é o seu cabeçalho.
 
