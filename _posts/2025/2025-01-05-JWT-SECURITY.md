@@ -4,7 +4,7 @@ date: 2025-01-05 10:44:00
 categories: [TRYHACKME, ROOMS, WEB APPLICATION PENTEST]
 tags: [api,tryhackme,web,application,jwt,pentest]      # TAG names should always be lowercase
 image: 
- path: /assets/img/posts/2025/01/room-JWT.png
+ path: /assets/img/posts/2025/01/room-JWT.webp
 
 ---
 
