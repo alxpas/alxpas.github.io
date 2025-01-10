@@ -8,7 +8,7 @@ image:
 
 ---
 
-# Objetivos
+## Objetivos
 
 1. Aprender sobre autenticação baseada em token.
 2. Aprender sobre JSON web tokens (JWTs).
@@ -692,7 +692,7 @@ payload = jwt.decode(token, self.secret, audience=["appA"], algorithms="HS256")
 ```
 
 
-# Conclusão
+## Conclusão
 
 A aula aborda assuntos importantes sobre JSON Web Token (JWT), explicando seu propósito e informando sobre os principais algoritmos utilizados para a segurança do token. Há um aprofundamento nas falhas de implementações, destacando vulnerabilidades na prática. Assim, consolida-se o conhecimento sobre o funcionamento do JWT e como aplicar boas práticas para garantir a segurança.
 
