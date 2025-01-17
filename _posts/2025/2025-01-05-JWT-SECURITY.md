@@ -4,12 +4,12 @@ date: 2025-01-05 10:44:00
 categories: [TRYHACKME, ROOMS, WEB APPLICATION PENTEST]
 tags: [api,tryhackme,web,application,jwt,pentest]      # TAG names should always be lowercase
 image: 
- path: /assets/img/posts/2025/01/room-JWT.png
- width: 700
- height: 400
+ path: /assets/img/posts/2025/01/room-JWT.webp
+
+
 ---
 
-# Objetivos
+## Objetivos
 
 1. Aprender sobre autenticação baseada em token.
 2. Aprender sobre JSON web tokens (JWTs).
@@ -97,7 +97,8 @@ curl -H 'Content-Type: application/json' -X POST -d '{ "username" : "admin", "pa
 
 ```
 
-#### What is the common header used to transport the JWT in a request?
+#### Perguntas
+##### What is the common header used to transport the JWT in a request?
 
 Para respondermos a pergunta acima, basta sabermos como é a estrutura de uma requisição JWT e qual é o seu cabeçalho.
 
@@ -692,7 +693,7 @@ payload = jwt.decode(token, self.secret, audience=["appA"], algorithms="HS256")
 ```
 
 
-# Conclusão
+## Conclusão
 
 A aula aborda assuntos importantes sobre JSON Web Token (JWT), explicando seu propósito e informando sobre os principais algoritmos utilizados para a segurança do token. Há um aprofundamento nas falhas de implementações, destacando vulnerabilidades na prática. Assim, consolida-se o conhecimento sobre o funcionamento do JWT e como aplicar boas práticas para garantir a segurança.
 
