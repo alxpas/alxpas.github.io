@@ -5,7 +5,8 @@ categories: [TRYHACKME, ROOMS, WEB APPLICATION PENTEST]
 tags: [api,tryhackme,web,application,jwt,pentest]      # TAG names should always be lowercase
 image: 
  path: /assets/img/posts/2025/01/room-JWT.png
-
+ width: 700
+ height: 400
 ---
 
 # Objetivos
