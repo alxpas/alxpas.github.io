@@ -1,10 +1,10 @@
 ---
-title: JWT - SECURITY - TRYHACKME
+title: JWT - Security - THM
 date: 2025-01-05 10:44:00
-categories: [TRYHACKME, ROOMS, WEB APPLICATION PENTEST]
+categories: [TRYHACKME, ROOMS]
 tags: [api,tryhackme,web,application,jwt,pentest]      # TAG names should always be lowercase
 image: 
- path: /assets/img/posts/2025/01/room-JWT.webp
+ path: /assets/img/posts/2025/01/JWT-SECURITY/room-JWT.webp
 
 
 ---
@@ -108,7 +108,7 @@ Resposta: `Authorization: Bearer header`
 
 JWT é um padrão aberto, fornecendo informações para desenvolvedores ou criadores de bibliotecas que queiram usar JWTs, a sua estrutura segue da seguinte maneira.
 
-![Estrutura JWT](/assets/img/posts/2025/01/JWT-SCTRUCTURE.webp)
+![Estrutura JWT](/assets/img/posts/2025/01/JWT-SECURITY/JWT-SCTRUCTURE.webp)
 
 ### Estrutura JWT
 
@@ -186,7 +186,7 @@ Outra solução, que podemos executar localmente, é a ferramenta [Cyber Chef](h
 
 Resultado da nossa decodificação.
 
-![JWT-IO](/assets/img/posts/2025/01/JWT-IO.webp)
+![JWT-IO](/assets/img/posts/2025/01/JWT-SECURITY/JWT-IO.webp)
 
 ### Erros de desenvolvimento
 
@@ -283,11 +283,11 @@ curl -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InV
 Mesmo sem nossa assinatura permanecemos autenticados, isso demonstra que a API não realiza validação de assinatura. Agora iremos verificar se conseguimos alterar nosso usuário para `admin`.
 Primeiro iremos realizar o decodificação do nosso JWT.
 
-![JWT EXAMPLE 2](/assets/img/posts/2025/01/JWT-example2-1.webp)
+![JWT EXAMPLE 2](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example2-1.webp)
 
 No payload do JWT iremos alterar para `1`, o valor do campo `admin`.
 
-![JWT EXAMPLE 2-2](/assets/img/posts/2025/01/JWT-example2-2.webp)
+![JWT EXAMPLE 2-2](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example2-2.webp)
 
 Realizado a alteração, agora realizaremos uma nova requisição, para verificar se conseguimos alterar nosso usuário.
 
@@ -343,17 +343,17 @@ curl -H 'Content-Type: application/json' \
 Agora precisamos alterar o tipo de algoritmo de verificação do campo `alg`para `None`.
 O cabeçalho do JWT está em **URL encode base64**  conforme mostrado usando CyberChef.
 
-![JWT EXAMPLE 3-1](/assets/img/posts/2025/01/JWT-example3.webp)
+![JWT EXAMPLE 3-1](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example3.webp)
 
 Para alteramos o tipo de algoritmo basta realizamos o inverso usando **Base64 encode**.
 
 `{"typ":"JWT","alg":"None"}`:`eyJ0eXAiOiJKV1QiLCJhbGciOiJOb25lIn0`
 
-![JWT EXAMPLE 3-2](/assets/img/posts/2025/01/JWT-example3-2.webp)
+![JWT EXAMPLE 3-2](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example3-2.webp)
 
 Feito a alteração do cabeçalho ainda precisamos alterar o valor do campo `admin` para `1`, para isso utilizaremos a ferramenta [jwt io](https://jwt.io/) novamente.
 
-![JWT EXAMPLE 3-3](/assets/img/posts/2025/01/JWT-example3-3.webp)
+![JWT EXAMPLE 3-3](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example3-3.webp)
 
 Agora com o valor definido como 1 e `alg`como `None` podemos montar nosso JWT.
 
@@ -422,11 +422,11 @@ O segredo é quebrado, com isso podemos alterar o JWT e forjar um acesso com usu
 
 Segredo:`secret`
 
-![JWT EXAMPLE 4](/assets/img/posts/2025/01/JWT-example4.webp)
+![JWT EXAMPLE 4](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example4.webp)
 
 Com a ferramenta [jwt io](https://jwt.io/) realizamos nossa alteração do JWT.
 
-![JWT EXAMPLE 4](/assets/img/posts/2025/01/JWT-example4-1.webp)
+![JWT EXAMPLE 4](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example4-1.webp)
 
 Com nosso JWT alterado realizamos uma requisição e verificamos se conseguimos obter o acesso administrativo.
 
@@ -486,7 +486,7 @@ Conforme é mencionado na aula, antes de executar nosso script precisamos realiz
 - Editar o arquivo `/usr/lib/python3/dist-packages/jwt/algorithms.py`.
 - Comentar as linhas 143 até 146.
 
-![JWT EXAMPLE 5](/assets/img/posts/2025/01/JWT-example5.webp)
+![JWT EXAMPLE 5](/assets/img/posts/2025/01/JWT-SECURITY/JWT-example5.webp)
 
 Após isso executamos nosso script e obtemos nosso JWT.
 
