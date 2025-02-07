@@ -2,7 +2,7 @@
 title: Lookup
 date: 2025-02-07 20:45:00
 categories: [TRYHACKME, CTF]
-tags: [web,linux,brute force,command injetcion,suid,path hijacking]      # TAG names should always be lowercase
+tags: [web,linux,brute force,command injetcion,suid,path hijacking,enumeration]      # TAG names should always be lowercase
 image: 
  path: /assets/img/posts/2025/02/lookup/room_image.webp
 
