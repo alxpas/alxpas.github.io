@@ -6,7 +6,6 @@ tags: [api,tryhackme,web,application,jwt,pentest]      # TAG names should always
 image: 
  path: /assets/img/posts/2025/01/JWT-SECURITY/room-JWT.webp
 
-
 ---
 
 ## Objetivos
