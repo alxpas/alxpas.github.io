@@ -87,6 +87,8 @@ Back on the source's homepage, there's another comment about the file named `mai
 
 `"automatically insert default credentials into the "users" table if it is ever deleted...`  
 
+## Exploring
+
 For authentication bypass, we should first use URL encoding to prevent the detection of our special characters.
 
 Wordlist to perform an SQL injection:
@@ -109,6 +111,8 @@ We can update the leaderboards of medals. When we insert an apostrophe `'`, we e
 
 ![injectics-ctf-update-medals](/assets/img/posts/2025/03/injectics/injectics-ctf-update-medals.png)
 
+## Obtaining Administrative Access
+
 The SQL update statement is likely written as follows.
 
 `UPDATE Leaderboard SET gold=10; WHERE country = 'USA'`
@@ -122,6 +126,8 @@ We will use `; DROP TABLES users -- -` to delete the table and create the defaul
 On the `Login as Admin` page, we log in using the administrator credentials.
 
 ![injectics-ctf-panel-admin](/assets/img/posts/2025/03/injectics/injectics-ctf-panel-admin.png)
+
+## CVE-2022-23614
 
 We can update certain user data in `Update Profile`.
 
