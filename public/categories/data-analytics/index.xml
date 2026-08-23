@@ -1,0 +1,708 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alex Paulino – DATA ANALYTICS</title>
+    <link>http://localhost:1313/categories/data-analytics/</link>
+    <description>Recent content in DATA ANALYTICS on Alex Paulino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt</language>
+    <lastBuildDate>Sun, 01 Mar 2026 16:00:00 -0300</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/categories/data-analytics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Data Analytics - Data Science</title>
+      <link>http://localhost:1313/posts/2026/2025-03-01-data-analytics/</link>
+      <pubDate>Sun, 01 Mar 2026 16:00:00 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/2026/2025-03-01-data-analytics/</guid>
+      <description>
+        
+        
+        &lt;h1 data-hextra-search-id=&#34;análise-de-dados-com-python&#34;&gt;Análise de dados com Python&lt;/h1&gt;&lt;h2 data-hextra-search-id=&#34;objetivos&#34;&gt;Objetivos&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;objetivos&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#objetivos&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;Importar bibliotecas e carregar dataset&lt;/li&gt;
+&lt;li&gt;Explorar o dataset&lt;/li&gt;
+&lt;li&gt;Tratar os dados&lt;/li&gt;
+&lt;li&gt;Criação de histogramas&lt;/li&gt;
+&lt;li&gt;Criação de boxplots&lt;/li&gt;
+&lt;li&gt;Criação de gráficos e análise&lt;/li&gt;
+&lt;li&gt;Comparação de médias&lt;/li&gt;
+&lt;li&gt;Criação scatterplots: Glucose × BMI e Age × BMI&lt;/li&gt;
+&lt;li&gt;Treinar uma regressão logística&lt;/li&gt;
+&lt;li&gt;Análise de PCA utilizando 3 parâmetros&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR:&lt;/strong&gt;&lt;br&gt;
+Neste projeto prático de Data Analytics com Python, explorei o dataset &lt;em&gt;Pima Indians Diabetes&lt;/em&gt; desde a limpeza de dados e análise exploratória (EDA) até a aplicação de modelos de Machine Learning. Após tratar valores inconsistentes e criar visualizações gráficas para mapear distribuições e &lt;em&gt;outliers&lt;/em&gt;, treinei um modelo de Regressão Logística que atingiu 79,3% de acurácia na previsão de diagnósticos. Por fim, uma análise de componentes principais (PCA), criando uma separação clara entre indivíduos saudáveis e diabéticos.&lt;/p&gt;
+&lt;p&gt;O dataset escolhido para analise: &lt;a
+    href=&#34;https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pima Indians Diabetes Database&lt;/a&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;importar-bibliotecas-e-carregar-dataset&#34;&gt;Importar bibliotecas e carregar dataset&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;importar-bibliotecas-e-carregar-dataset&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#importar-bibliotecas-e-carregar-dataset&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;1. Importar bibliotecas (pandas, numpy, matplotlib.pyplot e seaborn) e carregar o arquivo
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;pima_diabetes (fornecido e utilizado nas aulas). Exibir as primeiras linhas com head().
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pandas &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; pd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; plt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; seaborn &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; sns
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Para os últimos exercicios&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; sklearn.linear_model &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; LogisticRegression
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; sklearn.decomposition &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; PCA
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; sklearn.preprocessing &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; StandardScaler
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;df &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;  pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read_csv(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/content/pima_diabetes.csv&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mostrar_tabela(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;head())&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Pregnancies&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Glucose&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;BloodPressure&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;SkinThickness&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Insulin&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;BMI&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;DiabetesPedigreeFunction&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Age&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Outcome&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;6&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;148&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;72&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;35&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;33.6&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.627&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;50&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;85&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;66&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;29&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;26.6&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.351&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;31&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;8&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;183&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;64&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;23.3&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.672&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;32&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;89&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;66&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;23&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;94&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;28.1&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.167&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;21&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;137&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;40&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;35&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;168&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;43.1&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;2.288&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;33&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 data-hextra-search-id=&#34;explorar-o-dataset&#34;&gt;Explorar o dataset&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;explorar-o-dataset&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#explorar-o-dataset&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;2. Explorar a estrutura do dataset usando info() e describe(). Identificar colunas numéricas
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;e possíveis valores inválidos.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mostrar_info(df)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mostrar_tabela(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;describe(), incluir_index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;class &amp;#39;pandas.core.frame.DataFrame&amp;#39;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;RangeIndex: 768 entries, 0 to 767
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Data columns (total 9 columns):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; #   Column                    Non-Null Count  Dtype  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;---  ------                    --------------  -----  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 0   Pregnancies               768 non-null    int64  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 1   Glucose                   768 non-null    int64  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 2   BloodPressure             768 non-null    int64  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 3   SkinThickness             768 non-null    int64  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 4   Insulin                   768 non-null    int64  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 5   BMI                       768 non-null    float64
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 6   DiabetesPedigreeFunction  768 non-null    float64
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 7   Age                       768 non-null    int64  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; 8   Outcome                   768 non-null    int64  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dtypes: float64(2), int64(7)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;memory usage: 54.1 KB&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: left&#34;&gt;&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Pregnancies&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Glucose&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;BloodPressure&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;SkinThickness&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Insulin&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;BMI&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;DiabetesPedigreeFunction&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Age&lt;/th&gt;
+					&lt;th style=&#34;text-align: right&#34;&gt;Outcome&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;count&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;768&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;mean&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;3.84505&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;120.895&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;69.1055&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;20.5365&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;79.7995&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;31.9926&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.471876&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;33.2409&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.348958&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;std&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;3.36958&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;31.9726&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;19.3558&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;15.9522&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;115.244&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;7.88416&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.331329&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;11.7602&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.476951&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;min&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.078&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;21&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;25%&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;99&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;62&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;27.3&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.24375&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;24&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;50%&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;3&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;117&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;72&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;23&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;30.5&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;32&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.3725&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;29&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;75%&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;6&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;140.25&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;80&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;32&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;127.25&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;36.6&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;0.62625&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;41&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;max&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;17&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;199&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;122&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;99&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;846&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;67.1&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;2.42&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;81&lt;/td&gt;
+					&lt;td style=&#34;text-align: right&#34;&gt;1&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Analisando os dados acima com info() e describe(), percebemos que há registros com valores iguais a 0, representando dados faltantes. Os registros com dados faltantes estão nos campos: Glucose, BloodPressure, SkinThickness, Insulin e BMI.
+Além disso, 25% dos valores de SkinThickness e Insulin estão iguais a 0.
+Biologicamente uma pessoa viva não pode ter esses valores.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;tratar-os-dados&#34;&gt;Tratar os dados&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;tratar-os-dados&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tratar-os-dados&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;3. Tratar dados: identificar valores zero em colunas onde zero não faz sentido; substituir
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;por NaN; contar valores ausentes.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Identificando colunas que possuem zero&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Criamos uma lista com todas as colunas que possuem valores zeros(que não fazem sentido biologicamente)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;colunas_com_zeros &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BloodPressure&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SkinThickness&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Insulin&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Substituir zero por NaN (Not a Number)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;df[colunas_com_zeros] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[colunas_com_zeros]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;replace(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;nan)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Contando os valores ausentes e exibindo com print.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;isnull()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sum())&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;pre&gt;&lt;code&gt;Pregnancies                   0
+Glucose                       5
+BloodPressure                35
+SkinThickness               227
+Insulin                     374
+BMI                          11
+DiabetesPedigreeFunction      0
+Age                           0
+Outcome                       0
+dtype: int64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 data-hextra-search-id=&#34;criação-de-histogramas&#34;&gt;Criação de histogramas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;criação-de-histogramas&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cria%c3%a7%c3%a3o-de-histogramas&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;4. Criar histogramas das variáveis numéricas usando df.hist()
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;eixos &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;hist(figsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt;), edgecolor&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;black&amp;#39;&lt;/span&gt;, bins&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;19&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(type(eixos)) &lt;span style=&#34;color:#75715e&#34;&gt;#verificando qual é o tipo da variável.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; eixos&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;flatten():
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Valores&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Eixo horizontal&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Frequência&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Eixo vertical&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  coluna_nome &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_title()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; coluna_nome &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;columns: &lt;span style=&#34;color:#75715e&#34;&gt;#Verificando se a coluna existe&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    valor_skew &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[coluna_nome]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;skew() &lt;span style=&#34;color:#75715e&#34;&gt;#Calculando o skew para cada coluna.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_title(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;coluna_nome&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Skew: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;valor_skew&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.2f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, fontsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;, fontweight&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bold&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;show()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_7_1.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;explicação-do-código-acima&#34;&gt;Explicação do código acima.&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;explicação-do-código-acima&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#explica%c3%a7%c3%a3o-do-c%c3%b3digo-acima&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Com o comando &lt;strong&gt;df.hist()&lt;/strong&gt; criamos o histograma de todas as colunas.
+Os parâmetros passados para a função &lt;strong&gt;hist()&lt;/strong&gt; são utilizados para definir o layout do gráfico.
+Salvamos os histogramas em uma variável chamada &amp;ldquo;eixos&amp;rdquo;, a função retorna um objeto do tipo &lt;strong&gt;numpy.ndarray&lt;/strong&gt;.&lt;br&gt;
+No laço for, definimos para cada gráfico o eixo X (horizontal) e o eixo Y (vertical), com os nomes valores e frequência, respectivamente.
+Salvamos em uma variável &lt;strong&gt;coluna_nome&lt;/strong&gt; o nome da coluna.
+Dentro da condição if, verificamos se o &lt;strong&gt;dataframe (df)&lt;/strong&gt; possui o nome da coluna que foi salvo na variável anterior.&lt;br&gt;
+Se sim, calculamos o skew da coluna e armazenamos o resultado na variável.
+Após isso, definimos o título que será exibido no gráfico, inserimos o nome da coluna e seu valor de skew, além de configurarmos o tamanho da fonte (fontsize) e o estilo em negrito para a exibição.&lt;br&gt;
+Com o laço &lt;strong&gt;for&lt;/strong&gt;, conseguimos calcular o skew de cada coluna e exibi-lo junto ao gráfico da respectiva coluna.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;identificar-distribuições-mais-assimétricas&#34;&gt;Identificar distribuições mais assimétricas.&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;identificar-distribuições-mais-assimétricas&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#identificar-distribui%c3%a7%c3%b5es-mais-assim%c3%a9tricas&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Visualmente, já percebemos que as colunas Pregnancies, SkinThickness, BMI, Insulin e DiabetesPedigreeFunction apresentam diferenças.&lt;br&gt;
+Com a definição de NaN que fizemos no exercício anterior, garantimos que os valores que não são válidos não entrem no cálculo do skew().&lt;/p&gt;
+&lt;p&gt;As distribuições mais assimétricas são: Insulin, DiabetesPedigreeFunction - fortemente assimétrica a esquerda.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;criação-de-boxplots&#34;&gt;Criação de boxplots&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;criação-de-boxplots&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cria%c3%a7%c3%a3o-de-boxplots&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;5. Criar boxplots de Glucose, BMI, Age e BloodPressure para observar outliers.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Definindo as colunas que iremos criar os boxplots&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;colunas  &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Age&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BloodPressure&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Com o laço for realizamos o caculo e a geração de boxplots de todas as colunas que definimos.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; coluna_nome &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; colunas:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; coluna_nome &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;columns:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Calcular IQR de cada coluna&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Q1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[coluna_nome]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;quantile(&lt;span style=&#34;color:#ae81ff&#34;&gt;0.25&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Q3 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[coluna_nome]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;quantile(&lt;span style=&#34;color:#ae81ff&#34;&gt;0.75&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    IQR &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Q3 &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; Q1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Abaixo difinimos o intervalo, qualquer valor do dataset que estiver fora do intervalo é um outliers&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    limite_inf &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Q1 &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1.5&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;IQR
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    limite_sup &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Q3 &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1.5&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;IQR
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Detectando outliers de cada coluna&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    outliers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[(df[coluna_nome] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; limite_inf) &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; (df[coluna_nome] &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; limite_sup)]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    quantidade_outliers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; len(outliers) &lt;span style=&#34;color:#75715e&#34;&gt;#contando os outliers com função len()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Geração do Boxplot&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;figure(figsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    sns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;boxplot(y&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;df[coluna_nome], color&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;blue&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Uitlizando a biblioteca Seaborn que foi importada na primeira atividade (sns), &amp;#39;y&amp;#39; deixamos na vertical o gráfico&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Definindo o intervalo do eixo Y&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    min_val &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[coluna_nome]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;min()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    max_val &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[coluna_nome]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;max()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;yticks(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(min_val, max_val &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, step&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)) &lt;span style=&#34;color:#75715e&#34;&gt;#De 10 em 10 unidades&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;grid(axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;y&amp;#39;&lt;/span&gt;, linestyle&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;--&amp;#39;&lt;/span&gt;, alpha&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0.7&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Adicionando linhas para facilitar a visualização&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Boxplot de &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;coluna_nome&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Quantidade de Outliers: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;quantidade_outliers&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(coluna_nome)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;show()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Descrição solicitada&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Variável: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;coluna_nome&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Total de registros: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;df[coluna_nome]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;count()&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Exibindo a quantidade registro válidos na coluna.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Outliers detectados: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;quantidade_outliers&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Exbindo os outliers que calculamos em len()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Intervalo aceitável: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;limite_inf&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.2f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; a &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;limite_sup&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.2f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;90&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_10_0.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Variável: Glucose
+Total de registros: 763
+Outliers detectados: 0
+Intervalo aceitável: 36.00 a 204.00
+------------------------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_10_2.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Variável: BMI
+Total de registros: 757
+Outliers detectados: 8
+Intervalo aceitável: 13.85 a 50.25
+------------------------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_10_4.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Variável: Age
+Total de registros: 768
+Outliers detectados: 9
+Intervalo aceitável: -1.50 a 66.50
+------------------------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_10_6.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Variável: BloodPressure
+Total de registros: 733
+Outliers detectados: 14
+Intervalo aceitável: 40.00 a 104.00
+------------------------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 data-hextra-search-id=&#34;criação-de-gráficos-e-análise&#34;&gt;Criação de gráficos e análise&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;criação-de-gráficos-e-análise&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cria%c3%a7%c3%a3o-de-gr%c3%a1ficos-e-an%c3%a1lise&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;6. Criar um gráfico de barras da variável Outcome usando value_counts().plot(kind=&amp;#39;bar&amp;#39;).
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;outcome_counts &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Outcome&amp;#39;&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;value_counts() &lt;span style=&#34;color:#75715e&#34;&gt;#contando os valores&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Separando os valores para exibi-los dentro do grafico&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;nao_diabetico &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; outcome_counts[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;diabetico &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; outcome_counts[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;outcome_counts&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(kind&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bar&amp;#39;&lt;/span&gt;, edgecolor&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;black&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# Inserindo barras e bordas&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Contagem Total por Classe (Outcome)&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; Não diabético: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;nao_diabetico&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;, Diabético: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;diabetico&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, pad&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;15&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Inserindo um título e valores, no título&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xticks(ticks&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;], labels&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;0 (Não Diabético)&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;1 (Diabético)&amp;#39;&lt;/span&gt;], rotation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Abaixo do eixo horizontal colocando legenda&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Quantidade de Pacientes&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Eixo vertical&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;show() &lt;span style=&#34;color:#75715e&#34;&gt;#Exibindo gráfico&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_11_0.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;comparação-de-médias&#34;&gt;Comparação de médias&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;comparação-de-médias&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#compara%c3%a7%c3%a3o-de-m%c3%a9dias&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;7. Comparar médias de Glucose e BMI entre diabéticos e não diabéticos usando
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;groupby(&amp;#39;Outcome&amp;#39;).
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Calculando as médias agrupadas por Outcome&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;df_medias &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;groupby(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Outcome&amp;#39;&lt;/span&gt;)[[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;]]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Criando a estrutura dos gráficos&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fig, axes &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;subplots(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, figsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Definindo as colunas que serão utilizadas&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;colunas &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Percorre a lista fornecendo tanto o nome da coluna canto o índice&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i, col &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; enumerate(colunas):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    sns&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;barplot(x&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;df_medias&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index, y&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;df_medias[col], ax&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;axes[i],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                hue&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;df_medias&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;index,  legend&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;, edgecolor&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;black&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#&amp;#39;hue&amp;#39; para tratar o &amp;#39;FutureWarning&amp;#39; que estava aparecendo na saída do programa&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Adicionando labels com os valores exatos&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    axes[i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;bar_label(axes[i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;containers[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;], fmt&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%.2f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, padding&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, fontweight&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bold&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;#Definimos os ticks antes dos labels&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    axes[i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_xticks([&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    axes[i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_xticklabels([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Saudável (0)&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Diabético (1)&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    axes[i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_title(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Média de &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;col&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    axes[i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;set_ylim(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, df_medias[col]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;max() &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1.15&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;tight_layout()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;show()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_12_0.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;criação-scatterplots-glucose--bmi-e-age--bmi&#34;&gt;Criação scatterplots: Glucose × BMI e Age × BMI&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;criação-scatterplots-glucose--bmi-e-age--bmi&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cria%c3%a7%c3%a3o-scatterplots-glucose--bmi-e-age--bmi&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;8. Criar scatterplots de Glucose × BMI e Age × BMI coloridos por Outcome.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Outcome&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#75715e&#34;&gt;#Coluna que queremos prevê o valor&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Criando o gráfico de scatterplots&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;figure(figsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;], df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;], label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Saudável&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Definindo 0 como saudável&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;], df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;], label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Diabético&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Definindo 1 como diabético&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Definindo os eixos e título&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Diagrama de dispersão entre Glucose e BMI&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;legend()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;show()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;figure(figsize&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;,&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Age&amp;#39;&lt;/span&gt;], df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;], label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Saudável&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Age&amp;#39;&lt;/span&gt;], df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;loc[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;], label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Diabético&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Age&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Diagrama de dispersão entre Age e BMI&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;legend()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;show()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_13_0.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_13_1.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;interpretação-da-separação-visual-entre-grupos-dos-diagramas-de-dispersão-acima&#34;&gt;Interpretação da separação visual entre grupos, dos diagramas de dispersão acima.&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;interpretação-da-separação-visual-entre-grupos-dos-diagramas-de-dispersão-acima&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#interpreta%c3%a7%c3%a3o-da-separa%c3%a7%c3%a3o-visual-entre-grupos-dos-diagramas-de-dispers%c3%a3o-acima&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Glucose x BMI&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;No gráfico Glucose x BMI, observa-se que a maioria dos dados se concentra na região central. Há uma maior predominância de casos diabéticos (laranja) em pessoas com glicose entre 100 e 130, sendo que a grande maioria possui BMI inferior a 50, apesar de ser comum diabéticos de 100 a 130 de glicose, é muito provavél que o indivíduo com glicose acima de 140 seja diabético. Já os indivíduos saudáveis (azul) apresentam, em sua maioria, glicose abaixo de 140 e BMI também inferior a 50.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;AGE x BMI&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;No gráfico Age x BMI, a maioria dos indivíduos saudáveis tem menos de 33 anos, concentrando-se à esquerda do gráfico. Em contrapartida, os casos diabéticos estão mais dispersos ao longo do eixo da idade, embora a maioria ainda se encontre abaixo dos 50 anos.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;treinar-uma-regressão-logística&#34;&gt;Treinar uma regressão logística&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;treinar-uma-regressão-logística&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#treinar-uma-regress%c3%a3o-log%c3%adstica&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;9. Treinar uma regressão logística:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dropna(inplace&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Removendo os valores vazios, já tinhamos alterado para NaN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Definindo as colunas que serão irão entrar no treinamento&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X  &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Age&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BloodPressure&amp;#39;&lt;/span&gt;]]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Definindo o alvo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Outcome&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StandardScaler()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fit_transform(X) &lt;span style=&#34;color:#75715e&#34;&gt;#realizando a padronização dos dados, aplica z-score&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;modelo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; LogisticRegression() &lt;span style=&#34;color:#75715e&#34;&gt;#criando o objeto classificador&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;modelo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fit(X, y) &lt;span style=&#34;color:#75715e&#34;&gt;#realizando o treinamento&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Acurácia: &amp;#34;&lt;/span&gt;, modelo&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;score(X, y)) &lt;span style=&#34;color:#75715e&#34;&gt;#Aqui calculamos a acurácia e exibimos na tela&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;pre&gt;&lt;code&gt;Acurácia:  0.7933673469387755
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 data-hextra-search-id=&#34;interpretação-da-acurácia&#34;&gt;&lt;strong&gt;Interpretação da acurácia&lt;/strong&gt;&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;interpretação-da-acurácia&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#interpreta%c3%a7%c3%a3o-da-acur%c3%a1cia&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A Regressão Logística obteve uma acurácia de 77%.&lt;br&gt;
+Isso significa que, ao combinar Glicose, IMC, Idade e Pressão Arterial, o modelo foi capaz de prever corretamente o diagnóstico na maioria dos casos, mostrando que essas variaveis(colunas) tem forte correlação.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;análise-de-pca-utilizando-3-parâmetros&#34;&gt;Análise de PCA utilizando 3 parâmetros&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;análise-de-pca-utilizando-3-parâmetros&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#an%c3%a1lise-de-pca-utilizando-3-par%c3%a2metros&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;10. Executar uma análise de PCA utilizando 3 parâmetros.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Definindo quais colunas serão usadas&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;colunas_selecionadas &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Glucose&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;BMI&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Age&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Removendo os valores vazios, já tinhamos alterado para NaN&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;df_filtrado &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dropna(subset&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;colunas_selecionadas &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Outcome&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#75715e&#34;&gt;#Removendo também da coluna &amp;#39;Outcome&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; StandardScaler()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fit_transform(df_filtrado[colunas_selecionadas])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; df_filtrado[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Outcome&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pca &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; PCA(&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Definindo a quantidade de componentes principais&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Xp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pca&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fit_transform(X)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;v &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pca&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;explained_variance_ratio_ &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;#Cálculo de variância para mostrar a porcentagem em cada eixo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Rotulandos dados no gráfico&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(Xp[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;], Xp[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;], label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Saudável&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;scatter(Xp[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;], Xp[y&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;], label&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Diabético&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;PCA com &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;colunas_selecionadas[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; , &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;colunas_selecionadas[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; e &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;colunas_selecionadas[&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;]&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Colocando no título as colunas&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;xlabel(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;PC1 (&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;v[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.1f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%)&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Exibindo a porcentagem de variancia&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ylabel(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;PC2 (&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;v[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.1f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%)&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;#Exibindo a porcentagem de variancia&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;legend()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;show()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Criando uma tabela com os pesos de cada variável&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;loadings &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pd&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DataFrame(pca&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;components_&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;T, columns&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;PC1&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;PC2&amp;#39;&lt;/span&gt;], index&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;colunas_selecionadas)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mostrando o peso de cada variável no gráfico.&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(loadings)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2026/03/2025-03-01-Data-analytics/Data-analytics-1_17_0.png&#34; alt=&#34;png&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Mostrando o peso de cada variável no gráfico.
+              PC1       PC2
+Glucose  0.677701 -0.083079
+BMI      0.422247  0.857424
+Age      0.602021 -0.507861
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 data-hextra-search-id=&#34;comentários-sobre-o-gráfico-acima&#34;&gt;&lt;strong&gt;Comentários sobre o gráfico acima.&lt;/strong&gt;&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;comentários-sobre-o-gráfico-acima&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#coment%c3%a1rios-sobre-o-gr%c3%a1fico-acima&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A análise de PCA demonstrou que as variáveis Glucose, BMI e Age conseguem explicar 78% da variabilidade dos pacientes. Existe uma separação visual clara no eixo PC1, onde o grupo saudável se concentra em valores negativos e o grupo diabético em valores positivos, confirmando que a combinação desses três fatores é um forte indicador para a presença da doença.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

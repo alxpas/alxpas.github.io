@@ -1,0 +1,274 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alex Paulino – Burp</title>
+    <link>http://localhost:1313/tags/burp/</link>
+    <description>Recent content in Burp on Alex Paulino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt</language>
+    <lastBuildDate>Thu, 27 Mar 2025 21:35:00 -0300</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/tags/burp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Race Conditions</title>
+      <link>http://localhost:1313/posts/2025/2025-03-27-race-conditions/</link>
+      <pubDate>Thu, 27 Mar 2025 21:35:00 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/2025/2025-03-27-race-conditions/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Uma race condition é uma situação em programas de computador onde o tempo dos eventos influencia o comportamento e o resultado do programa. Normalmente acontece quando uma variável é acessada e modificada por vários threads. Devido à falta de mecanismos de bloqueio adequados e sincronização entre os diferentes threads, um invasor pode abusar do sistema e aplicar um desconto várias vezes ou fazer transações de dinheiro além do seu saldo.&lt;/p&gt;
+&lt;p&gt;O link da aula &lt;a
+    href=&#34;https://tryhackme.com/room/raceconditionsattacks&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;aqui&lt;/a&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;multi-threading&#34;&gt;Multi-Threading&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;multi-threading&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#multi-threading&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;. Processos:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Um processo é uma instância de um programa em execução.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cada processo possui seu próprio espaço de memória, ou seja, eles são independentes e isolados uns dos outros.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A comunicação entre processos (chamada de IPC, &lt;em&gt;Inter-Process Communication&lt;/em&gt;) pode ser complexa e consumir mais recursos.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Criar e gerenciar processos geralmente tem um custo maior em termos de tempo e recursos do sistema.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;2. Threads:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Uma thread é o menor fluxo de execução dentro de um processo.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Threads dentro de um mesmo processo compartilham o mesmo espaço de memória e recursos, o que facilita a troca de informações entre elas.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Threads são mais leves em termos de consumo de recursos do sistema, e a criação/gerenciamento é mais eficiente do que processos.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Porém, como compartilham a memória, há risco de problemas como &lt;em&gt;race conditions&lt;/em&gt; e necessidade de sincronização cuidadosa.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Resumo prático:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Use processos para tarefas independentes e isoladas.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Use threads para dividir tarefas dentro de um mesmo processo, especialmente quando elas precisam compartilhar dados entre si.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Abaixo aplicação uitlizando &lt;strong&gt;Flask&lt;/strong&gt;, um servidor que atende sequencialmente cada solicitação.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Import the Flask class from the flask module&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; flask &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; Flask
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Create an instance of the Flask class representing the application&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;app &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Flask(__name__)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Define a route for the root URL (&amp;#39;/&amp;#39;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@app.route&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;hello_world&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# This function will be executed when the root URL is accessed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# It returns a string containing HTML code for a simple web page&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Greeting&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;h1&amp;gt;Hello, World!&amp;lt;/h1&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# This checks if the script is being run directly (as the main program)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# and not being imported as a module&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Run the Flask application&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# The host=&amp;#39;0.0.0.0&amp;#39; allows the server to be accessible from any IP address&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# The port=8080 specifies the port number on which the server will listen&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    app&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;run(host&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;0.0.0.0&amp;#39;&lt;/span&gt;, port&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8080&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-requests.png&#34; alt=&#34;requests&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;O aplicativo mencionado anteriormente pode ser executado com quatro threads usando o Gunicorn. Gunicorn, também chamado de “Green Unicorn” (Unicórnio Verde), é um servidor HTTP WSGI para Python. WSGI significa &lt;em&gt;Web Server Gateway Interface&lt;/em&gt;, que serve como uma ponte entre servidores web e aplicações web Python. Especificamente, o Gunicorn pode gerar múltiplos processos de trabalho (&lt;em&gt;workers&lt;/em&gt;) para lidar com requisições simultaneamente. Ao executar o Gunicorn com a opção &lt;code&gt;--workers=4&lt;/code&gt;, estamos especificando que queremos quatro &lt;em&gt;workers&lt;/em&gt; prontos para processar requisições dos clientes; além disso, &lt;code&gt;--threads=2&lt;/code&gt; indica que cada processo de trabalho pode gerar duas threads.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-pids.png&#34; alt=&#34;PID&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;You downloaded an instruction booklet on how to make an origami crane. What would this instruction booklet resemble in computer terms?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;Program&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the name of the state where a process is waiting for an I/O event?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;Waiting&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;real-world-analogy&#34;&gt;Real World Analogy&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;real-world-analogy&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#real-world-analogy&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Vamos considerar este cenário:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Uma conta bancária tem $100.&lt;/li&gt;
+&lt;li&gt;Duas threads tentam sacar dinheiro ao mesmo tempo.&lt;/li&gt;
+&lt;li&gt;A Thread 1 verifica o saldo (vê $100) e saca $45.&lt;/li&gt;
+&lt;li&gt;Antes que a Thread 1 atualize o saldo, a Thread 2 também verifica o saldo (incorretamente vê $100) e saca $35.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Não podemos ter 100% de certeza sobre qual thread atualizará o saldo restante primeiro; entretanto, vamos supor que seja a Thread 1. A Thread 1 definirá o saldo restante como $55. Depois disso, a Thread 2 pode definir o saldo restante como $65, caso o problema não seja tratado corretamente. (A Thread 2 calculou que $65 deveria permanecer na conta após o saque porque o saldo era $100 quando ela o verificou.)&lt;/p&gt;
+&lt;p&gt;Em outras palavras, o usuário fez dois saques, mas o saldo da conta foi descontado apenas pelo segundo saque, porque a Thread 2 sobrescreveu a atualização&lt;/p&gt;
+&lt;p&gt;Exemplo multi threads em Python:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; threading
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; time
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;increase_by_10&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Thread &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;threading&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;current_thread()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;i&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;0% complete&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Create two threads&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;thread1 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; threading&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Thread(target&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;increase_by_10, name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Thread-1&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;thread2 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; threading&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Thread(target&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;increase_by_10, name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Thread-2&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Start the threads&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;thread1&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;start()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;thread2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;start()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Wait for both threads to finish&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;thread1&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;thread2&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Both threads have finished completely.&amp;#34;&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-multi-thread.png&#34; alt=&#34;multi threads&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Não podemos garantir qual thread completará 100% primeiro, executando duas vezes, ou até mais, podemos ter diversos outputs diferentes.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;causas&#34;&gt;Causas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;causas&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#causas&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;De maneira geral, uma causa comum de condições de corrida (&lt;em&gt;race conditions&lt;/em&gt;) está em recursos compartilhados. Por exemplo, quando várias threads acessam e modificam os mesmos dados compartilhados simultaneamente. Exemplos de dados compartilhados incluem registros de banco de dados e estruturas de dados na memória. Existem muitas causas sutis, mas mencionaremos três das mais comuns:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Execução Paralela:&lt;/strong&gt; Servidores web podem executar várias requisições em paralelo para lidar com interações simultâneas de usuários. Se essas requisições acessarem e modificarem recursos compartilhados ou estados da aplicação sem a devida sincronização, isso pode levar a condições de corrida e comportamentos inesperados.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Operações em Banco de Dados:&lt;/strong&gt; Operações simultâneas em banco de dados, como sequências de leitura-modificação-gravação, podem introduzir condições de corrida. Por exemplo, dois usuários tentando atualizar o mesmo registro ao mesmo tempo podem resultar em dados inconsistentes ou conflitos. A solução está em aplicar mecanismos adequados de bloqueio (&lt;em&gt;locking&lt;/em&gt;) e isolamento de transações.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Bibliotecas e Serviços de Terceiros:&lt;/strong&gt; Atualmente, aplicações web frequentemente integram bibliotecas de terceiros, APIs e outros serviços. Se esses componentes externos não forem projetados para lidar com acesso simultâneo de forma apropriada, condições de corrida podem ocorrer quando múltiplas requisições ou operações interagem com eles ao mesmo tempo.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Does the presented Python script guarantee which thread will reach 100% first? (Yea/Nay)&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;Nay&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In the second execution of the Python script, what is the name of the thread that reached 100% first?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;Thread-1&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;web-application-architecture&#34;&gt;Web Application Architecture&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;web-application-architecture&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#web-application-architecture&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Modelo Cliente-Servidor&lt;/strong&gt;
+As aplicações web seguem um modelo cliente-servidor:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cliente:&lt;/strong&gt; O cliente é o programa ou aplicação que inicia a solicitação de um serviço. Por exemplo, ao navegarmos em uma página da web, nosso navegador solicita a página (arquivo) a um servidor web.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Servidor:&lt;/strong&gt; O servidor é o programa ou sistema que fornece esses serviços em resposta às solicitações recebidas. Por exemplo, o servidor web responde a uma solicitação HTTP GET e envia uma página HTML (ou arquivo) para o navegador (cliente) que fez a solicitação.
+De maneira geral, o modelo cliente-servidor opera por meio de uma rede. O cliente envia sua solicitação pela rede, e o servidor a recebe, processa e devolve o recurso solicitado.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Aplicação Web Típica&lt;/strong&gt;
+Uma aplicação web segue uma arquitetura em vários níveis. Tal arquitetura separa a lógica da aplicação em diferentes camadas ou níveis. O design mais comum utiliza três níveis:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Camada de Apresentação:&lt;/strong&gt; Em aplicações web, essa camada consiste no navegador web do lado do cliente. O navegador renderiza os códigos HTML, CSS e JavaScript.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Camada de Aplicação:&lt;/strong&gt; Esta camada contém a lógica e a funcionalidade da aplicação web. Ela recebe as solicitações do cliente, as processa e interage com a camada de dados. É implementada usando linguagens de programação do lado do servidor, como Node.js e PHP, entre outras.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Camada de Dados:&lt;/strong&gt; Esta camada é responsável por armazenar e manipular os dados da aplicação. As operações típicas incluem criar, atualizar, excluir e buscar registros existentes. Geralmente, isso é feito usando um sistema de gerenciamento de banco de dados (DBMS); exemplos de DBMS incluem MySQL e PostgreSQL.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;How many states did the original state diagram of “validating and conducting money transfer” have?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;2&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How many states did the &lt;strong&gt;updated&lt;/strong&gt; state diagram of “validating and conducting money transfer” have?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;3&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How many states did the final state diagram of “validating coupon codes and applying discounts” have?&lt;/strong&gt;&lt;br&gt;
+R: &lt;code&gt;5&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;exploiting-race-conditions&#34;&gt;Exploiting Race Conditions&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;exploiting-race-conditions&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#exploiting-race-conditions&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A aplicação web possui um sistema de transferência de crédito, entre números de celulares.
+Podemos assim transferir créditos entre duas contas.&lt;/p&gt;
+&lt;p&gt;Número 1: &lt;code&gt;07799991337&lt;/code&gt;
+Balanço: &lt;code&gt;5.03&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Número 2: &lt;code&gt;07113371111&lt;/code&gt;
+Balanço: &lt;code&gt;8.80&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Transferimos &lt;code&gt;$1&lt;/code&gt; para a número 1 (&lt;code&gt;07799991337&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditiions-transfer.png&#34; alt=&#34;transfer&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Interceptando a requisição no Burp vemos que é um HTTP &lt;code&gt;POST&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-burp.png&#34; alt=&#34;burp&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Agora no Burp iremos duplicar a requisição 20 vezes e inserir no mesmo grupo de nome &lt;code&gt;Race conditions&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-burp-group.png&#34; alt=&#34;Burp group&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;diferenças-entre-os-tipos-de-requisições&#34;&gt;Diferenças entre os tipos de requisições.&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;diferenças-entre-os-tipos-de-requisições&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#diferen%c3%a7as-entre-os-tipos-de-requisi%c3%a7%c3%b5es&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Enviar Grupo em Sequência por uma Única Conexão&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Esta opção estabelece uma única conexão com o servidor e envia todas as solicitações nas abas do grupo antes de fechar a conexão. Isso pode ser útil para testar possíveis vulnerabilidades de dessincronização no lado do cliente.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Enviar Grupo em Sequência por Conexões Separadas&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Como o nome sugere, essa opção estabelece uma conexão TCP, envia uma solicitação do grupo e fecha a conexão TCP antes de repetir o processo para a solicitação subsequente.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Testamos essa opção para atacar a aplicação web. A captura de tela abaixo mostra 21 conexões TCP para as diferentes solicitações POST do grupo que enviamos.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;O primeiro grupo (rotulado como 1) compreende cinco solicitações bem-sucedidas. Pudemos confirmar que elas foram bem-sucedidas verificando as respectivas respostas. Além disso, notamos que cada uma levou cerca de 3 segundos, conforme indicado pela duração (rotulada como 3).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;O segundo grupo (rotulado como 2) mostra 16 solicitações negadas. A duração foi de cerca de 4 milissegundos. É interessante verificar também o &lt;strong&gt;Relative Start Time&lt;/strong&gt; (Tempo de Início Relativo).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-request-difference.png&#34; alt=&#34;Requests&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Enviar Grupo de Solicitações em Paralelo&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Escolher enviar as solicitações do grupo em paralelo faria com que o Repeater enviasse todas as solicitações do grupo de uma vez. Nesse caso, notamos o seguinte, conforme mostrado na captura de tela abaixo:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-requests-difference2.png&#34; alt=&#34;Requests 2&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Ao observar atentamente a captura de tela, notamos que cada solicitação gerou 12 pacotes; no entanto, na tentativa anterior (enviar em sequência), vimos que cada solicitação exigiu apenas 10 pacotes. Por que isso aconteceu?&lt;/p&gt;
+&lt;p&gt;De acordo com a documentação de envio de solicitações HTTP agrupadas, ao enviar em paralelo, o Repeater implementa diferentes técnicas para sincronizar a chegada das solicitações ao destino, ou seja, elas chegam em um curto intervalo de tempo. A técnica de sincronização depende do protocolo HTTP em uso:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;No caso do HTTP/2+, o Repeater tenta enviar todo o grupo em um único pacote. Em outras palavras, um único pacote TCP transportaria várias solicitações.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;No caso do HTTP/1, o Repeater utiliza a sincronização pelo último byte. Este truque é alcançado retendo o último byte de cada solicitação. Somente depois que todos os pacotes são enviados sem o último byte, os últimos bytes de todas as solicitações são enviados. A captura de tela abaixo mostra nossa solicitação POST enviada em dois pacotes.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;You need to get either of the accounts to get more than $100 of credit to get the flag. What is the flag that you obtained?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Iremos utilizar o envio em paralelo, os outros métodos não irão funcionar, conforma analise acima.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-burp-transfer-sucess.png&#34; alt=&#34;burp sucess&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;detection-and-mitigation&#34;&gt;Detection and Mitigation&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;detection-and-mitigation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#detection-and-mitigation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3 data-hextra-search-id=&#34;detecção&#34;&gt;Detecção&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;detecção&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#detec%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Detectar condições de corrida da perspectiva do proprietário do negócio pode ser desafiador. Se alguns usuários resgatarem o mesmo cartão-presente várias vezes, provavelmente isso passará despercebido, a menos que os registros sejam verificados ativamente em busca de certos comportamentos. Considerando que condições de corrida podem ser usadas para explorar vulnerabilidades ainda mais sutis, é claro que precisamos da ajuda de testadores de penetração e caçadores de bugs para tentar descobrir essas vulnerabilidades e relatar suas descobertas.&lt;/p&gt;
+&lt;p&gt;Os testadores de penetração devem entender como o sistema se comporta sob condições normais quando os controles aplicados estão vigentes. Esses controles podem ser: usar uma vez, votar uma vez, avaliar uma vez, limitar ao saldo disponível ou restringir para uso apenas uma vez a cada 5 minutos, entre outros. O próximo passo seria tentar contornar esse limite explorando condições de corrida. Descobrir os diferentes estados do sistema pode ajudar a fazer suposições educadas sobre as janelas de tempo onde uma condição de corrida pode ser explorada. Ferramentas como o Burp Suite Repeater podem ser um ótimo ponto de partida.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;mitigação&#34;&gt;Mitigação&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;mitigação&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mitiga%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Mecanismos de Sincronização&lt;/strong&gt;: Linguagens de programação modernas fornecem mecanismos de sincronização, como bloqueios (locks). Apenas uma thread pode adquirir o bloqueio de cada vez, impedindo outras de acessar o recurso compartilhado até que ele seja liberado.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Operações Atômicas&lt;/strong&gt;: Operações atômicas se referem a unidades de execução indivisíveis, um conjunto de instruções agrupadas e executadas sem interrupção. Essa abordagem garante que uma operação possa ser concluída sem ser interrompida por outra thread.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Transações de Banco de Dados&lt;/strong&gt;: Transações agrupam várias operações de banco de dados em uma única unidade. Consequentemente, todas as operações dentro da transação ou são bem-sucedidas como um grupo ou falham como um grupo. Essa abordagem garante a consistência dos dados e previne condições de corrida decorrentes de múltiplos processos modificando o banco de dados simultaneamente.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 data-hextra-search-id=&#34;challenge-web-app&#34;&gt;Challenge Web App&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;challenge-web-app&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#challenge-web-app&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Aplicação web realiza transações bancárias entre contas.
+Antes de explorarmos é essencial entender o comportamento da aplicação.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Informações importantes percebidas.&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Valores negativos são aceitos nas taxas, incrementando assim o balanço.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-burp-transfer-sucess.png&#34; alt=&#34;amount Burp&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Não é verificado se a taxa é proporcional ao valor transferido.&lt;/li&gt;
+&lt;li&gt;Valor recebido não pode ser maior que o fundo de quem está transferindo.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Podemos obter a &lt;code&gt;flag&lt;/code&gt; somente alterando a taxa para &lt;code&gt;-1000&lt;/code&gt; dessa forma será creditado &lt;code&gt;+1000&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/03/race-conditions/race-conditions-flag.png&#34; alt=&#34;Flag&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

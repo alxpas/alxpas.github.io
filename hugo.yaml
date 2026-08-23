@@ -1,0 +1,37 @@
+baseURL: 'https://alxpas.github.io/'
+defaultContentLanguage: 'pt'
+title: 'Alex Paulino'
+theme: 'hextra'
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+languages:
+  pt:
+    label: 'Português'
+    weight: 1
+  en:
+    label: 'English'
+    weight: 2
+
+menu:
+  main:
+    - name: 'Search'
+      weight: 1
+      params:
+        type: search
+    - name: 'Sobre'
+      url: '/about/'
+      weight: 2
+    - name: 'GitHub'
+      url: 'https://github.com/alxpas'
+      weight: 3
+      params:
+        icon: 'github'
+    - name: 'LinkedIn'
+      url: 'https://www.linkedin.com/in/alexpaulino/'
+      weight: 4
+      params:
+        icon: 'linkedin'

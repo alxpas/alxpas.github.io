@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>Race Conditions – Alex Paulino</title>
+  <meta name="description" content="Uma race condition é uma situação em programas de computador onde o tempo dos eventos influencia o comportamento e o resultado do programa. Normalmente acontece quando uma variável é acessada e modificada por vários threads. Devido à falta de mecanismos de bloqueio adequados e sincronização entre os diferentes threads, um invasor pode abusar do sistema e aplicar um desconto várias vezes ou fazer transações de dinheiro além do seu saldo." /><link rel="canonical" href="http://localhost:1313/posts/2025/2025-03-27-race-conditions/" itemprop="url" />
+
+<meta property="og:title" content="Race Conditions">
+<meta
+  property="og:description"
+  content="
+    
+      Uma race condition é uma situação em programas de computador onde o tempo dos eventos influencia o comportamento e o resultado do programa. Normalmente acontece quando uma variável é acessada e modificada por vários threads. Devido à falta de mecanismos de bloqueio adequados e sincronização entre os diferentes threads, um invasor pode abusar do sistema e aplicar um desconto várias vezes ou fazer transações de dinheiro além do seu saldo.
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/posts/2025/2025-03-27-race-conditions/"><meta property="article:section" content="posts">
+
+<meta
+  property="article:published_time"
+  content="2025-03-27T21:35:00-03:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-03-27T21:35:00-03:00">
+
+
+
+	<meta itemprop="name" content="Race Conditions">
+	<meta itemprop="description" content="Uma race condition é uma situação em programas de computador onde o tempo dos eventos influencia o comportamento e o resultado do programa. Normalmente acontece quando uma variável é acessada e modificada por vários threads. Devido à falta de mecanismos de bloqueio adequados e sincronização entre os diferentes threads, um invasor pode abusar do sistema e aplicar um desconto várias vezes ou fazer transações de dinheiro além do seu saldo.">
+	<meta itemprop="datePublished" content="2025-03-27T21:35:00-03:00">
+	<meta itemprop="dateModified" content="2025-03-27T21:35:00-03:00">
+	<meta itemprop="wordCount" content="2166">
+	<meta itemprop="keywords" content="Web,Application,Server Side,Burp">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Race Conditions">
+	<meta name="twitter:description" content="Uma race condition é uma situação em programas de computador onde o tempo dos eventos influencia o comportamento e o resultado do programa. Normalmente acontece quando uma variável é acessada e modificada por vários threads. Devido à falta de mecanismos de bloqueio adequados e sincronização entre os diferentes threads, um invasor pode abusar do sistema e aplicar um desconto várias vezes ou fazer transações de dinheiro além do seu saldo.">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Saltar para o conteúdo</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
+</a>
+<button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="Procurar..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button><a
+  title=""
+  href="/about/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">Sobre</span>
+</a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/alxpas" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
+          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden hx:xl:block">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Sobre</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <div class="hx:max-xl:hidden hx:h-0 hx:w-64 hx:shrink-0"></div></div>
+  
+  
+    <div class="hx:md:hidden hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:justify-items-start hx:grow">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-03-27-race-conditions/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom-right"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Índice">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">Nesta página</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#multi-threading">Multi-Threading
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#real-world-analogy">Real World Analogy
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#causas">Causas
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#web-application-architecture">Web Application Architecture
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#exploiting-race-conditions">Exploiting Race Conditions
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#diferen%c3%a7as-entre-os-tipos-de-requisi%c3%a7%c3%b5es">Diferenças entre os tipos de requisições.
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#detection-and-mitigation">Detection and Mitigation
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#detec%c3%a7%c3%a3o">Detecção
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#mitiga%c3%a7%c3%a3o">Mitigação
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#challenge-web-app">Challenge Web App
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Voltar ao topo</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        
+        <br class="hx:mt-1.5 hx:text-sm" />
+        <h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Race Conditions</h1>
+        <div class="hx:mb-16"></div>
+        <div class="content">
+          
+          <p>Uma race condition é uma situação em programas de computador onde o tempo dos eventos influencia o comportamento e o resultado do programa. Normalmente acontece quando uma variável é acessada e modificada por vários threads. Devido à falta de mecanismos de bloqueio adequados e sincronização entre os diferentes threads, um invasor pode abusar do sistema e aplicar um desconto várias vezes ou fazer transações de dinheiro além do seu saldo.</p>
+<p>O link da aula <a
+    href="https://tryhackme.com/room/raceconditionsattacks"target="_blank" rel="noopener">aqui</a></p>
+<h2 data-hextra-search-id="multi-threading">Multi-Threading<span class="hx:absolute hx:-mt-20" id="multi-threading"></span>
+    <a href="#multi-threading" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p><strong>. Processos:</strong></p>
+<ul>
+<li>
+<p>Um processo é uma instância de um programa em execução.</p>
+</li>
+<li>
+<p>Cada processo possui seu próprio espaço de memória, ou seja, eles são independentes e isolados uns dos outros.</p>
+</li>
+<li>
+<p>A comunicação entre processos (chamada de IPC, <em>Inter-Process Communication</em>) pode ser complexa e consumir mais recursos.</p>
+</li>
+<li>
+<p>Criar e gerenciar processos geralmente tem um custo maior em termos de tempo e recursos do sistema.</p>
+</li>
+</ul>
+<p><strong>2. Threads:</strong></p>
+<ul>
+<li>
+<p>Uma thread é o menor fluxo de execução dentro de um processo.</p>
+</li>
+<li>
+<p>Threads dentro de um mesmo processo compartilham o mesmo espaço de memória e recursos, o que facilita a troca de informações entre elas.</p>
+</li>
+<li>
+<p>Threads são mais leves em termos de consumo de recursos do sistema, e a criação/gerenciamento é mais eficiente do que processos.</p>
+</li>
+<li>
+<p>Porém, como compartilham a memória, há risco de problemas como <em>race conditions</em> e necessidade de sincronização cuidadosa.</p>
+</li>
+</ul>
+<p><strong>Resumo prático:</strong></p>
+<ul>
+<li>
+<p>Use processos para tarefas independentes e isoladas.</p>
+</li>
+<li>
+<p>Use threads para dividir tarefas dentro de um mesmo processo, especialmente quando elas precisam compartilhar dados entre si.</p>
+</li>
+</ul>
+<p>Abaixo aplicação uitlizando <strong>Flask</strong>, um servidor que atende sequencialmente cada solicitação.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Import the Flask class from the flask module</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create an instance of the Flask class representing the application</span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> Flask(__name__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define a route for the root URL (&#39;/&#39;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello_world</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This function will be executed when the root URL is accessed</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># It returns a string containing HTML code for a simple web page</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;&lt;html&gt;&lt;head&gt;&lt;title&gt;Greeting&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Hello, World!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This checks if the script is being run directly (as the main program)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># and not being imported as a module</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Run the Flask application</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># The host=&#39;0.0.0.0&#39; allows the server to be accessible from any IP address</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># The port=8080 specifies the port number on which the server will listen</span>
+</span></span><span style="display:flex;"><span>    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, port<span style="color:#f92672">=</span><span style="color:#ae81ff">8080</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-requests.png" alt="requests"  loading="lazy" /></p>
+<p>O aplicativo mencionado anteriormente pode ser executado com quatro threads usando o Gunicorn. Gunicorn, também chamado de “Green Unicorn” (Unicórnio Verde), é um servidor HTTP WSGI para Python. WSGI significa <em>Web Server Gateway Interface</em>, que serve como uma ponte entre servidores web e aplicações web Python. Especificamente, o Gunicorn pode gerar múltiplos processos de trabalho (<em>workers</em>) para lidar com requisições simultaneamente. Ao executar o Gunicorn com a opção <code>--workers=4</code>, estamos especificando que queremos quatro <em>workers</em> prontos para processar requisições dos clientes; além disso, <code>--threads=2</code> indica que cada processo de trabalho pode gerar duas threads.</p>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-pids.png" alt="PID"  loading="lazy" /></p>
+<p><strong>You downloaded an instruction booklet on how to make an origami crane. What would this instruction booklet resemble in computer terms?</strong><br>
+R: <code>Program</code></p>
+<p><strong>What is the name of the state where a process is waiting for an I/O event?</strong><br>
+R: <code>Waiting</code></p>
+<h2 data-hextra-search-id="real-world-analogy">Real World Analogy<span class="hx:absolute hx:-mt-20" id="real-world-analogy"></span>
+    <a href="#real-world-analogy" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Vamos considerar este cenário:</p>
+<ul>
+<li>Uma conta bancária tem $100.</li>
+<li>Duas threads tentam sacar dinheiro ao mesmo tempo.</li>
+<li>A Thread 1 verifica o saldo (vê $100) e saca $45.</li>
+<li>Antes que a Thread 1 atualize o saldo, a Thread 2 também verifica o saldo (incorretamente vê $100) e saca $35.</li>
+</ul>
+<p>Não podemos ter 100% de certeza sobre qual thread atualizará o saldo restante primeiro; entretanto, vamos supor que seja a Thread 1. A Thread 1 definirá o saldo restante como $55. Depois disso, a Thread 2 pode definir o saldo restante como $65, caso o problema não seja tratado corretamente. (A Thread 2 calculou que $65 deveria permanecer na conta após o saque porque o saldo era $100 quando ela o verificou.)</p>
+<p>Em outras palavras, o usuário fez dois saques, mas o saldo da conta foi descontado apenas pelo segundo saque, porque a Thread 2 sobrescreveu a atualização</p>
+<p>Exemplo multi threads em Python:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> threading
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">increase_by_10</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">11</span>):
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Thread </span><span style="color:#e6db74">{</span>threading<span style="color:#f92672">.</span>current_thread()<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">0% complete&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create two threads</span>
+</span></span><span style="display:flex;"><span>thread1 <span style="color:#f92672">=</span> threading<span style="color:#f92672">.</span>Thread(target<span style="color:#f92672">=</span>increase_by_10, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Thread-1&#34;</span>)
+</span></span><span style="display:flex;"><span>thread2 <span style="color:#f92672">=</span> threading<span style="color:#f92672">.</span>Thread(target<span style="color:#f92672">=</span>increase_by_10, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Thread-2&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Start the threads</span>
+</span></span><span style="display:flex;"><span>thread1<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>thread2<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Wait for both threads to finish</span>
+</span></span><span style="display:flex;"><span>thread1<span style="color:#f92672">.</span>join()
+</span></span><span style="display:flex;"><span>thread2<span style="color:#f92672">.</span>join()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Both threads have finished completely.&#34;</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copiar código"
+    aria-label="Copiar código"
+    data-copied-label="Copiado!"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-multi-thread.png" alt="multi threads"  loading="lazy" /></p>
+<p>Não podemos garantir qual thread completará 100% primeiro, executando duas vezes, ou até mais, podemos ter diversos outputs diferentes.</p>
+<h3 data-hextra-search-id="causas">Causas<span class="hx:absolute hx:-mt-20" id="causas"></span>
+    <a href="#causas" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>De maneira geral, uma causa comum de condições de corrida (<em>race conditions</em>) está em recursos compartilhados. Por exemplo, quando várias threads acessam e modificam os mesmos dados compartilhados simultaneamente. Exemplos de dados compartilhados incluem registros de banco de dados e estruturas de dados na memória. Existem muitas causas sutis, mas mencionaremos três das mais comuns:</p>
+<ol>
+<li>
+<p><strong>Execução Paralela:</strong> Servidores web podem executar várias requisições em paralelo para lidar com interações simultâneas de usuários. Se essas requisições acessarem e modificarem recursos compartilhados ou estados da aplicação sem a devida sincronização, isso pode levar a condições de corrida e comportamentos inesperados.</p>
+</li>
+<li>
+<p><strong>Operações em Banco de Dados:</strong> Operações simultâneas em banco de dados, como sequências de leitura-modificação-gravação, podem introduzir condições de corrida. Por exemplo, dois usuários tentando atualizar o mesmo registro ao mesmo tempo podem resultar em dados inconsistentes ou conflitos. A solução está em aplicar mecanismos adequados de bloqueio (<em>locking</em>) e isolamento de transações.</p>
+</li>
+<li>
+<p><strong>Bibliotecas e Serviços de Terceiros:</strong> Atualmente, aplicações web frequentemente integram bibliotecas de terceiros, APIs e outros serviços. Se esses componentes externos não forem projetados para lidar com acesso simultâneo de forma apropriada, condições de corrida podem ocorrer quando múltiplas requisições ou operações interagem com eles ao mesmo tempo.</p>
+</li>
+</ol>
+<p><strong>Does the presented Python script guarantee which thread will reach 100% first? (Yea/Nay)</strong><br>
+R: <code>Nay</code></p>
+<p><strong>In the second execution of the Python script, what is the name of the thread that reached 100% first?</strong><br>
+R: <code>Thread-1</code></p>
+<h2 data-hextra-search-id="web-application-architecture">Web Application Architecture<span class="hx:absolute hx:-mt-20" id="web-application-architecture"></span>
+    <a href="#web-application-architecture" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p><strong>Modelo Cliente-Servidor</strong>
+As aplicações web seguem um modelo cliente-servidor:</p>
+<ul>
+<li><strong>Cliente:</strong> O cliente é o programa ou aplicação que inicia a solicitação de um serviço. Por exemplo, ao navegarmos em uma página da web, nosso navegador solicita a página (arquivo) a um servidor web.</li>
+<li><strong>Servidor:</strong> O servidor é o programa ou sistema que fornece esses serviços em resposta às solicitações recebidas. Por exemplo, o servidor web responde a uma solicitação HTTP GET e envia uma página HTML (ou arquivo) para o navegador (cliente) que fez a solicitação.
+De maneira geral, o modelo cliente-servidor opera por meio de uma rede. O cliente envia sua solicitação pela rede, e o servidor a recebe, processa e devolve o recurso solicitado.</li>
+</ul>
+<p><strong>Aplicação Web Típica</strong>
+Uma aplicação web segue uma arquitetura em vários níveis. Tal arquitetura separa a lógica da aplicação em diferentes camadas ou níveis. O design mais comum utiliza três níveis:</p>
+<ul>
+<li><strong>Camada de Apresentação:</strong> Em aplicações web, essa camada consiste no navegador web do lado do cliente. O navegador renderiza os códigos HTML, CSS e JavaScript.</li>
+<li><strong>Camada de Aplicação:</strong> Esta camada contém a lógica e a funcionalidade da aplicação web. Ela recebe as solicitações do cliente, as processa e interage com a camada de dados. É implementada usando linguagens de programação do lado do servidor, como Node.js e PHP, entre outras.</li>
+<li><strong>Camada de Dados:</strong> Esta camada é responsável por armazenar e manipular os dados da aplicação. As operações típicas incluem criar, atualizar, excluir e buscar registros existentes. Geralmente, isso é feito usando um sistema de gerenciamento de banco de dados (DBMS); exemplos de DBMS incluem MySQL e PostgreSQL.</li>
+</ul>
+<p><strong>How many states did the original state diagram of “validating and conducting money transfer” have?</strong><br>
+R: <code>2</code></p>
+<p><strong>How many states did the <strong>updated</strong> state diagram of “validating and conducting money transfer” have?</strong><br>
+R: <code>3</code></p>
+<p><strong>How many states did the final state diagram of “validating coupon codes and applying discounts” have?</strong><br>
+R: <code>5</code></p>
+<h2 data-hextra-search-id="exploiting-race-conditions">Exploiting Race Conditions<span class="hx:absolute hx:-mt-20" id="exploiting-race-conditions"></span>
+    <a href="#exploiting-race-conditions" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>A aplicação web possui um sistema de transferência de crédito, entre números de celulares.
+Podemos assim transferir créditos entre duas contas.</p>
+<p>Número 1: <code>07799991337</code>
+Balanço: <code>5.03</code></p>
+<p>Número 2: <code>07113371111</code>
+Balanço: <code>8.80</code></p>
+<p>Transferimos <code>$1</code> para a número 1 (<code>07799991337</code>).</p>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditiions-transfer.png" alt="transfer"  loading="lazy" /></p>
+<p>Interceptando a requisição no Burp vemos que é um HTTP <code>POST</code>.</p>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-burp.png" alt="burp"  loading="lazy" /></p>
+<p>Agora no Burp iremos duplicar a requisição 20 vezes e inserir no mesmo grupo de nome <code>Race conditions</code>.</p>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-burp-group.png" alt="Burp group"  loading="lazy" /></p>
+<h3 data-hextra-search-id="diferenças-entre-os-tipos-de-requisições">Diferenças entre os tipos de requisições.<span class="hx:absolute hx:-mt-20" id="diferenças-entre-os-tipos-de-requisições"></span>
+    <a href="#diferen%c3%a7as-entre-os-tipos-de-requisi%c3%a7%c3%b5es" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p><strong>Enviar Grupo em Sequência por uma Única Conexão</strong></p>
+<p>Esta opção estabelece uma única conexão com o servidor e envia todas as solicitações nas abas do grupo antes de fechar a conexão. Isso pode ser útil para testar possíveis vulnerabilidades de dessincronização no lado do cliente.</p>
+<p><strong>Enviar Grupo em Sequência por Conexões Separadas</strong></p>
+<p><strong>Como o nome sugere, essa opção estabelece uma conexão TCP, envia uma solicitação do grupo e fecha a conexão TCP antes de repetir o processo para a solicitação subsequente.</strong></p>
+<p>Testamos essa opção para atacar a aplicação web. A captura de tela abaixo mostra 21 conexões TCP para as diferentes solicitações POST do grupo que enviamos.</p>
+<ul>
+<li>
+<p>O primeiro grupo (rotulado como 1) compreende cinco solicitações bem-sucedidas. Pudemos confirmar que elas foram bem-sucedidas verificando as respectivas respostas. Além disso, notamos que cada uma levou cerca de 3 segundos, conforme indicado pela duração (rotulada como 3).</p>
+</li>
+<li>
+<p>O segundo grupo (rotulado como 2) mostra 16 solicitações negadas. A duração foi de cerca de 4 milissegundos. É interessante verificar também o <strong>Relative Start Time</strong> (Tempo de Início Relativo).</p>
+</li>
+</ul>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-request-difference.png" alt="Requests"  loading="lazy" /></p>
+<p><strong>Enviar Grupo de Solicitações em Paralelo</strong></p>
+<p>Escolher enviar as solicitações do grupo em paralelo faria com que o Repeater enviasse todas as solicitações do grupo de uma vez. Nesse caso, notamos o seguinte, conforme mostrado na captura de tela abaixo:</p>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-requests-difference2.png" alt="Requests 2"  loading="lazy" /></p>
+<p>Ao observar atentamente a captura de tela, notamos que cada solicitação gerou 12 pacotes; no entanto, na tentativa anterior (enviar em sequência), vimos que cada solicitação exigiu apenas 10 pacotes. Por que isso aconteceu?</p>
+<p>De acordo com a documentação de envio de solicitações HTTP agrupadas, ao enviar em paralelo, o Repeater implementa diferentes técnicas para sincronizar a chegada das solicitações ao destino, ou seja, elas chegam em um curto intervalo de tempo. A técnica de sincronização depende do protocolo HTTP em uso:</p>
+<ul>
+<li>
+<p>No caso do HTTP/2+, o Repeater tenta enviar todo o grupo em um único pacote. Em outras palavras, um único pacote TCP transportaria várias solicitações.</p>
+</li>
+<li>
+<p>No caso do HTTP/1, o Repeater utiliza a sincronização pelo último byte. Este truque é alcançado retendo o último byte de cada solicitação. Somente depois que todos os pacotes são enviados sem o último byte, os últimos bytes de todas as solicitações são enviados. A captura de tela abaixo mostra nossa solicitação POST enviada em dois pacotes.</p>
+</li>
+</ul>
+<p><strong>You need to get either of the accounts to get more than $100 of credit to get the flag. What is the flag that you obtained?</strong></p>
+<p>Iremos utilizar o envio em paralelo, os outros métodos não irão funcionar, conforma analise acima.</p>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-burp-transfer-sucess.png" alt="burp sucess"  loading="lazy" /></p>
+<h2 data-hextra-search-id="detection-and-mitigation">Detection and Mitigation<span class="hx:absolute hx:-mt-20" id="detection-and-mitigation"></span>
+    <a href="#detection-and-mitigation" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><h3 data-hextra-search-id="detecção">Detecção<span class="hx:absolute hx:-mt-20" id="detecção"></span>
+    <a href="#detec%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><p>Detectar condições de corrida da perspectiva do proprietário do negócio pode ser desafiador. Se alguns usuários resgatarem o mesmo cartão-presente várias vezes, provavelmente isso passará despercebido, a menos que os registros sejam verificados ativamente em busca de certos comportamentos. Considerando que condições de corrida podem ser usadas para explorar vulnerabilidades ainda mais sutis, é claro que precisamos da ajuda de testadores de penetração e caçadores de bugs para tentar descobrir essas vulnerabilidades e relatar suas descobertas.</p>
+<p>Os testadores de penetração devem entender como o sistema se comporta sob condições normais quando os controles aplicados estão vigentes. Esses controles podem ser: usar uma vez, votar uma vez, avaliar uma vez, limitar ao saldo disponível ou restringir para uso apenas uma vez a cada 5 minutos, entre outros. O próximo passo seria tentar contornar esse limite explorando condições de corrida. Descobrir os diferentes estados do sistema pode ajudar a fazer suposições educadas sobre as janelas de tempo onde uma condição de corrida pode ser explorada. Ferramentas como o Burp Suite Repeater podem ser um ótimo ponto de partida.</p>
+<h3 data-hextra-search-id="mitigação">Mitigação<span class="hx:absolute hx:-mt-20" id="mitigação"></span>
+    <a href="#mitiga%c3%a7%c3%a3o" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h3><ol>
+<li>
+<p><strong>Mecanismos de Sincronização</strong>: Linguagens de programação modernas fornecem mecanismos de sincronização, como bloqueios (locks). Apenas uma thread pode adquirir o bloqueio de cada vez, impedindo outras de acessar o recurso compartilhado até que ele seja liberado.</p>
+</li>
+<li>
+<p><strong>Operações Atômicas</strong>: Operações atômicas se referem a unidades de execução indivisíveis, um conjunto de instruções agrupadas e executadas sem interrupção. Essa abordagem garante que uma operação possa ser concluída sem ser interrompida por outra thread.</p>
+</li>
+<li>
+<p><strong>Transações de Banco de Dados</strong>: Transações agrupam várias operações de banco de dados em uma única unidade. Consequentemente, todas as operações dentro da transação ou são bem-sucedidas como um grupo ou falham como um grupo. Essa abordagem garante a consistência dos dados e previne condições de corrida decorrentes de múltiplos processos modificando o banco de dados simultaneamente.</p>
+</li>
+</ol>
+<h2 data-hextra-search-id="challenge-web-app">Challenge Web App<span class="hx:absolute hx:-mt-20" id="challenge-web-app"></span>
+    <a href="#challenge-web-app" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><p>Aplicação web realiza transações bancárias entre contas.
+Antes de explorarmos é essencial entender o comportamento da aplicação.</p>
+<p><strong>Informações importantes percebidas.</strong></p>
+<ul>
+<li>Valores negativos são aceitos nas taxas, incrementando assim o balanço.</li>
+</ul>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-burp-transfer-sucess.png" alt="amount Burp"  loading="lazy" /></p>
+<ul>
+<li>Não é verificado se a taxa é proporcional ao valor transferido.</li>
+<li>Valor recebido não pode ser maior que o fundo de quem está transferindo.</li>
+</ul>
+<p>Podemos obter a <code>flag</code> somente alterando a taxa para <code>-1000</code> dessa forma será creditado <code>+1000</code>.</p>
+<p><img src="/assets/img/posts/2025/03/race-conditions/race-conditions-flag.png" alt="Flag"  loading="lazy" /></p>
+
+          
+        </div>
+        <div class="hx:mt-16"></div>
+        
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location=""
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg><span>Português</span></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2025/2025-03-27-race-conditions/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Claro</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Escuro</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">Sistema</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div><hr class="hx:border-gray-200 hx:dark:border-neutral-800" /><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="Procurar..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Procurar..."
+          aria-label="Procurar..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="Resultados da pesquisa"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
+    <script defer src="/pt.search-dialog.js" integrity=""></script>
+  </body>
+</html>
