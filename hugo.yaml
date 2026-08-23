@@ -4,34 +4,91 @@ title: 'Alex Paulino'
 theme: 'hextra'
 
 markup:
+  # allow raw html
   goldmark:
     renderer:
       unsafe: true
 
+  # enable hextra syntax highlight
+  highlight:
+    noClasses: false
+
 languages:
-  pt:
+  pt-br:
     label: 'Português'
     weight: 1
-  en:
+    menu:
+     main:
+     - name: 'Search'
+       weight: 1
+       params:
+         type: search
+     - name: Theme
+       weight: 2
+       params:
+        type: theme-toggle
+     - name: 'Sobre'
+       url: '/about/'
+       weight: 3
+     - name: 'GitHub'
+       url: 'https://github.com/alxpas'
+       weight: 4
+       params:
+         icon: 'github'
+     - name: 'LinkedIn'
+       url: 'https://www.linkedin.com/in/alexpaulino/'
+       weight: 5
+       params:
+         icon: 'linkedin'
+     - name: 'Idioma'
+       weight: 6
+       params:
+        type: language-switch
+
+  en:  
     label: 'English'
     weight: 2
+    menu:
+     main:
+     - name: 'Search'
+       weight: 1
+       params:
+         type: search
+     - name: Theme
+       weight: 2
+       params:
+        type: theme-toggle
+     - name: 'Sobre'
+       url: '/about/'
+       weight: 3
+     - name: 'GitHub'
+       url: 'https://github.com/alxpas'
+       weight: 4
+       params:
+         icon: 'github'
+     - name: 'LinkedIn'
+       url: 'https://www.linkedin.com/in/alexpaulino/'
+       weight: 5
+       params:
+         icon: 'linkedin'
+     - name: 'Idioma'
+       weight: 6
+       params:
+        type: language-switch
 
-menu:
-  main:
-    - name: 'Search'
-      weight: 1
-      params:
-        type: search
-    - name: 'Sobre'
-      url: '/about/'
-      weight: 2
-    - name: 'GitHub'
-      url: 'https://github.com/alxpas'
-      weight: 3
-      params:
-        icon: 'github'
-    - name: 'LinkedIn'
-      url: 'https://www.linkedin.com/in/alexpaulino/'
-      weight: 4
-      params:
-        icon: 'linkedin'
+params:
+  # Disable Hextra's built-in FlexSearch: it shipped a ~14 MB client index
+  # (full text of 760+ posts) and rebuilt it on the main thread on first
+  # keystroke, which is what made the search box feel slow. The navbar search
+  # input still renders (it's menu-driven); custom JS in head-end.html wires it
+  # to a DuckDuckGo `site:` query instead — zero payload, full-text, instant.
+  search:
+    enable: false
+
+  navbar:
+    displayTitle: true
+    displayLogo: false
+
+  footer:
+    displayCopyright: true
+    displayPoweredBy: true

@@ -81,8 +81,6 @@ Neste projeto prático de Data Analytics com Python, explorei o dataset Pima Ind
 
   <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
     <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
-    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
-    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
     <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Alex Paulino</span>
 </a>
 <button
@@ -94,7 +92,70 @@ Neste projeto prático de Data Analytics com Python, explorei o dataset Pima Ind
     aria-label="Procurar..."
   ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">Procurar...</span>
     <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
-  </button><a
+  </button><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="Mudar tema"
+    data-state="closed"
+    data-location="top"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:p-1 hx:md:p-2 hx:grow"
+    type="button"
+    aria-label="Mudar tema"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=24 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height=24 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><svg height=24 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+</div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Claro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Escuro
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        Sistema
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+<a
   title=""
   href="/about/"
   
@@ -107,7 +168,40 @@ Neste projeto prático de Data Analytics com Python, explorei o dataset Pima Ind
 <span class="hx:sr-only">GitHub</span>
           </a>
           <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/alexpaulino/" title="LinkedIn"><svg height=24 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037c-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85c3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065a2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg><span class="hx:sr-only">LinkedIn</span>
-          </a><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+          </a><div class="hx:flex hx:justify-items-start ">
+    <button
+      title="Mudar a língua"
+      data-state="closed"
+      data-location="top"
+      class="hextra-language-switcher hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:p-1 hx:md:p-2 hx:grow"
+      type="button"
+      aria-label="Mudar a língua"
+      aria-expanded="false"
+      aria-haspopup="menu"
+    >
+      <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=24 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg></div>
+    </button>
+    <ul
+      class="hextra-language-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+      style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+      role="menu"
+    >
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/posts/2026/2025-03-01-data-analytics/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >Português<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></a>
+        </li>
+      <li role="none" class="hx:flex hx:flex-col">
+          <a
+            href="/en/"
+            role="menuitem"
+            class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+          >English</a>
+        </li>
+      </ul>
+  </div><button type="button" aria-label="Menu" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
   </nav>
 </div>
 
@@ -335,23 +429,23 @@ Neste projeto prático de Data Analytics com Python, explorei o dataset <em>Pima
 <h2 data-hextra-search-id="importar-bibliotecas-e-carregar-dataset">Importar bibliotecas e carregar dataset<span class="hx:absolute hx:-mt-20" id="importar-bibliotecas-e-carregar-dataset"></span>
     <a href="#importar-bibliotecas-e-carregar-dataset" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">1. Importar bibliotecas (pandas, numpy, matplotlib.pyplot e seaborn) e carregar o arquivo
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">pima_diabetes (fornecido e utilizado nas aulas). Exibir as primeiras linhas com head().
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Para os últimos exercicios</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.linear_model <span style="color:#f92672">import</span> LogisticRegression
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.decomposition <span style="color:#f92672">import</span> PCA
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>df <span style="color:#f92672">=</span>  pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#39;/content/pima_diabetes.csv&#39;</span>)
-</span></span><span style="display:flex;"><span>mostrar_tabela(df<span style="color:#f92672">.</span>head())</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">1. Importar bibliotecas (pandas, numpy, matplotlib.pyplot e seaborn) e carregar o arquivo
+</span></span></span><span class="line"><span class="cl"><span class="s1">pima_diabetes (fornecido e utilizado nas aulas). Exibir as primeiras linhas com head().
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Para os últimos exercicios</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">df</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/content/pima_diabetes.csv&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">mostrar_tabela</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -438,13 +532,13 @@ Neste projeto prático de Data Analytics com Python, explorei o dataset <em>Pima
 <h2 data-hextra-search-id="explorar-o-dataset">Explorar o dataset<span class="hx:absolute hx:-mt-20" id="explorar-o-dataset"></span>
     <a href="#explorar-o-dataset" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">2. Explorar a estrutura do dataset usando info() e describe(). Identificar colunas numéricas
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">e possíveis valores inválidos.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mostrar_info(df)
-</span></span><span style="display:flex;"><span>mostrar_tabela(df<span style="color:#f92672">.</span>describe(), incluir_index<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">2. Explorar a estrutura do dataset usando info() e describe(). Identificar colunas numéricas
+</span></span></span><span class="line"><span class="cl"><span class="s1">e possíveis valores inválidos.
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">mostrar_info</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">mostrar_tabela</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">(),</span> <span class="n">incluir_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -458,22 +552,22 @@ Neste projeto prático de Data Analytics com Python, explorei o dataset <em>Pima
 </div>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-</span></span><span style="display:flex;"><span>RangeIndex: 768 entries, 0 to 767
-</span></span><span style="display:flex;"><span>Data columns (total 9 columns):
-</span></span><span style="display:flex;"><span> #   Column                    Non-Null Count  Dtype  
-</span></span><span style="display:flex;"><span>---  ------                    --------------  -----  
-</span></span><span style="display:flex;"><span> 0   Pregnancies               768 non-null    int64  
-</span></span><span style="display:flex;"><span> 1   Glucose                   768 non-null    int64  
-</span></span><span style="display:flex;"><span> 2   BloodPressure             768 non-null    int64  
-</span></span><span style="display:flex;"><span> 3   SkinThickness             768 non-null    int64  
-</span></span><span style="display:flex;"><span> 4   Insulin                   768 non-null    int64  
-</span></span><span style="display:flex;"><span> 5   BMI                       768 non-null    float64
-</span></span><span style="display:flex;"><span> 6   DiabetesPedigreeFunction  768 non-null    float64
-</span></span><span style="display:flex;"><span> 7   Age                       768 non-null    int64  
-</span></span><span style="display:flex;"><span> 8   Outcome                   768 non-null    int64  
-</span></span><span style="display:flex;"><span>dtypes: float64(2), int64(7)
-</span></span><span style="display:flex;"><span>memory usage: 54.1 KB</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+</span></span><span class="line"><span class="cl">RangeIndex: 768 entries, 0 to 767
+</span></span><span class="line"><span class="cl">Data columns (total 9 columns):
+</span></span><span class="line"><span class="cl"> #   Column                    Non-Null Count  Dtype  
+</span></span><span class="line"><span class="cl">---  ------                    --------------  -----  
+</span></span><span class="line"><span class="cl"> 0   Pregnancies               768 non-null    int64  
+</span></span><span class="line"><span class="cl"> 1   Glucose                   768 non-null    int64  
+</span></span><span class="line"><span class="cl"> 2   BloodPressure             768 non-null    int64  
+</span></span><span class="line"><span class="cl"> 3   SkinThickness             768 non-null    int64  
+</span></span><span class="line"><span class="cl"> 4   Insulin                   768 non-null    int64  
+</span></span><span class="line"><span class="cl"> 5   BMI                       768 non-null    float64
+</span></span><span class="line"><span class="cl"> 6   DiabetesPedigreeFunction  768 non-null    float64
+</span></span><span class="line"><span class="cl"> 7   Age                       768 non-null    int64  
+</span></span><span class="line"><span class="cl"> 8   Outcome                   768 non-null    int64  
+</span></span><span class="line"><span class="cl">dtypes: float64(2), int64(7)
+</span></span><span class="line"><span class="cl">memory usage: 54.1 KB</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -605,20 +699,20 @@ Biologicamente uma pessoa viva não pode ter esses valores.</p>
 <h2 data-hextra-search-id="tratar-os-dados">Tratar os dados<span class="hx:absolute hx:-mt-20" id="tratar-os-dados"></span>
     <a href="#tratar-os-dados" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">3. Tratar dados: identificar valores zero em colunas onde zero não faz sentido; substituir
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">por NaN; contar valores ausentes.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Identificando colunas que possuem zero</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Criamos uma lista com todas as colunas que possuem valores zeros(que não fazem sentido biologicamente)</span>
-</span></span><span style="display:flex;"><span>colunas_com_zeros <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Glucose&#39;</span>, <span style="color:#e6db74">&#39;BloodPressure&#39;</span>, <span style="color:#e6db74">&#39;SkinThickness&#39;</span>, <span style="color:#e6db74">&#39;Insulin&#39;</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Substituir zero por NaN (Not a Number)</span>
-</span></span><span style="display:flex;"><span>df[colunas_com_zeros] <span style="color:#f92672">=</span> df[colunas_com_zeros]<span style="color:#f92672">.</span>replace(<span style="color:#ae81ff">0</span>, np<span style="color:#f92672">.</span>nan)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Contando os valores ausentes e exibindo com print.</span>
-</span></span><span style="display:flex;"><span>print(df<span style="color:#f92672">.</span>isnull()<span style="color:#f92672">.</span>sum())</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">3. Tratar dados: identificar valores zero em colunas onde zero não faz sentido; substituir
+</span></span></span><span class="line"><span class="cl"><span class="s1">por NaN; contar valores ausentes.
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Identificando colunas que possuem zero</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#Criamos uma lista com todas as colunas que possuem valores zeros(que não fazem sentido biologicamente)</span>
+</span></span><span class="line"><span class="cl"><span class="n">colunas_com_zeros</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;BloodPressure&#39;</span><span class="p">,</span> <span class="s1">&#39;SkinThickness&#39;</span><span class="p">,</span> <span class="s1">&#39;Insulin&#39;</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Substituir zero por NaN (Not a Number)</span>
+</span></span><span class="line"><span class="cl"><span class="n">df</span><span class="p">[</span><span class="n">colunas_com_zeros</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">colunas_com_zeros</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Contando os valores ausentes e exibindo com print.</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -644,25 +738,25 @@ dtype: int64
 <h2 data-hextra-search-id="criação-de-histogramas">Criação de histogramas<span class="hx:absolute hx:-mt-20" id="criação-de-histogramas"></span>
     <a href="#cria%c3%a7%c3%a3o-de-histogramas" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">4. Criar histogramas das variáveis numéricas usando df.hist()
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>eixos <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>hist(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">15</span>), edgecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>, bins<span style="color:#f92672">=</span><span style="color:#ae81ff">19</span>)
-</span></span><span style="display:flex;"><span>print(type(eixos)) <span style="color:#75715e">#verificando qual é o tipo da variável.</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> eixos<span style="color:#f92672">.</span>flatten():
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  x<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#39;Valores&#39;</span>) <span style="color:#75715e">#Eixo horizontal</span>
-</span></span><span style="display:flex;"><span>  x<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#39;Frequência&#39;</span>) <span style="color:#75715e">#Eixo vertical</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  coluna_nome <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>get_title()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> coluna_nome <span style="color:#f92672">in</span> df<span style="color:#f92672">.</span>columns: <span style="color:#75715e">#Verificando se a coluna existe</span>
-</span></span><span style="display:flex;"><span>    valor_skew <span style="color:#f92672">=</span> df[coluna_nome]<span style="color:#f92672">.</span>skew() <span style="color:#75715e">#Calculando o skew para cada coluna.</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    x<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>coluna_nome<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Skew: </span><span style="color:#e6db74">{</span>valor_skew<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>, fontweight<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;bold&#39;</span>)
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>show()</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">4. Criar histogramas das variáveis numéricas usando df.hist()
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">eixos</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">eixos</span><span class="p">))</span> <span class="c1">#verificando qual é o tipo da variável.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">eixos</span><span class="o">.</span><span class="n">flatten</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">x</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Valores&#39;</span><span class="p">)</span> <span class="c1">#Eixo horizontal</span>
+</span></span><span class="line"><span class="cl">  <span class="n">x</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequência&#39;</span><span class="p">)</span> <span class="c1">#Eixo vertical</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">coluna_nome</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">get_title</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="n">coluna_nome</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span> <span class="c1">#Verificando se a coluna existe</span>
+</span></span><span class="line"><span class="cl">    <span class="n">valor_skew</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span><span class="o">.</span><span class="n">skew</span><span class="p">()</span> <span class="c1">#Calculando o skew para cada coluna.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">x</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">coluna_nome</span><span class="si">}</span><span class="se">\n</span><span class="s2">Skew: </span><span class="si">{</span><span class="n">valor_skew</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -692,50 +786,50 @@ Com a definição de NaN que fizemos no exercício anterior, garantimos que os v
 <h2 data-hextra-search-id="criação-de-boxplots">Criação de boxplots<span class="hx:absolute hx:-mt-20" id="criação-de-boxplots"></span>
     <a href="#cria%c3%a7%c3%a3o-de-boxplots" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">5. Criar boxplots de Glucose, BMI, Age e BloodPressure para observar outliers.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Definindo as colunas que iremos criar os boxplots</span>
-</span></span><span style="display:flex;"><span>colunas  <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Glucose&#39;</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>, <span style="color:#e6db74">&#39;Age&#39;</span>, <span style="color:#e6db74">&#39;BloodPressure&#39;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Com o laço for realizamos o caculo e a geração de boxplots de todas as colunas que definimos.</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> coluna_nome <span style="color:#f92672">in</span> colunas:
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> coluna_nome <span style="color:#f92672">in</span> df<span style="color:#f92672">.</span>columns:
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Calcular IQR de cada coluna</span>
-</span></span><span style="display:flex;"><span>    Q1 <span style="color:#f92672">=</span> df[coluna_nome]<span style="color:#f92672">.</span>quantile(<span style="color:#ae81ff">0.25</span>)
-</span></span><span style="display:flex;"><span>    Q3 <span style="color:#f92672">=</span> df[coluna_nome]<span style="color:#f92672">.</span>quantile(<span style="color:#ae81ff">0.75</span>)
-</span></span><span style="display:flex;"><span>    IQR <span style="color:#f92672">=</span> Q3 <span style="color:#f92672">-</span> Q1
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Abaixo difinimos o intervalo, qualquer valor do dataset que estiver fora do intervalo é um outliers</span>
-</span></span><span style="display:flex;"><span>    limite_inf <span style="color:#f92672">=</span> Q1 <span style="color:#f92672">-</span> <span style="color:#ae81ff">1.5</span><span style="color:#f92672">*</span>IQR
-</span></span><span style="display:flex;"><span>    limite_sup <span style="color:#f92672">=</span> Q3 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1.5</span><span style="color:#f92672">*</span>IQR
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Detectando outliers de cada coluna</span>
-</span></span><span style="display:flex;"><span>    outliers <span style="color:#f92672">=</span> df[(df[coluna_nome] <span style="color:#f92672">&lt;</span> limite_inf) <span style="color:#f92672">|</span> (df[coluna_nome] <span style="color:#f92672">&gt;</span> limite_sup)]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    quantidade_outliers <span style="color:#f92672">=</span> len(outliers) <span style="color:#75715e">#contando os outliers com função len()</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Geração do Boxplot</span>
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">4</span>))
-</span></span><span style="display:flex;"><span>    sns<span style="color:#f92672">.</span>boxplot(y<span style="color:#f92672">=</span>df[coluna_nome], color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;blue&#39;</span>) <span style="color:#75715e">#Uitlizando a biblioteca Seaborn que foi importada na primeira atividade (sns), &#39;y&#39; deixamos na vertical o gráfico</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Definindo o intervalo do eixo Y</span>
-</span></span><span style="display:flex;"><span>    min_val <span style="color:#f92672">=</span> df[coluna_nome]<span style="color:#f92672">.</span>min()
-</span></span><span style="display:flex;"><span>    max_val <span style="color:#f92672">=</span> df[coluna_nome]<span style="color:#f92672">.</span>max()
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>yticks(np<span style="color:#f92672">.</span>arange(min_val, max_val <span style="color:#f92672">+</span> <span style="color:#ae81ff">10</span>, step<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)) <span style="color:#75715e">#De 10 em 10 unidades</span>
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>grid(axis<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;y&#39;</span>, linestyle<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;--&#39;</span>, alpha<span style="color:#f92672">=</span><span style="color:#ae81ff">0.7</span>) <span style="color:#75715e">#Adicionando linhas para facilitar a visualização</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Boxplot de </span><span style="color:#e6db74">{</span>coluna_nome<span style="color:#e6db74">}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Quantidade de Outliers: </span><span style="color:#e6db74">{</span>quantidade_outliers<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>xlabel(coluna_nome)
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>show()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Descrição solicitada</span>
-</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Variável: </span><span style="color:#e6db74">{</span>coluna_nome<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Total de registros: </span><span style="color:#e6db74">{</span>df[coluna_nome]<span style="color:#f92672">.</span>count()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>) <span style="color:#75715e">#Exibindo a quantidade registro válidos na coluna.</span>
-</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Outliers detectados: </span><span style="color:#e6db74">{</span>quantidade_outliers<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>) <span style="color:#75715e">#Exbindo os outliers que calculamos em len()</span>
-</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Intervalo aceitável: </span><span style="color:#e6db74">{</span>limite_inf<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> a </span><span style="color:#e6db74">{</span>limite_sup<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">90</span>)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">5. Criar boxplots de Glucose, BMI, Age e BloodPressure para observar outliers.
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Definindo as colunas que iremos criar os boxplots</span>
+</span></span><span class="line"><span class="cl"><span class="n">colunas</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;BloodPressure&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Com o laço for realizamos o caculo e a geração de boxplots de todas as colunas que definimos.</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">coluna_nome</span> <span class="ow">in</span> <span class="n">colunas</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="n">coluna_nome</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#Calcular IQR de cada coluna</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#Abaixo difinimos o intervalo, qualquer valor do dataset que estiver fora do intervalo é um outliers</span>
+</span></span><span class="line"><span class="cl">    <span class="n">limite_inf</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">IQR</span>
+</span></span><span class="line"><span class="cl">    <span class="n">limite_sup</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">IQR</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#Detectando outliers de cada coluna</span>
+</span></span><span class="line"><span class="cl">    <span class="n">outliers</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">limite_inf</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">limite_sup</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">quantidade_outliers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span> <span class="c1">#contando os outliers com função len()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#Geração do Boxplot</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span> <span class="c1">#Uitlizando a biblioteca Seaborn que foi importada na primeira atividade (sns), &#39;y&#39; deixamos na vertical o gráfico</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#Definindo o intervalo do eixo Y</span>
+</span></span><span class="line"><span class="cl">    <span class="n">min_val</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">max_val</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span> <span class="c1">#De 10 em 10 unidades</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span> <span class="c1">#Adicionando linhas para facilitar a visualização</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Boxplot de </span><span class="si">{</span><span class="n">coluna_nome</span><span class="si">}</span><span class="se">\n</span><span class="s2">Quantidade de Outliers: </span><span class="si">{</span><span class="n">quantidade_outliers</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">coluna_nome</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#Descrição solicitada</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Variável: </span><span class="si">{</span><span class="n">coluna_nome</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Total de registros: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">coluna_nome</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span> <span class="c1">#Exibindo a quantidade registro válidos na coluna.</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Outliers detectados: </span><span class="si">{</span><span class="n">quantidade_outliers</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span> <span class="c1">#Exbindo os outliers que calculamos em len()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Intervalo aceitável: </span><span class="si">{</span><span class="n">limite_inf</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> a </span><span class="si">{</span><span class="n">limite_sup</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-&#34;</span> <span class="o">*</span> <span class="mi">90</span><span class="p">)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -778,21 +872,21 @@ Intervalo aceitável: 40.00 a 104.00
 <h2 data-hextra-search-id="criação-de-gráficos-e-análise">Criação de gráficos e análise<span class="hx:absolute hx:-mt-20" id="criação-de-gráficos-e-análise"></span>
     <a href="#cria%c3%a7%c3%a3o-de-gr%c3%a1ficos-e-an%c3%a1lise" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">6. Criar um gráfico de barras da variável Outcome usando value_counts().plot(kind=&#39;bar&#39;).
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>outcome_counts <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;Outcome&#39;</span>]<span style="color:#f92672">.</span>value_counts() <span style="color:#75715e">#contando os valores</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Separando os valores para exibi-los dentro do grafico</span>
-</span></span><span style="display:flex;"><span>nao_diabetico <span style="color:#f92672">=</span> outcome_counts[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>diabetico <span style="color:#f92672">=</span> outcome_counts[<span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>outcome_counts<span style="color:#f92672">.</span>plot(kind<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;bar&#39;</span>, edgecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>) <span style="color:#75715e"># Inserindo barras e bordas</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Contagem Total por Classe (Outcome)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74"> Não diabético: </span><span style="color:#e6db74">{</span>nao_diabetico<span style="color:#e6db74">}</span><span style="color:#e6db74">, Diabético: </span><span style="color:#e6db74">{</span>diabetico<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>, pad<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>) <span style="color:#75715e">#Inserindo um título e valores, no título</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xticks(ticks<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], labels<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;0 (Não Diabético)&#39;</span>, <span style="color:#e6db74">&#39;1 (Diabético)&#39;</span>], rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) <span style="color:#75715e">#Abaixo do eixo horizontal colocando legenda</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;Quantidade de Pacientes&#39;</span>) <span style="color:#75715e">#Eixo vertical</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show() <span style="color:#75715e">#Exibindo gráfico</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">6. Criar um gráfico de barras da variável Outcome usando value_counts().plot(kind=&#39;bar&#39;).
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">outcome_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Outcome&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="c1">#contando os valores</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Separando os valores para exibi-los dentro do grafico</span>
+</span></span><span class="line"><span class="cl"><span class="n">nao_diabetico</span> <span class="o">=</span> <span class="n">outcome_counts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">diabetico</span> <span class="o">=</span> <span class="n">outcome_counts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">outcome_counts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span> <span class="c1"># Inserindo barras e bordas</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Contagem Total por Classe (Outcome)</span><span class="se">\n</span><span class="s1"> Não diabético: </span><span class="si">{</span><span class="n">nao_diabetico</span><span class="si">}</span><span class="s1">, Diabético: </span><span class="si">{</span><span class="n">diabetico</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> <span class="c1">#Inserindo um título e valores, no título</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0 (Não Diabético)&#39;</span><span class="p">,</span> <span class="s1">&#39;1 (Diabético)&#39;</span><span class="p">],</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#Abaixo do eixo horizontal colocando legenda</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Quantidade de Pacientes&#39;</span><span class="p">)</span> <span class="c1">#Eixo vertical</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1">#Exibindo gráfico</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -808,37 +902,37 @@ Intervalo aceitável: 40.00 a 104.00
 <h2 data-hextra-search-id="comparação-de-médias">Comparação de médias<span class="hx:absolute hx:-mt-20" id="comparação-de-médias"></span>
     <a href="#compara%c3%a7%c3%a3o-de-m%c3%a9dias" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">7. Comparar médias de Glucose e BMI entre diabéticos e não diabéticos usando
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">groupby(&#39;Outcome&#39;).
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Calculando as médias agrupadas por Outcome</span>
-</span></span><span style="display:flex;"><span>df_medias <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>groupby(<span style="color:#e6db74">&#39;Outcome&#39;</span>)[[<span style="color:#e6db74">&#39;Glucose&#39;</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>]]<span style="color:#f92672">.</span>mean()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Criando a estrutura dos gráficos</span>
-</span></span><span style="display:flex;"><span>fig, axes <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">5</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Definindo as colunas que serão utilizadas</span>
-</span></span><span style="display:flex;"><span>colunas <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Glucose&#39;</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Percorre a lista fornecendo tanto o nome da coluna canto o índice</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i, col <span style="color:#f92672">in</span> enumerate(colunas):
-</span></span><span style="display:flex;"><span>    sns<span style="color:#f92672">.</span>barplot(x<span style="color:#f92672">=</span>df_medias<span style="color:#f92672">.</span>index, y<span style="color:#f92672">=</span>df_medias[col], ax<span style="color:#f92672">=</span>axes[i],
-</span></span><span style="display:flex;"><span>                hue<span style="color:#f92672">=</span>df_medias<span style="color:#f92672">.</span>index,  legend<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, edgecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;black&#39;</span>) <span style="color:#75715e">#&#39;hue&#39; para tratar o &#39;FutureWarning&#39; que estava aparecendo na saída do programa</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Adicionando labels com os valores exatos</span>
-</span></span><span style="display:flex;"><span>    axes[i]<span style="color:#f92672">.</span>bar_label(axes[i]<span style="color:#f92672">.</span>containers[<span style="color:#ae81ff">0</span>], fmt<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%.2f</span><span style="color:#e6db74">&#39;</span>, padding<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, fontweight<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;bold&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#Definimos os ticks antes dos labels</span>
-</span></span><span style="display:flex;"><span>    axes[i]<span style="color:#f92672">.</span>set_xticks([<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>])
-</span></span><span style="display:flex;"><span>    axes[i]<span style="color:#f92672">.</span>set_xticklabels([<span style="color:#e6db74">&#39;Saudável (0)&#39;</span>, <span style="color:#e6db74">&#39;Diabético (1)&#39;</span>])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    axes[i]<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Média de </span><span style="color:#e6db74">{</span>col<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
-</span></span><span style="display:flex;"><span>    axes[i]<span style="color:#f92672">.</span>set_ylim(<span style="color:#ae81ff">0</span>, df_medias[col]<span style="color:#f92672">.</span>max() <span style="color:#f92672">*</span> <span style="color:#ae81ff">1.15</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>tight_layout()
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">7. Comparar médias de Glucose e BMI entre diabéticos e não diabéticos usando
+</span></span></span><span class="line"><span class="cl"><span class="s1">groupby(&#39;Outcome&#39;).
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Calculando as médias agrupadas por Outcome</span>
+</span></span><span class="line"><span class="cl"><span class="n">df_medias</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Outcome&#39;</span><span class="p">)[[</span><span class="s1">&#39;Glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Criando a estrutura dos gráficos</span>
+</span></span><span class="line"><span class="cl"><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Definindo as colunas que serão utilizadas</span>
+</span></span><span class="line"><span class="cl"><span class="n">colunas</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Percorre a lista fornecendo tanto o nome da coluna canto o índice</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colunas</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df_medias</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df_medias</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">                <span class="n">hue</span><span class="o">=</span><span class="n">df_medias</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>  <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span> <span class="c1">#&#39;hue&#39; para tratar o &#39;FutureWarning&#39; que estava aparecendo na saída do programa</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#Adicionando labels com os valores exatos</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">bar_label</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">containers</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#Definimos os ticks antes dos labels</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Saudável (0)&#39;</span><span class="p">,</span> <span class="s1">&#39;Diabético (1)&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Média de </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">df_medias</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.15</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -854,33 +948,33 @@ Intervalo aceitável: 40.00 a 104.00
 <h2 data-hextra-search-id="criação-scatterplots-glucose--bmi-e-age--bmi">Criação scatterplots: Glucose × BMI e Age × BMI<span class="hx:absolute hx:-mt-20" id="criação-scatterplots-glucose--bmi-e-age--bmi"></span>
     <a href="#cria%c3%a7%c3%a3o-scatterplots-glucose--bmi-e-age--bmi" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">8. Criar scatterplots de Glucose × BMI e Age × BMI coloridos por Outcome.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;Outcome&#39;</span>] <span style="color:#75715e">#Coluna que queremos prevê o valor</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Criando o gráfico de scatterplots</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">5</span>))
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;Glucose&#39;</span>], df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Saudável&#34;</span>) <span style="color:#75715e">#Definindo 0 como saudável</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;Glucose&#39;</span>], df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Diabético&#34;</span>) <span style="color:#75715e">#Definindo 1 como diabético</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Definindo os eixos e título</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Glucose&#39;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;BMI&#39;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Diagrama de dispersão entre Glucose e BMI&#39;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">5</span>))
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;Age&#39;</span>], df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Saudável&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;Age&#39;</span>], df<span style="color:#f92672">.</span>loc[y<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Diabético&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#39;Age&#39;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#39;BMI&#39;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#39;Diagrama de dispersão entre Age e BMI&#39;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">8. Criar scatterplots de Glucose × BMI e Age × BMI coloridos por Outcome.
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Outcome&#39;</span><span class="p">]</span> <span class="c1">#Coluna que queremos prevê o valor</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Criando o gráfico de scatterplots</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Glucose&#39;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Saudável&#34;</span><span class="p">)</span> <span class="c1">#Definindo 0 como saudável</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Glucose&#39;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Diabético&#34;</span><span class="p">)</span> <span class="c1">#Definindo 1 como diabético</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Definindo os eixos e título</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Glucose&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;BMI&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Diagrama de dispersão entre Glucose e BMI&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Saudável&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Diabético&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;BMI&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Diagrama de dispersão entre Age e BMI&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -902,24 +996,24 @@ Intervalo aceitável: 40.00 a 104.00
 <h2 data-hextra-search-id="treinar-uma-regressão-logística">Treinar uma regressão logística<span class="hx:absolute hx:-mt-20" id="treinar-uma-regressão-logística"></span>
     <a href="#treinar-uma-regress%c3%a3o-log%c3%adstica" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">9. Treinar uma regressão logística:
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>df<span style="color:#f92672">.</span>dropna(inplace<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>) <span style="color:#75715e">#Removendo os valores vazios, já tinhamos alterado para NaN</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Definindo as colunas que serão irão entrar no treinamento</span>
-</span></span><span style="display:flex;"><span>X  <span style="color:#f92672">=</span> df[[<span style="color:#e6db74">&#39;BMI&#39;</span>, <span style="color:#e6db74">&#39;Age&#39;</span>, <span style="color:#e6db74">&#39;Glucose&#39;</span>, <span style="color:#e6db74">&#39;BloodPressure&#39;</span>]]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Definindo o alvo</span>
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;Outcome&#39;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> StandardScaler()<span style="color:#f92672">.</span>fit_transform(X) <span style="color:#75715e">#realizando a padronização dos dados, aplica z-score</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>modelo <span style="color:#f92672">=</span> LogisticRegression() <span style="color:#75715e">#criando o objeto classificador</span>
-</span></span><span style="display:flex;"><span>modelo<span style="color:#f92672">.</span>fit(X, y) <span style="color:#75715e">#realizando o treinamento</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Acurácia: &#34;</span>, modelo<span style="color:#f92672">.</span>score(X, y)) <span style="color:#75715e">#Aqui calculamos a acurácia e exibimos na tela</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">9. Treinar uma regressão logística:
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#Removendo os valores vazios, já tinhamos alterado para NaN</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Definindo as colunas que serão irão entrar no treinamento</span>
+</span></span><span class="line"><span class="cl"><span class="n">X</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;BMI&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;BloodPressure&#39;</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Definindo o alvo</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Outcome&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1">#realizando a padronização dos dados, aplica z-score</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">modelo</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span> <span class="c1">#criando o objeto classificador</span>
+</span></span><span class="line"><span class="cl"><span class="n">modelo</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1">#realizando o treinamento</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Acurácia: &#34;</span><span class="p">,</span> <span class="n">modelo</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span> <span class="c1">#Aqui calculamos a acurácia e exibimos na tela</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -939,38 +1033,38 @@ Isso significa que, ao combinar Glicose, IMC, Idade e Pressão Arterial, o model
 <h2 data-hextra-search-id="análise-de-pca-utilizando-3-parâmetros">Análise de PCA utilizando 3 parâmetros<span class="hx:absolute hx:-mt-20" id="análise-de-pca-utilizando-3-parâmetros"></span>
     <a href="#an%c3%a1lise-de-pca-utilizando-3-par%c3%a2metros" class="subheading-anchor" aria-label="Link permanente para esta secção"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">10. Executar uma análise de PCA utilizando 3 parâmetros.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Definindo quais colunas serão usadas</span>
-</span></span><span style="display:flex;"><span>colunas_selecionadas <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Glucose&#39;</span>, <span style="color:#e6db74">&#39;BMI&#39;</span>, <span style="color:#e6db74">&#39;Age&#39;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Removendo os valores vazios, já tinhamos alterado para NaN</span>
-</span></span><span style="display:flex;"><span>df_filtrado <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>dropna(subset<span style="color:#f92672">=</span>colunas_selecionadas <span style="color:#f92672">+</span> [<span style="color:#e6db74">&#39;Outcome&#39;</span>]) <span style="color:#75715e">#Removendo também da coluna &#39;Outcome&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> StandardScaler()<span style="color:#f92672">.</span>fit_transform(df_filtrado[colunas_selecionadas])
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> df_filtrado[<span style="color:#e6db74">&#39;Outcome&#39;</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>pca <span style="color:#f92672">=</span> PCA(<span style="color:#ae81ff">2</span>) <span style="color:#75715e">#Definindo a quantidade de componentes principais</span>
-</span></span><span style="display:flex;"><span>Xp <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(X)
-</span></span><span style="display:flex;"><span>v <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>explained_variance_ratio_ <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span> <span style="color:#75715e">#Cálculo de variância para mostrar a porcentagem em cada eixo</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Rotulandos dados no gráfico</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(Xp[y<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>], Xp[y<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Saudável&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(Xp[y<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>], Xp[y<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Diabético&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;PCA com </span><span style="color:#e6db74">{</span>colunas_selecionadas[<span style="color:#ae81ff">0</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74"> , </span><span style="color:#e6db74">{</span>colunas_selecionadas[<span style="color:#ae81ff">1</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74"> e </span><span style="color:#e6db74">{</span>colunas_selecionadas[<span style="color:#ae81ff">2</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>) <span style="color:#75715e">#Colocando no título as colunas</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;PC1 (</span><span style="color:#e6db74">{</span>v[<span style="color:#ae81ff">0</span>]<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%)&#39;</span>) <span style="color:#75715e">#Exibindo a porcentagem de variancia</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;PC2 (</span><span style="color:#e6db74">{</span>v[<span style="color:#ae81ff">1</span>]<span style="color:#e6db74">:</span><span style="color:#e6db74">.1f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%)&#39;</span>) <span style="color:#75715e">#Exibindo a porcentagem de variancia</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>legend()
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#Criando uma tabela com os pesos de cada variável</span>
-</span></span><span style="display:flex;"><span>loadings <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(pca<span style="color:#f92672">.</span>components_<span style="color:#f92672">.</span>T, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;PC1&#39;</span>, <span style="color:#e6db74">&#39;PC2&#39;</span>], index<span style="color:#f92672">=</span>colunas_selecionadas)
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;Mostrando o peso de cada variável no gráfico.&#39;</span>)
-</span></span><span style="display:flex;"><span>print(loadings)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">10. Executar uma análise de PCA utilizando 3 parâmetros.
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Definindo quais colunas serão usadas</span>
+</span></span><span class="line"><span class="cl"><span class="n">colunas_selecionadas</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;BMI&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Removendo os valores vazios, já tinhamos alterado para NaN</span>
+</span></span><span class="line"><span class="cl"><span class="n">df_filtrado</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">colunas_selecionadas</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;Outcome&#39;</span><span class="p">])</span> <span class="c1">#Removendo também da coluna &#39;Outcome&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_filtrado</span><span class="p">[</span><span class="n">colunas_selecionadas</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">df_filtrado</span><span class="p">[</span><span class="s1">&#39;Outcome&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#Definindo a quantidade de componentes principais</span>
+</span></span><span class="line"><span class="cl"><span class="n">Xp</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span> <span class="o">*</span> <span class="mi">100</span> <span class="c1">#Cálculo de variância para mostrar a porcentagem em cada eixo</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Rotulandos dados no gráfico</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xp</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xp</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Saudável&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Xp</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xp</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Diabético&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PCA com </span><span class="si">{</span><span class="n">colunas_selecionadas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> , </span><span class="si">{</span><span class="n">colunas_selecionadas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> e </span><span class="si">{</span><span class="n">colunas_selecionadas</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#Colocando no título as colunas</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PC1 (</span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span> <span class="c1">#Exibindo a porcentagem de variancia</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PC2 (</span><span class="si">{</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span> <span class="c1">#Exibindo a porcentagem de variancia</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Criando uma tabela com os pesos de cada variável</span>
+</span></span><span class="line"><span class="cl"><span class="n">loadings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PC1&#39;</span><span class="p">,</span> <span class="s1">&#39;PC2&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">colunas_selecionadas</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mostrando o peso de cada variável no gráfico.&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">loadings</span><span class="p">)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Copiar código"
@@ -1102,50 +1196,11 @@ Age      0.602021 -0.507861
     >
       <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
     <span>Com a tecnologia de Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
-  </a></div></div>
+  </a></div><div class="hx:mt-6 hx:text-xs">© 2026 Projecto Hextra.</div></div>
     </div></footer>
     
-    <dialog
-    id="hextra-search-dialog"
-    class="hextra-search-dialog"
-    aria-label="Procurar..."
-  >
-    <div class="hextra-search">
-      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
-          class="hextra-search-input"
-          type="search"
-          role="combobox"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-          placeholder="Procurar..."
-          aria-label="Procurar..."
-          aria-controls="hextra-search-results"
-          aria-expanded="false"
-        /><button
-          type="button"
-          class="hextra-search-input-kbd"
-          data-search-close
-          aria-label="Close"
-        >ESC</button>
-      </div>
-      <div class="hextra-search-results-viewport" data-search-viewport>
-        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
-          <ul
-            id="hextra-search-results"
-            class="hextra-search-results"
-            role="listbox"
-            aria-label="Resultados da pesquisa"
-          ></ul>
-          <div class="hextra-search-empty" data-search-empty hidden>Nenhum resultado encontrado</div>
-        </div>
-      </div>
-      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
-    </div>
-  </dialog>
+    
     <script defer src="/js/main.js" integrity=""></script>
-<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script><script defer src="/pt.search.js" integrity=""></script>
-    <script defer src="/pt.search-dialog.js" integrity=""></script>
+
   </body>
 </html>
