@@ -1,33 +1,90 @@
-# Bundler cache
-.bundle
-vendor
-Gemfile.lock
-
-# Jekyll cache
-.jekyll-cache
-.jekyll-metadata
-_site
-
-# RubyGems
-*.gem
-
-# NPM dependencies
-node_modules
-package-lock.json
-
-# IDE configurations
-.idea
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
-!.vscode/tasks.json
-
-# Misc
-_sass/vendors
-assets/js/dist
-
-# Virtual environment
+# ============================
+# Ambientes virtuais / Python
+# ============================
+venv/
 .venv/
+env/
+.env/
+ENV/
+virtualenv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
 
-# notebooks 
-_notebooks
+# ============================
+# Jupyter / Notebooks
+# ============================
+notebooks/
+_notebooks/
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*-checkpoint.ipynb
+
+# ============================
+# Variáveis de ambiente / segredos
+# ============================
+.env
+.env.*
+*.env
+secrets.*
+*.key
+*.pem
+
+# ============================
+# Logs e caches
+# ============================
+*.log
+.cache/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+*.tmp
+*.bak
+
+# ============================
+# Hugo (site estático)
+# ============================
+public/
+resources/
+.hugo_build.lock
+
+# ============================
+# Jekyll (site estático)
+# ============================
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+vendor/
+.bundle/
+
+# ============================
+# Sistema operacional
+# ============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================
+# Editores / IDEs
+# ============================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ============================
+# Node (caso use ferramentas JS no site)
+# ============================
+node_modules/
+npm-debug.log*
+yarn-error.log*
