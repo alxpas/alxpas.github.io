@@ -27,5 +27,7 @@ _sass/vendors
 assets/js/dist
 
 # Virtual environment
-
 .venv/
+
+# notebooks 
+_notebooks
